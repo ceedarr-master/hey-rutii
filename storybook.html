@@ -275,41 +275,97 @@
     </div>
   </div>
 
-  <!-- 2. Color Palette Tokens -->
+  
+  <!-- 2. Figma Complete Color Palette System -->
   <div class="sb-section">
-    <div class="sb-section-title">🎨 Color Palette & Brand Tokens</div>
-    <div class="sb-grid">
-      <div class="color-swatch" style="background: var(--brand-gradient);">
-        <div class="swatch-name">Brand Gradient</div>
-        <div class="swatch-code">#46efc5 -> #00c8de</div>
+    <div class="sb-section-title">🎨 Figma Complete Color Palette System</div>
+    
+    <!-- Top Level -->
+    <div class="typo-group" style="margin-bottom: 24px;">
+      <div class="typo-group-name">▼ Top Level Brand & Strokes</div>
+      <div class="sb-grid">
+        <div class="color-swatch" style="background: var(--color-primary);">
+          <div class="swatch-name">Primary</div>
+          <div class="swatch-code">Linear (#46efc5 -> #00c8de)</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--color-background); border:1px solid #d0e8e4;">
+          <div class="swatch-name">Background</div>
+          <div class="swatch-code">Linear (#eafff6 -> #fff8ec)</div>
+        </div>
+        <div class="color-swatch" style="background: var(--color-brand-accent);">
+          <div class="swatch-name">Brand Accent</div>
+          <div class="swatch-code">#00c6b8</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--color-brand-secondary);">
+          <div class="swatch-name">Brand Secondary</div>
+          <div class="swatch-code">#def7f2</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--color-stroke-dark);">
+          <div class="swatch-name">Stroke - Dark</div>
+          <div class="swatch-code">#c7e3e8</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--color-stroke-light);">
+          <div class="swatch-name">Stroke - Light</div>
+          <div class="swatch-code">#d7eae9</div>
+        </div>
       </div>
-      <div class="color-swatch" style="background: var(--accent-color);">
-        <div class="swatch-name">Accent Cyan</div>
-        <div class="swatch-code">#00c6b8</div>
+    </div>
+
+    <!-- Text Category -->
+    <div class="typo-group" style="margin-bottom: 24px;">
+      <div class="typo-group-name">▼ Text Colors</div>
+      <div class="sb-grid">
+        <div class="color-swatch" style="background: var(--text-brand-accent);">
+          <div class="swatch-name">Text / Brand Accent</div>
+          <div class="swatch-code">#00c6b8</div>
+        </div>
+        <div class="color-swatch" style="background: var(--text-primary);">
+          <div class="swatch-name">Text / Primary</div>
+          <div class="swatch-code">#262626</div>
+        </div>
+        <div class="color-swatch" style="background: var(--text-secondary);">
+          <div class="swatch-name">Text / Secondary</div>
+          <div class="swatch-code">#6c807e</div>
+        </div>
+        <div class="color-swatch" style="background: var(--text-tertiary);">
+          <div class="swatch-name">Text / Tertiary</div>
+          <div class="swatch-code">#9cb3b0</div>
+        </div>
+        <div class="color-swatch" style="background: var(--text-warning);">
+          <div class="swatch-name">Text / Warning</div>
+          <div class="swatch-code">#ff8816</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: #ffffff; border:1px solid #ddd;">
+          <div class="swatch-name">Text / White</div>
+          <div class="swatch-code">#ffffff</div>
+        </div>
       </div>
-      <div class="color-swatch color-swatch-dark" style="background: var(--bg-accent);">
-        <div class="swatch-name">Background Accent</div>
-        <div class="swatch-code">#def7f2</div>
-      </div>
-      <div class="color-swatch color-swatch-dark" style="background: var(--bg-secondary);">
-        <div class="swatch-name">Background Secondary</div>
-        <div class="swatch-code">#edf8f6</div>
-      </div>
-      <div class="color-swatch" style="background: var(--text-primary);">
-        <div class="swatch-name">Text Primary</div>
-        <div class="swatch-code">#2b2b2b</div>
-      </div>
-      <div class="color-swatch" style="background: var(--text-secondary);">
-        <div class="swatch-name">Text Secondary</div>
-        <div class="swatch-code">#9cb3b0</div>
-      </div>
-      <div class="color-swatch" style="background: var(--text-danger);">
-        <div class="swatch-name">Text Danger / Current</div>
-        <div class="swatch-code">#ff8816</div>
-      </div>
-      <div class="color-swatch color-swatch-dark" style="background: var(--bg-danger);">
-        <div class="swatch-name">Background Danger</div>
-        <div class="swatch-code">#fff0ec</div>
+    </div>
+
+    <!-- Surface Category -->
+    <div class="typo-group">
+      <div class="typo-group-name">▼ Surface Colors</div>
+      <div class="sb-grid">
+        <div class="color-swatch color-swatch-dark" style="background: var(--surface-white); border:1px solid #ddd;">
+          <div class="swatch-name">Surface / White</div>
+          <div class="swatch-code">#ffffff</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--surface-light);">
+          <div class="swatch-name">Surface / Light</div>
+          <div class="swatch-code">#ebf6f4</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--surface-dark);">
+          <div class="swatch-name">Surface / Dark</div>
+          <div class="swatch-code">#bddad6</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--surface-tab);">
+          <div class="swatch-name">Surface / Tab</div>
+          <div class="swatch-code">#e2f4f1</div>
+        </div>
+        <div class="color-swatch color-swatch-dark" style="background: var(--surface-warning);">
+          <div class="swatch-name">Surface / Warning</div>
+          <div class="swatch-code">#fff0ec</div>
+        </div>
       </div>
     </div>
   </div>
