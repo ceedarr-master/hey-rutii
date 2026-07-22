@@ -28,10 +28,10 @@ button:active { transform: scale(0.97); }
 button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* Button Sizes */
-.btn-lg { width: 100%; padding: var(--space-16) var(--space-14); font-size: var(--typo-display-lg); border-radius: var(--radius-lg); min-height: 55px; min-width: none: 55px; }
-.btn-md { width: auto; padding: var(--space-14) var(--space-12); font-size: var(--typo-display-md); border-radius: var(--radius-md); min-height: 48px; min-width: none: 48px; }
-.btn-sm { width: auto; padding: var(--space-10) var(--space-8); font-size: var(--typo-display-xs); border-radius: var(--radius-sm); min-height: 34px; min-width: none: 34px; }
-.btn-xs { width: auto; padding: var(--space-8) var(--space-4); font-size: var(--typo-display-xs); border-radius: var(--radius-xs); min-height: 26px; min-width: none: 26px; }
+.btn-lg { width: 100%; padding: var(--space-16) var(--space-14); font-size: var(--typo-display-lg); border-radius: var(--radius-lg); min-height: 55px; min-width: 55px;}
+.btn-md { width: auto; padding: var(--space-14) var(--space-12); font-size: var(--typo-display-md); border-radius: var(--radius-md); min-height: 48px; min-width: 48px;}
+.btn-sm { width: auto; padding: var(--space-10) var(--space-8); font-size: var(--typo-display-xs); border-radius: var(--radius-sm); min-height: 34px; min-width: 34px;}
+.btn-xs { width: auto; padding: var(--space-8) var(--space-4); font-size: var(--typo-display-xs); border-radius: var(--radius-xs); min-height: 26px; min-width: 26px;}
 .btn-flex { flex: 1; width: auto; }
 
 /* Button Variants */
