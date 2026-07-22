@@ -131,7 +131,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 .set-progress-line { position: absolute; top: 50%; left: 0; right: 0; border-top: 2px dashed var(--color-stroke-dark); z-index: 1; transform: translateY(-50%); }
 .set-dot { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: var(--typo-display-2xs); font-weight: var(--fw-black); z-index: 2; }
 .set-dot.done { background: var(--surface-dark); color: var(--text-white); }
-.set-dot.current { background:var(--color-brand-accent); color: var(---text-white);}
+.set-dot.current { background:var(--color-brand-accent); color: var(--text-white);}
 .set-dot.upcoming { background: var(--color-brand-secondary); color: var(--text-brand-accent);}
 
 /* Giant Digital Timer */
