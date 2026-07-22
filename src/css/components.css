@@ -37,8 +37,8 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 /* Button Variants */
 .btn-primary { background: var(--brand-gradient); color: var(--text-white); box-shadow: 0 6px 18px var(--btn-shadow); border: none; }
 .btn-primary:disabled { background: var(--bg-disabled); box-shadow: none; color: var(--text-disabled); }
-.btn-secondary { background: var(--color-brand-secondary); color: var(--text-white); border: none; font-weight: var(--fw-bold); }
-.btn-outlined { background: var(--color-brand-secondary); color: var(--text-white); border: 1px dashed var(--border-accent); font-weight: var(--fw-bold); }
+.btn-secondary { background: var(--color-brand-secondary); color: var(--text-brand-accent); border: none; font-weight: var(--fw-bold); }
+.btn-outlined { background: var(--color-brand-secondary); color: var(--text-brand-accent); border: 1px dashed var(--border-accent); font-weight: var(--fw-bold); }
 .btn-tertiary { background: transparent; color: var(--text-secondary); border: none; padding: 0 !important; }
 .btn-warning { background: var(--surface-warning); color: var(--text-warning); border: none; font-weight: var(--fw-bold); }
 .btn-icon { width: auto; padding: var(--space-8) var(--space-10) !important; font-size: var(--text-base) !important; border-radius: var(--radius-md) !important; display: inline-flex; align-items: center; justify-content: justify; }
