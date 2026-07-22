@@ -28,10 +28,10 @@ button:active { transform: scale(0.97); }
 button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* Button Sizes */
-.btn-lg { width: 100%; padding: var(--space-16) var(--space-14); font-size: var(--typo-display-lg); border-radius: var(--radius-lg); min-height: 55px; min-width: 55px;}
-.btn-md { width: auto; padding: var(--space-14) var(--space-12); font-size: var(--typo-display-md); border-radius: var(--radius-md); min-height: 48px; min-width: 48px;}
-.btn-sm { width: auto; padding: var(--space-10) var(--space-8); font-size: var(--typo-display-xs); border-radius: var(--radius-sm); min-height: 34px; min-width: 34px;}
-.btn-xs { width: auto; padding: var(--space-8) var(--space-4); font-size: var(--typo-display-xs); border-radius: var(--radius-xs); min-height: 26px; min-width: 26px;}
+.btn-lg { width: 100%; padding: var(--space-14) var(--space-16); font-size: var(--typo-display-lg); border-radius: var(--radius-lg); min-height: 55px; min-width: 55px;}
+.btn-md { width: auto; padding: var(--space-12) var(--space-14); font-size: var(--typo-display-md); border-radius: var(--radius-md); min-height: 48px; min-width: 48px;}
+.btn-sm { width: auto; padding: var(--space-8) var(--space-10); font-size: var(--typo-display-xs); border-radius: var(--radius-sm); min-height: 34px; min-width: 34px;}
+.btn-xs { width: auto; padding: var(--space-4) var(--space-8); font-size: var(--typo-display-xs); border-radius: var(--radius-xs); min-height: 26px; min-width: 26px;}
 .btn-flex { flex: 1; width: auto; }
 
 /* Button Variants */
@@ -128,11 +128,11 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* Set Progress Track (Figma Specs) */
 .set-progress-track { display: flex; align-items: center; gap: 8px; position: relative; }
-.set-progress-line { position: absolute; top: 50%; left: 0; right: 0; border-top: 2px dashed #b5e4df; z-index: 1; transform: translateY(-50%); }
-.set-dot { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: var(--fw-black); z-index: 2; border: 2px solid transparent; background: #ffffff; }
-.set-dot.done { background: #00c6b8; color: #ffffff; border-color: #00c6b8; }
-.set-dot.current { background: #00c6b8; color: #ffffff; border-color: #00c6b8; box-shadow: 0 0 0 4px rgba(0, 198, 184, 0.25); }
-.set-dot.upcoming { background: #ffffff; color: #b5e4df; border-color: #b5e4df; }
+.set-progress-line { position: absolute; top: 50%; left: 0; right: 0; border-top: 2px dashed var(--color-stroke-dark); z-index: 1; transform: translateY(-50%); }
+.set-dot { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: var(--typo-display-2xs); font-weight: var(--fw-black); z-index: 2; }
+.set-dot.done { background: var(--surface-dark); color: var(--text-white); }
+.set-dot.current { background:var(--color-brand-accent); color: var(---text-white);}
+.set-dot.upcoming { background: var(--color-brand-secondary); color: var(--text-brand-accent);}
 
 /* Giant Digital Timer */
 .digital-timer {
