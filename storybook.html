@@ -121,6 +121,45 @@
       font-size: 14px;
       outline: none;
     }
+
+    /* Typography Showcase Box */
+    .typo-group {
+      margin-bottom: 28px;
+    }
+    .typo-group-name {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--bg-secondary);
+      padding-bottom: 6px;
+    }
+    .typo-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--border-base);
+    }
+    .typo-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      width: 140px;
+      flex-shrink: 0;
+    }
+    .typo-sample {
+      flex: 1;
+      color: var(--text-primary);
+    }
+    .typo-spec {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: monospace;
+      margin-left: 16px;
+    }
   </style>
 </head>
 <body>
@@ -137,7 +176,105 @@
     <a href="./index.html" class="btn-md btn-primary" style="text-decoration:none;">📱 App으로 이동</a>
   </div>
 
-  <!-- 1. Color Palette Tokens -->
+  <!-- 1. Figma Exact Typography System -->
+  <div class="sb-section">
+    <div class="sb-section-title">🔤 Figma Typography System</div>
+    
+    <!-- Highlight -->
+    <div class="typo-group">
+      <div class="typo-group-name">▼ Highlight</div>
+      
+      <div class="typo-row">
+        <div class="typo-label">Timer</div>
+        <div class="typo-sample typo-highlight-timer">00:30</div>
+        <div class="typo-spec">62px / 150% (Black 900)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Title</div>
+        <div class="typo-sample typo-highlight-title">Hey Rutii</div>
+        <div class="typo-spec">36px / 150% (Black 900)</div>
+      </div>
+    </div>
+
+    <!-- Display -->
+    <div class="typo-group">
+      <div class="typo-group-name">▼ Display (Bold / Black)</div>
+      
+      <div class="typo-row">
+        <div class="typo-label">Display 2xl</div>
+        <div class="typo-sample typo-display-2xl">복식호흡 브레이싱</div>
+        <div class="typo-spec">28px / 150% (Black 900)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Display xl</div>
+        <div class="typo-sample typo-display-xl">TVA 코어 루틴 (데모)</div>
+        <div class="typo-spec">22px / 150% (Black 900)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Display lg</div>
+        <div class="typo-sample typo-display-lg">+ 새 루틴 만들기</div>
+        <div class="typo-spec">18px / 150% (Bold 700)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Display md</div>
+        <div class="typo-sample typo-display-md">운동 진행 방식</div>
+        <div class="typo-spec">16px / 150% (Bold 700)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Display sm</div>
+        <div class="typo-sample typo-display-sm">시작하기 ▶</div>
+        <div class="typo-spec">14px / 150% (Bold 700)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Display xs</div>
+        <div class="typo-sample typo-display-xs">동기화 완료</div>
+        <div class="typo-spec">12px / 150% (Bold 700)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Display 2xs</div>
+        <div class="typo-sample typo-display-2xs">로그아웃</div>
+        <div class="typo-spec">10px / 110% (Bold 700)</div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="typo-group">
+      <div class="typo-group-name">▼ Body (Medium / Regular)</div>
+      
+      <div class="typo-row">
+        <div class="typo-label">Body xl</div>
+        <div class="typo-sample typo-body-xl">루틴이 저장되었습니다.</div>
+        <div class="typo-spec">22px / 150% (Medium 500)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Body md</div>
+        <div class="typo-sample typo-body-md">복부에 힘을 주고 호흡을 일정하게 유지합니다.</div>
+        <div class="typo-spec">16px / 150% (Medium 500)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Body sm</div>
+        <div class="typo-sample typo-body-sm">8단계 • 약 12분 소요</div>
+        <div class="typo-spec">14px / 150% (Medium 500)</div>
+      </div>
+
+      <div class="typo-row">
+        <div class="typo-label">Body xs</div>
+        <div class="typo-sample typo-body-xs">저장된 루틴을 선택하거나 새로 만들어 보세요.</div>
+        <div class="typo-spec">12px / 150% (Medium 500)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Color Palette Tokens -->
   <div class="sb-section">
     <div class="sb-section-title">🎨 Color Palette & Brand Tokens</div>
     <div class="sb-grid">
@@ -173,18 +310,6 @@
         <div class="swatch-name">Background Danger</div>
         <div class="swatch-code">#fff0ec</div>
       </div>
-    </div>
-  </div>
-
-  <!-- 2. Typography & Spacing -->
-  <div class="sb-section">
-    <div class="sb-section-title">🔤 Typography & Spacing System</div>
-    <div style="display:flex; flex-direction:column; gap:16px;">
-      <div style="font-size: var(--text-3xl); font-weight: var(--fw-black);">Display 30px (Black 900) - TVA 코어 루틴</div>
-      <div style="font-size: var(--text-2xl); font-weight: var(--fw-extra);">Heading 26px (ExtraBold 800) - 운동 단계 제목</div>
-      <div style="font-size: var(--text-xl); font-weight: var(--fw-bold);">Subheading 22px (Bold 700) - 루틴 카드 제목</div>
-      <div style="font-size: var(--text-base); font-weight: var(--fw-medium);">Body 16px (Medium 600) - 운동 동작 설명 텍스트</div>
-      <div style="font-size: var(--text-sm); color: var(--text-secondary);">Caption 14px (Secondary) - 세트 정보 및 부위 텍스트</div>
     </div>
   </div>
 

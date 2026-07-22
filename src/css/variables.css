@@ -19,7 +19,7 @@
     --radius-lg: 16px;
     --shadow-card-light: rgba(70, 239, 197, 0.08);
 
-    /* Text */
+    /* Text Colors */
     --text-primary: #2b2b2b;
     --text-secondary: #9cb3b0;
     --text-muted: #9cb3b0;
@@ -56,7 +56,25 @@
     --bg-cal-day: #fbfaff;
     --border-cal-day: #f0ecf7;
 
-    /* Typography */
+    /* Figma Typography System Tokens */
+    --typo-highlight-timer: 62px;
+    --typo-highlight-title: 36px;
+    --typo-display-2xl: 28px;
+    --typo-display-xl: 22px;
+    --typo-display-lg: 18px;
+    --typo-display-md: 16px;
+    --typo-display-sm: 14px;
+    --typo-display-xs: 12px;
+    --typo-display-2xs: 10px;
+
+    --typo-body-xl: 22px;
+    --typo-body-md: 16px;
+    --typo-body-sm: 14px;
+    --typo-body-xs: 12px;
+
+    --lh-150: 1.5;
+    --lh-110: 1.1;
+
     --text-micro: 10px;
     --text-xs: 12px;
     --text-sm: 14px;
@@ -69,7 +87,9 @@
     --text-5xl: 52px;
     --text-huge: 64px;
 
-    --fw-medium: 600;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
     --fw-bold: 700;
     --fw-extra: 800;
     --fw-black: 900;

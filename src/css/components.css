@@ -138,3 +138,20 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* Giant Digital Timer */
 .digital-timer { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 64px; font-weight: 900; color: #00c6b8; letter-spacing: -2px; margin: 20px 0; text-align: center; }
+
+/* ---- Figma Typography System Utility Classes ---- */
+.typo-highlight-timer { font-size: var(--typo-highlight-timer); line-height: var(--lh-150); font-weight: var(--fw-black); }
+.typo-highlight-title { font-size: var(--typo-highlight-title); line-height: var(--lh-150); font-weight: var(--fw-black); }
+
+.typo-display-2xl { font-size: var(--typo-display-2xl); line-height: var(--lh-150); font-weight: var(--fw-black); }
+.typo-display-xl { font-size: var(--typo-display-xl); line-height: var(--lh-150); font-weight: var(--fw-black); }
+.typo-display-lg { font-size: var(--typo-display-lg); line-height: var(--lh-150); font-weight: var(--fw-bold); }
+.typo-display-md { font-size: var(--typo-display-md); line-height: var(--lh-150); font-weight: var(--fw-bold); }
+.typo-display-sm { font-size: var(--typo-display-sm); line-height: var(--lh-150); font-weight: var(--fw-bold); }
+.typo-display-xs { font-size: var(--typo-display-xs); line-height: var(--lh-150); font-weight: var(--fw-bold); }
+.typo-display-2xs { font-size: var(--typo-display-2xs); line-height: var(--lh-110); font-weight: var(--fw-bold); }
+
+.typo-body-xl { font-size: var(--typo-body-xl); line-height: var(--lh-150); font-weight: var(--fw-medium); }
+.typo-body-md { font-size: var(--typo-body-md); line-height: var(--lh-150); font-weight: var(--fw-medium); }
+.typo-body-sm { font-size: var(--typo-body-sm); line-height: var(--lh-150); font-weight: var(--fw-medium); }
+.typo-body-xs { font-size: var(--typo-body-xs); line-height: var(--lh-150); font-weight: var(--fw-medium); }
