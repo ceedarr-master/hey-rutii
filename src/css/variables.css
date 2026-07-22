@@ -1,5 +1,5 @@
 :root {
-    /* Main Brand (from Figma Hey Rutii Design System) */
+    /* Main Brand */
     --brand-gradient: linear-gradient(135deg, #46efc5 0%, #00c8de 100%);
     --accent-color: #00c6b8;
     --bg-accent: #def7f2;
@@ -7,21 +7,16 @@
     --btn-shadow: rgba(70, 239, 197, 0.35);
 
     /* Backgrounds & Cards */
-    --bg-body: linear-gradient(160deg, #eafff6 0%, #fff8ec 100%);
     --bg-card: #ffffff;
     --bg-secondary: #edf8f6;
     --border-card: #c7e3e8;
     --border-base: #d7eae9;
 
-    /* Border Radius (from Figma Button & Card Components) */
+    /* Border Radius */
     --radius-xs: 6px;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
-    --radius-xl: 20px;
-    --radius-2xl: 24px;
-    --radius-3xl: 28px;
-    --shadow-card: rgba(0, 200, 222, 0.12);
     --shadow-card-light: rgba(70, 239, 197, 0.08);
 
     /* Text */
@@ -29,7 +24,6 @@
     --text-secondary: #9cb3b0;
     --text-muted: #9cb3b0;
     --text-highlight: #6c807e;
-    --text-warning: #769588;
     --text-danger: #ff8816;
     --color-danger-light: #ffc9b8;
     --text-notice: #ffe302;
@@ -37,11 +31,8 @@
     --text-white: #ffffff;
 
     /* Status & Alerts */
-    --bg-warning: rgb(156 207 196 / 30%);
     --bg-danger: #fff0ec;
     --bg-notice: #fff9db;
-    --bg-toast: rgba(43, 43, 43, 0.95);
-    --shadow-toast: 0 8px 24px rgba(0, 0, 0, 0.2);
 
     /* Disabled */
     --bg-disabled: #eafaf5;
@@ -49,7 +40,6 @@
 
     /* Progress Bar */
     --progress-done: #00c2a8;
-    --progress-current: #ff7a59;
 
     /* Badges */
     --badge-bg: #def7f2;
@@ -60,15 +50,12 @@
 
     /* Navigation & Tabs */
     --bg-tabs: #e2f4f1;
-    --shadow-tab: rgba(60, 211, 173, 0.15);
 
     /* Calendar Grid */
     --text-cal-day: #4a4a4a;
     --bg-cal-day: #fbfaff;
     --border-cal-day: #f0ecf7;
-    --bg-cal-done: linear-gradient(135deg, #00c2a8, #00b39a);
-    --shadow-cal-done: rgba(0, 194, 168, 0.3);
-  
+
     /* Typography */
     --text-micro: 10px;
     --text-xs: 12px;
@@ -90,9 +77,7 @@
     /* Spacing */
     --space-2: 2px;
     --space-4: 4px;
-    --space-5: 5px;
     --space-6: 6px;
-    --space-7: 7px;
     --space-8: 8px;
     --space-10: 10px;
     --space-12: 12px;
@@ -104,7 +89,6 @@
     --space-24: 24px;
     --space-26: 26px;
     --space-30: 30px;
-    --space-36: 36px;
     --space-40: 40px;
     --space-60: 60px;
 }
