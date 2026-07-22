@@ -1,2 +1,10 @@
+/* ==========================================================================
+   Hey Rutii - Master Stylesheet
+   --------------------------------------------------------------------------
+   This master stylesheet imports:
+   1. variables.css  : Design system tokens, colors, typography, spacing
+   2. components.css : Button matrix, underline inputs, cards, timers, tabs
+   ========================================================================== */
+
 @import './variables.css';
 @import './components.css';
