@@ -5,13 +5,13 @@ import { renderList } from './ListScreen.js';
 
 export function renderDone(routine) {
   return `
-    <div class="card" style="text-align:center; padding:var(--space-30) var(--space-20);">
+    <div class="card">
       <div style="font-size:64px; margin-bottom:var(--space-16);">🎉</div>
       <h2 style="font-size:var(--text-2xl); font-weight:var(--fw-black); color:var(--text-primary); margin-bottom:var(--space-8);">수고하셨습니다!</h2>
-      <p style="font-size:var(--text-base); color:var(--text-secondary); font-weight:var(--fw-bold); margin-bottom:var(--space-24);">"${escapeHtml(routine.name)}" 루틴을 완료했습니다.</p>
+      <p style="font-size:var(--text-base); color:var(--text-secondary); font-weight:var(--fw-bold); margin-bottom:var(--space-24);">"${escapeHtml(routine.name)}"을(를) 완료했습니다.</p>
       <div style="display:flex; gap:var(--space-10);">
-        <button class="btn-lg btn-secondary btn-flex" onclick="window.restartRoutine()">다시 시작 🔄</button>
-        <button class="btn-lg btn-primary btn-flex" onclick="window.goScreen('list')">완료 ✓</button>
+        <button class="btn-lg btn-secondary btn-flex" onclick="window.restartRoutine()">처음부터 다시</button>
+        <button class="btn-lg btn-primary btn-flex" onclick="window.goScreen('list')">메인으로</button>
       </div>
     </div>`;
 }
@@ -52,7 +52,7 @@ export function renderPlay(routine) {
     if (!state.play.remaining) state.play.remaining = s.type === 'transition' ? s.seconds : (s.restSeconds || 15);
     body = `
       <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:var(--space-16);">
-        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px;">✓ ${s.type === 'transition' ? '준비' : '휴식 중'}</span>
+        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px;">${s.type === 'transition' ? '준비' : '휴식 중'}</span>
         ${setTrackHtml}
       </div>
       <div style="font-size:var(--text-base); color:var(--text-secondary); margin-bottom:4px; text-align:center;">${escapeHtml(s.name)}</div>

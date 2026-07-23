@@ -6,6 +6,7 @@
   padding: var(--space-24);
   text-align: center;
   box-shadow: 0 5px 12px var(--card-shadow);
+  min-height: 448px;
 }
 
 /* ---- button system (Synced with Figma Component Set) ---- */
