@@ -311,12 +311,27 @@ window.goEditRoutine = (id) => {
 };
 
 window.deleteRoutine = (id) => {
-  showConfirm("정말 이 루틴을 삭제하시겠습니까?", async () => {
-    delete state.routines[id];
-    state.routineOrder = state.routineOrder.filter(i => i !== id);
-    await deleteRoutineStorage(id);
-    await persistList();
+  if (!id) {
+    state.screen = "list";
     render();
+    return;
+  }
+  showConfirmModal({
+    icon: getSfSymbol('trash.fill', 36, 'var(--color-danger)'),
+    title: '루틴 삭제',
+    message: '정말 이 루틴을 삭제하시겠습니까? 삭제된 루틴은 복구할 수 없습니다.',
+    confirmText: '삭제하기',
+    cancelText: '취소',
+    isDanger: true,
+    onConfirm: async () => {
+      delete state.routines[id];
+      state.routineOrder = state.routineOrder.filter(rId => rId !== id);
+      await deleteRoutineStorage(id);
+      await persistList();
+      state.screen = "list";
+      render();
+      showToast("루틴이 삭제되었습니다.");
+    }
   });
 };
 
