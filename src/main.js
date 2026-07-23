@@ -385,6 +385,8 @@ window.saveRoutine = async () => {
     name: b.name.trim(),
     desc: (b.desc || "").trim(),
     steps: b.steps,
+    original_author: b.original_author !== undefined ? b.original_author : (existing.original_author || null),
+    is_modified: b.original_author ? (existing.original_author ? true : false) : (existing.is_modified || false),
     updatedAt: new Date().toISOString()
   };
 
@@ -615,19 +617,33 @@ if (document.readyState === 'loading') {
   startApp();
 }
 
+const generate6CharShareCode = () => {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+};
+
 window.shareRoutine = async (id) => {
   const r = state.routines[id];
   if (!r) return;
 
+  const currentAuthorName = (state.userProfile && state.userProfile.display_name) || (state.user && state.user.email ? state.user.email.split('@')[0] : "나");
+  const currentAuthorAvatar = (state.userProfile && state.userProfile.avatar_url) || "";
+
+  if (!r.original_author) {
+    r.original_author = {
+      name: currentAuthorName,
+      avatar: currentAuthorAvatar
+    };
+  }
+
   let code = r.shareCode;
   if (!code) {
-    const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
-    code = `RT-${rand}`;
+    code = generate6CharShareCode();
     r.shareCode = code;
-    r.original_author = r.original_author || {
-      name: (state.userProfile && state.userProfile.display_name) || "익명",
-      avatar: (state.userProfile && state.userProfile.avatar_url) || ""
-    };
     await persistRoutine(r);
   }
 
@@ -638,8 +654,8 @@ window.shareRoutine = async (id) => {
         .upsert({
           share_code: code,
           routine_data: r,
-          author_name: r.original_author?.name || "익명",
-          author_avatar: r.original_author?.avatar || "",
+          author_name: r.original_author?.name || currentAuthorName,
+          author_avatar: r.original_author?.avatar || currentAuthorAvatar,
           created_at: new Date().toISOString()
         });
     } catch(e) {
@@ -666,9 +682,9 @@ window.promptImportRoutineToBuilder = () => {
   showPromptModal({
     icon: getSfSymbol('link', 36, 'var(--text-brand-accent)'),
     title: '루틴 코드로 불러오기',
-    message: '공유받은 루틴 코드를 입력해 주세요 (예: RT-8X2K):',
+    message: '공유받은 6자리 루틴 코드를 입력해 주세요 (예: X7K9M2):',
     defaultValue: '',
-    placeholder: 'RT-XXXX',
+    placeholder: 'X7K9M2',
     inputType: 'text',
     unitLabel: '',
     confirmText: '불러오기',
@@ -714,18 +730,24 @@ window.promptImportRoutineToBuilder = () => {
         return;
       }
 
+      const authorObj = importedRoutine.original_author || {
+        name: "알 수 없음",
+        avatar: ""
+      };
+
       state.builder = {
         editingId: null,
-        name: importedRoutine.name ? `${importedRoutine.name} (복사본)` : "불러온 루틴",
+        name: importedRoutine.name ? `${importedRoutine.name}` : "불러온 루틴",
         desc: importedRoutine.desc || "",
         steps: JSON.parse(JSON.stringify(importedRoutine.steps || [])),
         editingStepIndex: null,
-        editingStep: null
+        editingStep: null,
+        original_author: authorObj
       };
 
       state.screen = "builder";
       render();
-      showToast("루틴을 불러왔습니다! 내용을 확인 후 저장하세요.");
+      showToast("${authorObj.name}님의 루틴을 불러왔습니다!");
     }
   });
 };
