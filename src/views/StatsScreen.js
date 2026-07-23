@@ -270,21 +270,21 @@ export function renderStats() {
       ${filterBarHtml}
       <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">루틴 실행 횟수</div>
-            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
+          <div class="card-hero">
+            <label class="hero">루틴 실행 횟수</label>
+            <div class="stat-hero">0회</div>
           </div>
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">완주 횟수</div>
-            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
+          <div class="card-hero">
+            <label class="hero">완주 횟수</label>
+            <div class="stat-hero">0회</div>
           </div>
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
-            <div style="font-size:var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0초</div>
+          <div class="card-hero">
+            <label class="hero">누적 시간</label>
+            <div class="stat-hero">0초</div>
           </div>
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
-            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0일</div>
+          <div class="card-hero">
+            <label class="hero">연속 일수</label>
+            <div class="stat-hero">0일</div>
           </div>
         </div>
 
@@ -312,21 +312,21 @@ export function renderStats() {
       ${filterBarHtml}
       <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">루틴 실행 횟수</div>
-            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
+          <div class="card-hero">
+            <label class="hero">루틴 실행 횟수</label>
+            <div class="stat-hero">0회</div>
           </div>
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">완주 횟수</div>
-            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
+          <div class="card-hero">
+            <label class="hero">완주 횟수</label>
+            <div class="stat-hero">0회</div>
           </div>
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
-            <div style="font-size:var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0초</div>
+          <div class="card-hero">
+            <label class="hero">누적 시간</label>
+            <div class="stat-hero">0초</div>
           </div>
-          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
-            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0일</div>
+          <div class="card-hero">
+            <label class="hero">연속 일수</label>
+            <div class="stat-hero">0일</div>
           </div>
         </div>
 
@@ -365,19 +365,19 @@ export function renderStats() {
     
     <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
       <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
-        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+        <div class="card-hero">
           <label>루틴 실행 횟수</label>
           <div class="stat-hero">${totalExecutions}회</div>
         </div>
-        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+        <div class="card-hero">
           <label>완주 횟수</label>
           <div class="stat-hero">${fullCompletions}회</div>
         </div>
-        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+        <div class="card-hero">
           <label>누적 시간</label>
           <div class="stat-hero">${totalDurationStr}</div>
         </div>
-        <div >
+        <div class="card-hero">
           <label>연속 일수</label>
           <div class="stat-hero">${streak}일</div>
         </div>

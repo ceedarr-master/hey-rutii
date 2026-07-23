@@ -341,6 +341,10 @@ label {
   margin-bottom: var(--space-4);
 }
 
+label.hero {
+  text-align: center !important;
+}
+
 .credit {
   font-size: var(--typo-body-xs);
   color: var(--text-tertiary);
