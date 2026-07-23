@@ -93,8 +93,8 @@ export function renderBuilder() {
                 `}
               </div>
               <div style="display:flex; gap: var(--space-6);">
-                <button class="btn-xs btn-tertiary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
-                <button class="btn-xs btn-tertiary btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
+                <button class="btn-sm btn-secondary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
+                <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
               </div>
             </div>`;
         }
@@ -107,13 +107,13 @@ export function renderBuilder() {
       ${b.editingId ? `
         <div style="font-size:var(--text-sm); display:flex; align-items:center; gap:var(--space-8);">
           ${state.routines[b.editingId]?.shareCode 
-            ? `<button class="btn-xs btn-secondary" onclick="navigator.clipboard.writeText('${state.routines[b.editingId].shareCode}').then(() => showToast('코드가 복사되었습니다.'));">🔗 공유 코드 복사</button>` 
-            : `<button class="btn-xs btn-secondary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 발급</button>`}
-          <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
+            ? `<button class="btn-sm btn-tertiary" onclick="navigator.clipboard.writeText('${state.routines[b.editingId].shareCode}').then(() => showToast('코드가 복사되었습니다.'));">공유 코드 복사</button>` 
+            : `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">공유 코드 발급</button>`}
+          <button class="btn-sm btn-warning btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
         </div>
       ` : `
         <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
-        <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${id}')">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
+        <button class="btn-xs btn-warning btn-icon" onclick="window.deleteRoutine('${id}')">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
       `}
     </div>
 

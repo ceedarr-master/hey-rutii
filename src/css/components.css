@@ -12,6 +12,14 @@
   justify-content: space-between;
 }
 
+.inline-edit-box {
+  background: var(--surface-white);
+  border: 1px solid var(--color-stroke-dark);
+  border-radius: var(--radius-xl);
+  padding: var(--space-24);
+  margin: var(--space-8) 0;
+}
+
 /* ---- button system (Synced with Figma Component Set) ---- */
 button {
   border: none;
@@ -73,6 +81,11 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* ---- builder & inputs ---- */
 .builder-title { font-size: var(--text-2xl); font-weight: var(--fw-extra); margin-bottom: var(--space-18); }
+.label {
+    font-size: var(--text-xs);
+    font-weight: var(--fw-bold);
+    color: var(--text-secondary);
+}
 .form-input-text {
   width: 100%; border: none; border-bottom: 1px solid var(--border-accent); background: transparent;
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8); font-size: var(--typo-body-md); font-weight: var(--fw-bold); color: var(--text-primary);
@@ -193,10 +206,10 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   text-align: center;
 }
 .cal-header {
-  font-size: 12px;
+  font-size: var(--typo-display-sm);
   font-weight: var(--fw-bold);
-  color: var(--text-secondary);
-  padding-bottom: 4px;
+  color: var(--text-primary);
+  padding-bottom: var(--space-4);
 }
 .cal-day {
   aspect-ratio: 1;
@@ -205,7 +218,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 13px;
+  font-size: var(--typo-display-xs);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   position: relative;
@@ -217,15 +230,18 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   border: none;
 }
 .cal-day.today {
-  border: 2px solid #00c6b8;
+  border: 1px solid var(--color-primary);
   color: #00c6b8;
-  font-weight: var(--fw-black);
+}
+.car-day.future {
+  background: transparent;
+  border: none;
+  font-weight: var(--fw-medium);
+  color: var(--text-tertiary);
 }
 .cal-day.completed {
-  background: #00c6b8;
-  color: #ffffff;
-  border-color: #00c6b8;
-  box-shadow: 0 3px 8px rgba(0, 198, 184, 0.3);
+  background: var(--color-brand-accent);
+  color: var(--text-white);
 }
 .cal-day.completed.today {
   box-shadow: 0 0 0 3px rgba(0, 198, 184, 0.35);
