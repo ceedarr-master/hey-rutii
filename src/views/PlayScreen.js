@@ -28,10 +28,48 @@ export function renderPlay(routine) {
     return renderList();
   }
   const s = routine.steps[state.play.current];
-  const segs = routine.steps.map((_, i) => {
+
+  // 1. Exclude transition steps from step count & progress bar segments
+  const exerciseStepIndices = [];
+  routine.steps.forEach((step, idx) => {
+    if (step.type !== 'transition') {
+      exerciseStepIndices.push(idx);
+    }
+  });
+
+  const totalExerciseSteps = exerciseStepIndices.length;
+
+  // Calculate current exercise step index (1-indexed)
+  let currentExerciseIndex = 1;
+  let activeExerciseStepOriginalIdx = exerciseStepIndices[0];
+
+  if (s.type === 'transition') {
+    // If transition step, find next exercise step or last exercise step
+    const nextExerciseIdx = exerciseStepIndices.find(idx => idx > state.play.current);
+    if (nextExerciseIdx !== undefined) {
+      currentExerciseIndex = exerciseStepIndices.indexOf(nextExerciseIdx) + 1;
+      activeExerciseStepOriginalIdx = nextExerciseIdx;
+    } else {
+      currentExerciseIndex = totalExerciseSteps;
+      activeExerciseStepOriginalIdx = exerciseStepIndices[totalExerciseSteps - 1];
+    }
+  } else {
+    // If exercise step
+    const foundIdx = exerciseStepIndices.indexOf(state.play.current);
+    currentExerciseIndex = foundIdx !== -1 ? (foundIdx + 1) : 1;
+    activeExerciseStepOriginalIdx = state.play.current;
+  }
+
+  // 2. Render Progress Bar Segments (only for exercise steps)
+  const segs = exerciseStepIndices.map((origIdx) => {
     let cls = "progress-seg";
-    if (i < state.play.current) cls += " done";
-    else if (i === state.play.current) cls += " current";
+    if (state.play.current > origIdx) {
+      cls += " done";
+    } else if (state.play.current === origIdx) {
+      cls += " current";
+    } else if (s.type === 'transition' && origIdx === activeExerciseStepOriginalIdx) {
+      cls += " current";
+    }
     return `<div class="${cls}"></div>`;
   }).join("");
 
@@ -123,7 +161,7 @@ export function renderPlay(routine) {
 
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
-      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">${state.play.current + 1} of ${routine.steps.length}</div>
+      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">${currentExerciseIndex} of ${totalExerciseSteps}</div>
       <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-tertiary);">${escapeHtml(routine.name)}</div>
       <div style="display:flex; gap:12px;">
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? "🔊" : "🔇"}</button>
