@@ -98,8 +98,9 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 .form-textarea-underline::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .type-toggle { display: flex; gap: var(--space-8); margin-top: var(--space-6); }
-.num-row { display: flex; gap: var(--space-10); align-items: center; margin-top: var(--space-6); }
-.num-group { flex: 1; text-align: center; position: relative; }
+.num-row { display: flex; gap: 16px; align-items: center; margin-top: 16px; }
+.num-group { flex: 1; display: flex; align-items: baseline; gap: 6px; position: relative; }
+.num-unit { font-size: 16px; font-weight: var(--fw-bold); color: var(--text-secondary); white-space: nowrap; }
 
 .steps-section-title { font-size: var(--text-sm); font-weight: var(--fw-extra); color: var(--text-secondary); margin: var(--space-26) 0 var(--space-10); text-transform: uppercase; letter-spacing: 0.5px; }
 

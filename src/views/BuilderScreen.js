@@ -27,15 +27,30 @@ export function renderInlineStepEditor(i, s) {
         <button class="btn-xs ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">✓횟수</button>
       </div>
 
-      <div style="display:flex; gap:8px; margin-top:12px;">
+      <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
         ${isTimer ? `
-          <input class="form-input-num" id="edit-mm-${i}" type="number" min="0" value="${mm}" placeholder="분" style="flex:1;" />
-          <input class="form-input-num" id="edit-ss-${i}" type="number" min="0" max="59" value="${ss}" placeholder="초" style="flex:1;" />
+          <div class="num-group">
+            <input class="form-input-num" id="edit-mm-${i}" type="number" min="0" value="${mm}" />
+            <span class="num-unit">분</span>
+          </div>
+          <div class="num-group">
+            <input class="form-input-num" id="edit-ss-${i}" type="number" min="0" max="59" value="${ss}" />
+            <span class="num-unit">초</span>
+          </div>
         ` : `
-          <input class="form-input-num" id="edit-reps-${i}" type="number" min="1" value="${reps}" placeholder="개" style="flex:1;" />
+          <div class="num-group">
+            <input class="form-input-num" id="edit-reps-${i}" type="number" min="1" value="${reps}" />
+            <span class="num-unit">개</span>
+          </div>
         `}
-        <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" placeholder="세트" style="flex:1;" />
-        <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" placeholder="초 휴식" style="flex:1;" />
+        <div class="num-group">
+          <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" />
+          <span class="num-unit">세트</span>
+        </div>
+        <div class="num-group">
+          <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" />
+          <span class="num-unit">초 휴식</span>
+        </div>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
@@ -132,38 +147,38 @@ export function renderBuilder() {
       </div>
 
       ${isTimer ? `
-        <div class="num-row" style="display:flex; gap:12px; margin-top:16px;">
-          <div class="num-group" style="flex:1;">
+        <div class="num-row">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="0" value="${formDraft.mm}" oninput="window.updateForm('mm', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">분</label>
+            <span class="num-unit">분</span>
           </div>
-          <div class="num-group" style="flex:1;">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="0" max="59" value="${formDraft.ss}" oninput="window.updateForm('ss', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">초</label>
+            <span class="num-unit">초</span>
           </div>
         </div>
-        <div class="num-row" style="display:flex; gap:12px; margin-top:16px;">
-          <div class="num-group" style="flex:1;">
+        <div class="num-row">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="1" value="${formDraft.sets}" oninput="window.updateForm('sets', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">세트</label>
+            <span class="num-unit">세트</span>
           </div>
-          <div class="num-group" style="flex:1;">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="0" value="${formDraft.restSeconds}" oninput="window.updateForm('restSeconds', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">초 휴식</label>
+            <span class="num-unit">초 휴식</span>
           </div>
         </div>` : `
-        <div class="num-row" style="display:flex; gap:12px; margin-top:16px;">
-          <div class="num-group" style="flex:1;">
+        <div class="num-row">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="1" value="${formDraft.reps}" oninput="window.updateForm('reps', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">개</label>
+            <span class="num-unit">개</span>
           </div>
-          <div class="num-group" style="flex:1;">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="1" value="${formDraft.sets}" oninput="window.updateForm('sets', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">세트</label>
+            <span class="num-unit">세트</span>
           </div>
-          <div class="num-group" style="flex:1;">
+          <div class="num-group">
             <input class="form-input-num" type="number" min="0" value="${formDraft.restSeconds}" oninput="window.updateForm('restSeconds', this.value)" />
-            <label style="font-size:var(--text-sm); color:var(--text-secondary); font-weight:var(--fw-bold);">초 휴식</label>
+            <span class="num-unit">초 휴식</span>
           </div>
         </div>`}
 
