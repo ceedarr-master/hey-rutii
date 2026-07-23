@@ -13,8 +13,8 @@ export function renderInlineStepEditor(i, s) {
           <span class="num-unit">초</span>
         </div>
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-          <button class="btn-md btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
-          <button class="btn-md btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+          <button class="btn-sm btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
+          <button class="btn-sm btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
         </div>
       </div>`;
   }
@@ -71,8 +71,8 @@ export function renderInlineStepEditor(i, s) {
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-        <button class="btn-md btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
-        <button class="btn-md btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+        <button class="btn-sm btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
+        <button class="btn-sm btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
       </div>
     </div>`;
 }
