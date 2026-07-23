@@ -64,6 +64,12 @@ export async function syncData() {
       .select('*')
       .eq('user_id', state.user.id)
       .maybeSingle();
+
+    if (error) {
+      console.warn("user_sync query warning:", error);
+      state.syncStatus = "error";
+      return;
+    }
       
     const localOrder = JSON.parse(localStorage.getItem("routines:list") || "[]");
     const localHistory = JSON.parse(localStorage.getItem("routines:history") || "[]");
@@ -93,27 +99,27 @@ export async function syncData() {
     }
 
     const cloudUpdatedAt = data.updated_at ? new Date(data.updated_at).getTime() : 0;
+    const isLocalFreshOrEmpty = localUpdatedAt === 0 || localOrder.length === 0 || (localOrder.length === 1 && localOrder[0] === DEFAULT_TVA_ROUTINE.id && data.routine_order && data.routine_order.length > 0);
 
-    let mergedHistory = localHistory;
-    // Only merge cloud logs if local hasn't been updated more recently (e.g. after a deletion)
-    if (cloudUpdatedAt > localUpdatedAt) {
-      mergedHistory = mergeHistoryLogs(localHistory, data.history || []);
-      localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
-    }
-    
-    if (cloudUpdatedAt > localUpdatedAt) {
-      if (data.routine_order) {
+    if (cloudUpdatedAt > localUpdatedAt || isLocalFreshOrEmpty) {
+      if (data.routine_order && Array.isArray(data.routine_order)) {
         state.routineOrder = data.routine_order;
         localStorage.setItem("routines:list", JSON.stringify(data.routine_order));
       }
-      if (data.routines) {
+      if (data.routines && typeof data.routines === 'object') {
         state.routines = data.routines;
         Object.keys(data.routines).forEach(id => {
           localStorage.setItem("routines:" + id, JSON.stringify(data.routines[id]));
         });
       }
+      if (data.history && Array.isArray(data.history)) {
+        const mergedHistory = mergeHistoryLogs(localHistory, data.history);
+        localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
+      }
       state.syncStatus = "synced";
     } else {
+      const mergedHistory = mergeHistoryLogs(localHistory, data.history || []);
+      localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
       const now = new Date().toISOString();
       await supabaseClient
         .from('user_sync')

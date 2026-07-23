@@ -776,7 +776,6 @@ window.handleAuthSubmit = async () => {
       localStorage.setItem("savedEmail", email);
       showToast("로그인 완료!");
       state.screen = "list";
-      await syncData();
       render();
     } else {
       if (password.length < 6) {
@@ -789,9 +788,8 @@ window.handleAuthSubmit = async () => {
       if (error) throw error;
       state.authEmail = email;
       localStorage.setItem("savedEmail", email);
-      showToast("회원가입 요청 성공!");
+      showToast("회원가입 성공!");
       state.screen = "list";
-      await syncData();
       render();
     }
   } catch (err) {

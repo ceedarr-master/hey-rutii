@@ -1,4 +1,5 @@
 import { state, saveLocalUserProfile } from '../store/state.js';
+import { syncData } from '../store/sync.js';
 
 export const supabaseUrl = "https://jqgyjmampztcagqtzfol.supabase.co";
 export const supabaseKey = "sb_publishable_4Br2T12uYJ338QOCvuuTYA_3rcU1ueY";
@@ -26,6 +27,7 @@ export function initSupabaseAuth(onAuthChanged) {
       } else if (session) {
         state.user = session.user;
         await loadUserProfileCloud();
+        await syncData();
       } else {
         state.user = null;
         state.userProfile = null;
