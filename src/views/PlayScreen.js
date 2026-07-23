@@ -73,8 +73,21 @@ export function renderPlay(routine) {
     return `<div class="${cls}"></div>`;
   }).join("");
 
-  const prevEx = state.play.current > 0 ? routine.steps[state.play.current - 1] : null;
-  const nextEx = state.play.current < routine.steps.length - 1 ? routine.steps[state.play.current + 1] : null;
+  let prevEx = null;
+  for (let i = state.play.current - 1; i >= 0; i--) {
+    if (routine.steps[i] && routine.steps[i].type !== 'transition') {
+      prevEx = routine.steps[i];
+      break;
+    }
+  }
+
+  let nextEx = null;
+  for (let i = state.play.current + 1; i < routine.steps.length; i++) {
+    if (routine.steps[i] && routine.steps[i].type !== 'transition') {
+      nextEx = routine.steps[i];
+      break;
+    }
+  }
   const totalSets = s.sets || 1;
 
   let dotsHtml = "";
@@ -174,6 +187,6 @@ export function renderPlay(routine) {
     </div>
     <div style="display:flex; justify-content:space-between; margin-top: var(--space-16);">
       <button class="btn-sm btn-tertiary" onclick="window.prevStep()">${prevText}</button>
-      <button class="btn-sm btn-tertiary" onclick="window.nextStep()">${nextText}</button>
+      <button class="btn-sm btn-tertiary" onclick="window.skipStep()">${nextText}</button>
     </div>`;
 }

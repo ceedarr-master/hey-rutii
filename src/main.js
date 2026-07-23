@@ -201,16 +201,63 @@ window.nextStep = () => {
   }
 };
 
+
 window.prevStep = () => {
   clearTimer();
-  if (state.play.current > 0) {
-    state.play.current--;
+  const routine = state.routines[state.currentId];
+  if (!routine) return;
+
+  let targetIdx = -1;
+  for (let i = state.play.current - 1; i >= 0; i--) {
+    if (routine.steps[i] && routine.steps[i].type !== 'transition') {
+      targetIdx = i;
+      break;
+    }
+  }
+
+  if (targetIdx !== -1) {
+    state.play.current = targetIdx;
     state.play.currentSet = 1;
     state.play.remaining = 0;
     state.play.isResting = false;
+    state.play.paused = false;
+    render();
+  } else if (state.play.current > 0) {
+    state.play.current = 0;
+    state.play.currentSet = 1;
+    state.play.remaining = 0;
+    state.play.isResting = false;
+    state.play.paused = false;
     render();
   }
 };
+
+window.skipStep = () => {
+  clearTimer();
+  const routine = state.routines[state.currentId];
+  if (!routine) return;
+
+  let targetIdx = -1;
+  for (let i = state.play.current + 1; i < routine.steps.length; i++) {
+    if (routine.steps[i] && routine.steps[i].type !== 'transition') {
+      targetIdx = i;
+      break;
+    }
+  }
+
+  if (targetIdx !== -1) {
+    state.play.current = targetIdx;
+    state.play.currentSet = 1;
+    state.play.remaining = 0;
+    state.play.isResting = false;
+    state.play.paused = false;
+    render();
+  } else {
+    state.play.current = routine.steps.length;
+    window.nextStep();
+  }
+};
+
 
 window.togglePause = () => {
   state.play.paused = !state.play.paused;
