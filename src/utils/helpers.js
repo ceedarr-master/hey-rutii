@@ -95,133 +95,47 @@ function getOrCreateTooltip() {
 }
 
 export function initTooltipListeners() {
+  if (typeof window === 'undefined' || window.__tooltip_listeners_attached) return;
+  window.__tooltip_listeners_attached = true;
+
+  const show = (target) => {
+    const content = target.getAttribute('data-tooltip');
+    if (!content) return;
+    const tooltip = getOrCreateTooltip();
+    tooltip.innerHTML = content;
+    tooltip.style.display = 'block';
+    const rect = target.getBoundingClientRect();
+    tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+    tooltip.style.top = rect.top + 'px';
+  };
+
+  const hide = () => {
+    const tooltip = document.getElementById('custom-tooltip');
+    if (tooltip) {
+      tooltip.style.display = 'none';
+    }
+  };
+
   document.addEventListener('mouseover', (e) => {
     const target = e.target.closest('[data-tooltip]');
-    if (target) {
-      const tooltip = getOrCreateTooltip();
-      const content = target.getAttribute('data-tooltip');
-      if (content) {
-        tooltip.innerHTML = content;
-        tooltip.style.opacity = '1';
-        const rect = target.getBoundingClientRect();
-        tooltip.style.left = (rect.left + rect.width / 2) + 'px';
-        tooltip.style.top = (rect.top - 8) + 'px';
-      }
-    }
+    if (target) show(target);
   });
 
   document.addEventListener('mouseout', (e) => {
     const target = e.target.closest('[data-tooltip]');
-    const tooltip = document.getElementById('custom-tooltip');
-    if (target && tooltip) {
-      tooltip.style.opacity = '0';
-    }
+    if (target) hide();
   });
 
   document.addEventListener('mousemove', (e) => {
     const target = e.target.closest('[data-tooltip]');
     const tooltip = document.getElementById('custom-tooltip');
-    if (target && tooltip && tooltip.style.opacity === '1') {
+    if (target && tooltip && tooltip.style.display === 'block') {
       const rect = target.getBoundingClientRect();
       tooltip.style.left = (rect.left + rect.width / 2) + 'px';
-      tooltip.style.top = (rect.top - 8) + 'px';
+      tooltip.style.top = rect.top + 'px';
     }
   });
 }
 
-/* old listener replaced */
-function oldTooltip() {
-  document.addEventListener('mouseover', (e) => {
-    const target = e.target.closest('[data-tooltip]');
-    const tooltip = document.getElementById('custom-tooltip');
-    if (target && tooltip) {
-      tooltip.innerHTML = target.getAttribute('data-tooltip');
-      tooltip.style.opacity = '1';
-      const rect = target.getBoundingClientRect();
-      tooltip.style.left = (rect.left + rect.width / 2) + 'px';
-      tooltip.style.top = (rect.top - 8) + 'px';
-    }
-  });
-
-  document.addEventListener('mouseout', (e) => {
-    const target = e.target.closest('[data-tooltip]');
-    const tooltip = document.getElementById('custom-tooltip');
-    if (target && tooltip) {
-      tooltip.style.opacity = '0';
-    }
-  });
-}
-
-export function showConfirmModal({ icon = '❓', title, message, confirmText = '확인', cancelText = '취소', isDanger = false, onConfirm }) {
-  const existing = document.getElementById('common-modal-backdrop');
-  if (existing) existing.remove();
-
-  const backdrop = document.createElement('div');
-  backdrop.id = 'common-modal-backdrop';
-  backdrop.className = 'modal-backdrop';
-
-  backdrop.innerHTML = `
-    <div class="modal-box">
-      <div class="modal-icon">${icon}</div>
-      <div class="modal-title">${escapeHtml(title)}</div>
-      <div class="modal-desc">${escapeHtml(message)}</div>
-      <div class="modal-btn-row">
-        <button class="btn-md btn-tertiary btn-flex" id="modal-cancel-btn">${escapeHtml(cancelText)}</button>
-        <button class="btn-md ${isDanger ? 'btn-danger' : 'btn-primary'} btn-flex" id="modal-confirm-btn">${escapeHtml(confirmText)}</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(backdrop);
-
-  const close = () => backdrop.remove();
-  backdrop.querySelector('#modal-cancel-btn').onclick = close;
-  backdrop.querySelector('#modal-confirm-btn').onclick = () => {
-    close();
-    if (onConfirm) onConfirm();
-  };
-  backdrop.onclick = (e) => {
-    if (e.target === backdrop) close();
-  };
-}
-
-export function showPromptModal({ icon = '⏳', title, message, defaultValue = '15', confirmText = '추가하기', cancelText = '취소', onConfirm }) {
-  const existing = document.getElementById('common-modal-backdrop');
-  if (existing) existing.remove();
-
-  const backdrop = document.createElement('div');
-  backdrop.id = 'common-modal-backdrop';
-  backdrop.className = 'modal-backdrop';
-
-  backdrop.innerHTML = `
-    <div class="modal-box">
-      <div class="modal-icon">${icon}</div>
-      <div class="modal-title">${escapeHtml(title)}</div>
-      <div class="modal-desc">${escapeHtml(message)}</div>
-      <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <input id="modal-input-val" class="form-input-num" type="number" min="1" value="${escapeAttr(defaultValue)}" style="font-size: 24px; text-align: center; width: 100px;" />
-        <span style="font-size: 16px; font-weight: var(--fw-bold); color: var(--text-secondary);">초</span>
-      </div>
-      <div class="modal-btn-row">
-        <button class="btn-md btn-tertiary btn-flex" id="modal-cancel-btn">${escapeHtml(cancelText)}</button>
-        <button class="btn-md btn-primary btn-flex" id="modal-confirm-btn">${escapeHtml(confirmText)}</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(backdrop);
-
-  const inputEl = backdrop.querySelector('#modal-input-val');
-  if (inputEl) setTimeout(() => inputEl.focus(), 100);
-
-  const close = () => backdrop.remove();
-  backdrop.querySelector('#modal-cancel-btn').onclick = close;
-  backdrop.querySelector('#modal-confirm-btn').onclick = () => {
-    const val = inputEl ? inputEl.value : defaultValue;
-    close();
-    if (onConfirm) onConfirm(val);
-  };
-  backdrop.onclick = (e) => {
-    if (e.target === backdrop) close();
-  };
-}
+// Auto-run listener initialization upon module import
+initTooltipListeners();

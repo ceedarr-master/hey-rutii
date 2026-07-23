@@ -118,24 +118,20 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 /* ---- custom tooltip ---- */
 #custom-tooltip {
   position: fixed;
-  background: rgba(18, 38, 34, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 198, 184, 0.3);
+  background: #142d28;
+  border: 1px solid #00c6b8;
   color: #ffffff;
-  padding: 10px 16px;
-  border-radius: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
   font-size: 13px;
   font-weight: var(--fw-bold);
   pointer-events: none;
-  z-index: 99999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 999999;
+  display: none;
   white-space: pre-wrap;
   text-align: center;
-  transform: translate(-50%, calc(-100% - 10px));
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  transform: translate(-50%, calc(-100% - 12px));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 #custom-tooltip.visible {
