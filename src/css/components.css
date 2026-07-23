@@ -87,6 +87,7 @@ label {
     font-weight: var(--fw-bold);
     color: var(--text-secondary);
     display:block;
+    text-align: left;
   }
 
 .form-input-text {
