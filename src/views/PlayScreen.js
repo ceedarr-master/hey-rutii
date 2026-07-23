@@ -109,6 +109,7 @@ export function renderPlay(routine) {
   let body = "";
   if (s.type === 'transition' || state.play.isResting) {
     if (!state.play.remaining) state.play.remaining = s.type === 'transition' ? s.seconds : (s.restSeconds || 15);
+    const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
         <span class="badge">${s.type === 'transition' ? '트랜지션' : '휴식 중'}</span>
@@ -121,7 +122,7 @@ export function renderPlay(routine) {
       </div>
 
       <div class="card-group-timer">
-        <div class="digital-timer typo-highlight-timer">${fmt(state.play.remaining)}</div>
+        <div class="digital-timer typo-highlight-timer ${isWarning ? 'warning' : ''}">${fmt(state.play.remaining)}</div>
       </div>
 
       <div class="card-group-footer">
@@ -129,6 +130,7 @@ export function renderPlay(routine) {
       </div>`;
   } else if (s.type === "timer") {
     if (!state.play.remaining) state.play.remaining = s.seconds;
+    const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
         <span class="badge">⏱ 시간 진행</span>
@@ -142,7 +144,7 @@ export function renderPlay(routine) {
       </div>
 
       <div class="card-group-timer">
-        <div class="digital-timer typo-highlight-timer" >${fmt(state.play.remaining)}</div>
+        <div class="digital-timer typo-highlight-timer ${isWarning ? 'warning' : ''}">${fmt(state.play.remaining)}</div>
       </div>
 
       <div class="card-group-footer" style="display:flex; gap:var(--space-18);">

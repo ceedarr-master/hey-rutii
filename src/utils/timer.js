@@ -41,6 +41,11 @@ export function startTimer(nextStepCallback) {
       const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
       elements.forEach(el => {
         el.textContent = fmt(state.play.remaining);
+        if (state.play.remaining <= 3) {
+          el.classList.add("warning");
+        } else {
+          el.classList.remove("warning");
+        }
       });
 
       // 3초, 2초, 1초 저음 카운트다운 알림음 (520Hz)
@@ -48,20 +53,21 @@ export function startTimer(nextStepCallback) {
         playBeep('count');
       }
     } else if (state.play.remaining === 1) {
-      // 0:00 초에 고음 알림음 (1046Hz) 즉시 울리고 0:00 렌더 후 다음 화면으로 이동
+      // 0:00 초에 고음 알림음 (1046.5Hz) 즉시 울리고 0:00 렌더 후 다음 화면으로 이동
       state.play.remaining = 0;
       const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
       elements.forEach(el => {
         el.textContent = fmt(0);
+        el.classList.add("warning");
       });
 
       playBeep('finish');
 
       setTimeout(() => {
-        if (nextStepCallback) nextStepCallback();
+        if (nextStepCallback) nextStepCallback(true);
       }, 120);
     } else {
-      if (nextStepCallback) nextStepCallback();
+      if (nextStepCallback) nextStepCallback(true);
     }
   }, 1000);
 }

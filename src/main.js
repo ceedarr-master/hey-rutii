@@ -1,5 +1,5 @@
 import { getSfSymbol } from './utils/icons.js';
-import { playBeep } from './utils/audio.js';
+import { playBeep, playRoutineCompleteSound } from './utils/audio.js';
 import { state, DEFAULT_TVA_ROUTINE, formDraft, saveLocalUserProfile } from './store/state.js';
 import { supabaseClient, initSupabaseAuth } from './config/supabase.js';
 import { renderHeader } from './components/Header.js';
@@ -157,9 +157,9 @@ window.confirmResetAndStart = (id) => {
   });
 };
 
-window.nextStep = () => {
+window.nextStep = (skipBeep = false) => {
   clearTimer();
-  playBeep('finish');
+  if (!skipBeep) playBeep('finish');
   const routine = state.routines[state.currentId];
   if (!routine) return;
   const s = routine.steps[state.play.current];
@@ -194,7 +194,8 @@ window.nextStep = () => {
   if (state.play.current < routine.steps.length) {
     render();
   } else {
-    // Routine completed! Log history
+    // Routine completed! Play cheerful ascending chime & log history
+    playBeep('routineComplete');
     const historyRaw = localStorage.getItem("routines:history") || "[]";
     let history = [];
     try { history = JSON.parse(historyRaw); } catch(e) {}
