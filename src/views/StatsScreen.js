@@ -202,11 +202,12 @@ function generateRecentActivity(logs) {
     const dateStr = `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours() < 10 ? '0':''}${d.getHours()}:${d.getMinutes() < 10 ? '0':''}${d.getMinutes()}`;
     const durStr = formatDuration(l.durationSeconds);
     return `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <div style="display: flex; gap: var(--space-4);">
-          <div class="log-title">${escapeHtml(l.routineName || '루틴')}</div> • 
-          <div class="log-meta">${dateStr}</div> • 
-          <div class="log-meta">${durStr} 완료</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-16);">
+      <div class="log-title">${escapeHtml(l.routineName || '루틴')}</div>  
+      <div style="display: flex; gap: var(--space-4);">
+          <div class="log-meta">${dateStr}</div>
+          <span class="log-meta" style="padding: var(--space-8) 0;">•</span> 
+          <div class="log-meta">${durStr}</div>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="btn-xs btn-tertiary btn-icon">${getSfSymbol("trash.fill", 14, "var(--text-warning)")}</button>
