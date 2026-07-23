@@ -92,6 +92,8 @@ export async function syncData() {
       return;
     }
 
+    const cloudUpdatedAt = data.updated_at ? new Date(data.updated_at).getTime() : 0;
+
     let mergedHistory = localHistory;
     // Only merge cloud logs if local hasn't been updated more recently (e.g. after a deletion)
     if (cloudUpdatedAt > localUpdatedAt) {
@@ -99,7 +101,6 @@ export async function syncData() {
       localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
     }
     
-    const cloudUpdatedAt = new Date(data.updated_at).getTime();
     if (cloudUpdatedAt > localUpdatedAt) {
       if (data.routine_order) {
         state.routineOrder = data.routine_order;

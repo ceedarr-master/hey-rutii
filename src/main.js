@@ -604,15 +604,92 @@ window.promptInsertTransitions = () => {
   });
 };
 
-window.handleLogout = async () => {
-  if (supabaseClient) {
-    await supabaseClient.auth.signOut();
+window.performLocalLogoutCleanup = async () => {
+  try {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.startsWith("routines:") || key === "user_profile")) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+  } catch(e) {
+    console.warn("Local storage cleanup warning:", e);
   }
+
+  saveLocalUserProfile(null);
   state.user = null;
   state.userProfile = null;
-  saveLocalUserProfile(null);
+  state.statsFilter = "all";
+  state.routineOrder = [DEFAULT_TVA_ROUTINE.id];
+  state.routines = { [DEFAULT_TVA_ROUTINE.id]: DEFAULT_TVA_ROUTINE };
+  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: null };
+  state.screen = "list";
+
+  if (supabaseClient) {
+    try { await supabaseClient.auth.signOut(); } catch(e) {}
+  }
+
   showToast("로그아웃 되었습니다.");
   render();
+};
+
+window.handleLogout = async () => {
+  clearTimer();
+
+  if (state.screen === "play") {
+    state.play.paused = true;
+    render();
+
+    showConfirmModal({
+      icon: getSfSymbol('stopwatch', 36, 'var(--text-brand-accent)'),
+      title: '운동 중단 및 로그아웃',
+      message: '운동을 중단하고 로그아웃 하시겠습니까?\n현재까지 진행된 운동 시간과 상황이 서버에 저장된 후 로그아웃됩니다.',
+      confirmText: '중단 및 로그아웃',
+      cancelText: '취소',
+      isDanger: true,
+      onConfirm: async () => {
+        const routine = state.routines[state.currentId];
+        if (routine) {
+          const duration = state.play.startTime 
+            ? Math.max(1, Math.round((Date.now() - state.play.startTime) / 1000))
+            : 0;
+
+          const historyRaw = localStorage.getItem("routines:history") || "[]";
+          let history = [];
+          try { history = JSON.parse(historyRaw); } catch(e) {}
+          history.unshift({
+            id: Date.now().toString(),
+            routineId: routine.id,
+            routineName: routine.name + " (중단)",
+            completedAt: new Date().toISOString(),
+            durationSeconds: duration,
+            completed: false
+          });
+          localStorage.setItem("routines:history", JSON.stringify(history));
+
+          routine.progress = {
+            current: state.play.current,
+            currentSet: state.play.currentSet,
+            remaining: state.play.remaining,
+            isResting: state.play.isResting
+          };
+
+          await persistRoutine(routine);
+          try {
+            await triggerCloudSync();
+          } catch(e) {
+            console.warn("Cloud sync failed during logout:", e);
+          }
+        }
+        await window.performLocalLogoutCleanup();
+      }
+    });
+    return;
+  }
+
+  await window.performLocalLogoutCleanup();
 };
 
 window.saveProfile = async () => {
@@ -667,6 +744,118 @@ window.uploadAvatar = async (event) => {
     showToast("프로필 사진이 업데이트되었습니다.");
   } catch (e) {
     alert("이미지 업로드에 실패했습니다: " + e.message);
+  }
+};
+
+window.handleAuthSubmit = async () => {
+  const emailEl = document.getElementById("authEmail");
+  const passEl = document.getElementById("authPassword");
+  const email = emailEl ? emailEl.value.trim() : "";
+  const password = passEl ? passEl.value.trim() : "";
+
+  if (!email || !password) {
+    showToast("이메일과 비밀번호를 모두 입력해 주세요.");
+    return;
+  }
+
+  if (!supabaseClient) {
+    showToast("Supabase 초기화 실패. 오프라인 모드로 동작 중입니다.");
+    return;
+  }
+
+  const isLogin = state.authMode !== 'signup';
+
+  try {
+    state.syncStatus = "syncing";
+    render();
+
+    if (isLogin) {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      state.authEmail = email;
+      localStorage.setItem("savedEmail", email);
+      showToast("로그인 완료!");
+      state.screen = "list";
+      await syncData();
+      render();
+    } else {
+      if (password.length < 6) {
+        showToast("비밀번호는 최소 6자리 이상이어야 합니다.");
+        state.syncStatus = "idle";
+        render();
+        return;
+      }
+      const { data, error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) throw error;
+      state.authEmail = email;
+      localStorage.setItem("savedEmail", email);
+      showToast("회원가입 요청 성공!");
+      state.screen = "list";
+      await syncData();
+      render();
+    }
+  } catch (err) {
+    state.authEmail = email;
+    showToast((isLogin ? "로그인" : "회원가입") + " 실패: " + (err.message || err));
+    state.syncStatus = "error";
+    render();
+  }
+};
+
+window.handleResetPasswordPrompt = async () => {
+  const emailEl = document.getElementById("authEmail");
+  const email = emailEl ? emailEl.value.trim() : "";
+  if (!email) {
+    showToast("비밀번호 재설정 링크를 받으실 이메일을 입력란에 기입해 주세요.");
+    return;
+  }
+  if (!supabaseClient) return showToast("Supabase 초기화 실패");
+
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin
+    });
+    if (error) throw error;
+    showToast("비밀번호 재설정 이메일 발송 완료! 메일함을 확인해 주세요.");
+  } catch (err) {
+    showToast("재설정 이메일 발송 실패: " + err.message);
+  }
+};
+
+window.handleUpdatePassword = async () => {
+  const passEl = document.getElementById("newPassword");
+  const password = passEl ? passEl.value.trim() : "";
+  if (!password || password.length < 6) {
+    return showToast("새 비밀번호를 6자리 이상 입력해 주세요.");
+  }
+  if (!supabaseClient) return;
+
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password });
+    if (error) throw error;
+    showToast("비밀번호가 성공적으로 변경되었습니다.");
+    state.screen = "list";
+    render();
+  } catch (err) {
+    showToast("비밀번호 변경 실패: " + err.message);
+  }
+};
+
+window.handleProfileUpdatePassword = async () => {
+  const passEl = document.getElementById("profNewPassword");
+  const password = passEl ? passEl.value.trim() : "";
+  if (!password || password.length < 6) {
+    return showToast("새 비밀번호를 6자리 이상 입력해 주세요.");
+  }
+  if (!supabaseClient) return;
+
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password });
+    if (error) throw error;
+    showToast("비밀번호가 성공적으로 변경되었습니다.");
+    if (passEl) passEl.value = "";
+  } catch (err) {
+    showToast("비밀번호 변경 실패: " + err.message);
   }
 };
 
