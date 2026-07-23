@@ -20,8 +20,8 @@ export function renderList() {
                   <span>${escapeHtml(r.original_author.name || '알 수 없음')}님의 루틴${r.is_modified ? '을 바탕으로 제작' : ''}</span>
                 </div>
               ` : ''}
-              <div class="routine-name" style="font-size: var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-primary);">${escapeHtml(r.name)}</div>
-              <div class="routine-meta" style="font-size:var(--text-sm); color:var(--text-tertiary); margin-top:0px;">
+              <div class="routine-name">${escapeHtml(r.name)}</div>
+              <div class="routine-meta">
                 ${r.steps.filter(s => s.type !== 'transition').length}단계 • 약 ${estimateMinutes(r)}분
               </div>
             </div>
@@ -35,7 +35,7 @@ export function renderList() {
          <button class="btn-md btn-secondary btn-flex" onclick="window.confirmResetAndStart('${id}')">처음부터 시작</button>
          <button class="btn-md btn-primary btn-flex" onclick="window.resumePlay('${id}')">이어서 하기 ▶</button>
        </div>`
-    : `<button class="btn-md btn-primary" style="width:100%; margin-top:var(--space-16);" onclick="window.goIntro('${id}')">시작하기 ▶</button>`}
+    : `<button class="btn-md btn-primary" style="width:100%; margin-top:var(--space-16);" onclick="window.goIntro('${id}')">시작하기</button>`}
         </div>`;
     }).join("");
   }
@@ -45,11 +45,11 @@ export function renderList() {
       <button class="main-tab-btn active" onclick="window.goScreen('list')">내 루틴</button>
       <button class="main-tab-btn" onclick="window.goStatsTab()">통계</button>
     </div>
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+    <div style="display:flex; align-items:center; gap: var(--space-10); margin-bottom:4px;">
       ${state.userProfile && state.userProfile.display_name ? renderAvatarHtml(state.userProfile.avatar_url, 32) : ''}
-      <div style="font-size: var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-primary);">${nameDisplay}의 루틴</div>
+      <div style="font-size: var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-primary);">${nameDisplay}의 루틴</div>
     </div>
-    <div style="font-size:var(--text-sm); color:var(--text-secondary); margin-bottom:var(--space-16);">저장된 루틴을 선택하거나 새로 만들어 보세요</div>
+    <div style="font-size:var(--typo-display-md); color:var(--text-secondary); margin-bottom:var(--space-16);">저장된 루틴을 선택하거나 새로 만들어 보세요</div>
     <button class="btn-md btn-outlined" style="width:100%; margin-bottom:var(--space-12);" onclick="window.goNewRoutine()">+ 새 루틴 만들기</button>
     ${cards}`;
 }
