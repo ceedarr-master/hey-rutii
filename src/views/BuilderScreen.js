@@ -63,15 +63,15 @@ export function renderBuilder() {
           return `
             <div class="step-item-figma ${isTrans ? 'transition-type' : ''}" data-id="${i}">
               <div style="display:flex; align-items:center; flex:1; gap:10px;">
-                <div class="step-drag-handle">≡</div>
+                <div class="step-drag-handle" style="${isTrans ? 'color:var(--text-tertiary);' : ''}">≡</div>
                 <div>
-                  <div style="font-size:16px; font-weight:var(--fw-bold); color:var(--text-primary);">${escapeHtml(s.name)}</div>
-                  <div style="font-size:var(--text-xs); color:var(--text-secondary); margin-top:2px;">${stepDetail(s)}</div>
+                  <div style="font-size:15px; font-weight:var(--fw-bold); color:${isTrans ? 'var(--text-tertiary)' : 'var(--text-primary)'};">${escapeHtml(s.name)}</div>
+                  <div style="font-size:var(--text-xs); color:${isTrans ? 'var(--text-tertiary)' : 'var(--text-secondary)'}; margin-top:2px;">${stepDetail(s)}</div>
                 </div>
               </div>
-              <div style="display:flex; gap: var(--space-8);">
-                <button class="btn-secondary" onclick="window.startInlineEdit(${i})">✏️</button>
-                <button class="btn-warning" onclick="window.removeStep(${i})">🗑️</button>
+              <div style="display:flex; gap: var(--space-6);">
+                <button class="btn-xs btn-tertiary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">✏️</button>
+                <button class="btn-xs btn-tertiary btn-icon" onclick="window.removeStep(${i})" title="삭제">🗑️</button>
               </div>
             </div>`;
         }
@@ -86,6 +86,7 @@ export function renderBuilder() {
           ${state.routines[b.editingId]?.shareCode 
             ? `<button class="btn-xs btn-secondary" onclick="navigator.clipboard.writeText('${state.routines[b.editingId].shareCode}').then(() => showToast('코드가 복사되었습니다.'));">🔗 공유 코드 복사</button>` 
             : `<button class="btn-xs btn-secondary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 발급</button>`}
+          <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">🗑️</button>
         </div>
       ` : `
         <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
@@ -94,7 +95,10 @@ export function renderBuilder() {
     </div>
 
     <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">루틴 이름<span class="lbl-req">*</span></label>
-    <input class="form-input-text" style="font-size:22px; font-weight:var(--fw-black); margin-bottom:var(--space-20);" type="text" placeholder="예: TVA 코어 루틴" value="${escapeAttr(b.name)}" oninput="window.updateBuilderName(this.value)" />
+    <input class="form-input-text" style="font-size:20px; font-weight:var(--fw-black); margin-bottom:var(--space-12);" type="text" placeholder="예: TVA 코어 루틴" value="${escapeAttr(b.name)}" oninput="window.updateBuilderName(this.value)" />
+
+    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">루틴 설명 (선택)</label>
+    <input class="form-input-text" style="font-size:14px; margin-bottom:var(--space-20);" type="text" placeholder="예: 코어 근육 강화 및 자세 교정 루틴" value="${escapeAttr(b.desc || '')}" oninput="window.updateBuilderDesc(this.value)" />
 
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
       <span style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 목록 (${b.steps.length})</span>

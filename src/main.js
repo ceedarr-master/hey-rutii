@@ -300,6 +300,7 @@ window.goEditRoutine = (id) => {
   state.builder = {
     editingId: id,
     name: r.name,
+    desc: r.desc || '',
     steps: JSON.parse(JSON.stringify(r.steps)),
     editingStepIndex: null,
     editingStep: null
@@ -319,6 +320,7 @@ window.deleteRoutine = (id) => {
 };
 
 window.updateBuilderName = (val) => { state.builder.name = val; };
+window.updateBuilderDesc = (val) => { state.builder.desc = val; };
 
 window.updateForm = (field, val) => {
   if (['mm', 'ss', 'reps', 'sets', 'restSeconds'].includes(field)) {
@@ -360,9 +362,12 @@ window.saveRoutine = async () => {
   if (b.steps.length === 0) return showToast("최소 1개 이상의 운동을 추가해 주세요.");
 
   const id = b.editingId || "rt-" + Date.now();
+  const existing = state.routines[id] || {};
   const routineObj = {
+    ...existing,
     id,
     name: b.name.trim(),
+    desc: (b.desc || "").trim(),
     steps: b.steps,
     updatedAt: new Date().toISOString()
   };

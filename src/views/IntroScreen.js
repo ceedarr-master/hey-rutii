@@ -30,6 +30,11 @@ export function renderIntro() {
           </div>
         ` : ''}
         <div class="intro-title">${escapeHtml(r.name)}</div>
+        ${r.desc ? `
+          <div style="font-size:var(--text-sm); color:var(--text-secondary); margin-top:var(--space-6); text-align:center; line-height:1.4;">
+            ${escapeHtml(r.desc)}
+          </div>
+        ` : ''}
       </div>
 
       <div class="card-group-body">
