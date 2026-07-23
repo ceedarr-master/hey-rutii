@@ -72,7 +72,62 @@ export function showConfirm(message, onConfirm) {
   });
 }
 
+export function formatDuration(totalSec) {
+  if (!totalSec || totalSec <= 0) return '0초';
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  if (m > 0 && s > 0) return `${m}분 ${s}초`;
+  if (m > 0) return `${m}분`;
+  return `${s}초`;
+}
+
+function getOrCreateTooltip() {
+  let tooltip = document.getElementById('custom-tooltip');
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.id = 'custom-tooltip';
+    document.body.appendChild(tooltip);
+  }
+  return tooltip;
+}
+
 export function initTooltipListeners() {
+  document.addEventListener('mouseover', (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    if (target) {
+      const tooltip = getOrCreateTooltip();
+      const content = target.getAttribute('data-tooltip');
+      if (content) {
+        tooltip.innerHTML = content;
+        tooltip.style.opacity = '1';
+        const rect = target.getBoundingClientRect();
+        tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+        tooltip.style.top = (rect.top - 8) + 'px';
+      }
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    const tooltip = document.getElementById('custom-tooltip');
+    if (target && tooltip) {
+      tooltip.style.opacity = '0';
+    }
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    const tooltip = document.getElementById('custom-tooltip');
+    if (target && tooltip && tooltip.style.opacity === '1') {
+      const rect = target.getBoundingClientRect();
+      tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+      tooltip.style.top = (rect.top - 8) + 'px';
+    }
+  });
+}
+
+/* old listener replaced */
+function oldTooltip() {
   document.addEventListener('mouseover', (e) => {
     const target = e.target.closest('[data-tooltip]');
     const tooltip = document.getElementById('custom-tooltip');

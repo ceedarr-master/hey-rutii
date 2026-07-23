@@ -1,5 +1,5 @@
 import { state } from '../store/state.js';
-import { escapeHtml, escapeAttr, parseLogDate } from '../utils/helpers.js';
+import { escapeHtml, escapeAttr, parseLogDate, formatDuration } from '../utils/helpers.js';
 
 export function getHistoryLogs() {
   try {
@@ -84,8 +84,7 @@ function generateWeeklyChart(logs) {
       tooltipHtml += `<div style="color:#6e8d89; font-size:13px;">운동 기록 없음</div>`;
     } else {
       const rows = dayLogs.map(l => {
-        const m = Math.round((l.durationSeconds || 0) / 60);
-        return `<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:2px; font-size:13px;"><span style="color:#ffffff;">${escapeHtml(l.routineName || '루틴')}</span><span style="color:#46efc5; font-weight:800;">${m}분</span></div>`;
+        return `<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:2px; font-size:13px;"><span style="color:#ffffff;">${escapeHtml(l.routineName || '루틴')}</span><span style="color:#46efc5; font-weight:800;">${formatDuration(l.durationSeconds)}</span></div>`;
       }).join('');
       tooltipHtml += rows;
     }
@@ -127,11 +126,13 @@ function generateCalendarGrid(logs) {
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
   
-  const completedDates = new Set();
+  const dayLogsMap = {};
   logs.forEach(l => {
     const d = parseLogDate(l);
     if (d.getFullYear() === year && d.getMonth() === month) {
-      completedDates.add(d.getDate());
+      const dateNum = d.getDate();
+      if (!dayLogsMap[dateNum]) dayLogsMap[dateNum] = [];
+      dayLogsMap[dateNum].push(l);
     }
   });
   
@@ -147,13 +148,23 @@ function generateCalendarGrid(logs) {
   
   for (let date = 1; date <= lastDate; date++) {
     const isToday = isCurrentMonth && today.getDate() === date;
-    const isDone = completedDates.has(date);
+    const dayLogs = dayLogsMap[date] || [];
+    const isDone = dayLogs.length > 0;
+    
     let cls = 'cal-day';
     if (isDone) cls += ' completed';
     if (isToday) cls += ' today';
     
+    let tooltipAttr = '';
+    if (isDone) {
+      const dateStr = `${year}.${month + 1}.${date}`;
+      const rows = dayLogs.map(l => `<div style="display:flex; justify-content:space-between; gap:12px; margin-bottom:2px; font-size:13px;"><span style="color:#ffffff;">${escapeHtml(l.routineName || '루틴')}</span><span style="color:#46efc5; font-weight:800;">${formatDuration(l.durationSeconds)}</span></div>`).join('');
+      const tooltipHtml = `<div style="font-size:11px; color:#9cb3b0; margin-bottom:4px; font-weight:600; text-align:left;">${dateStr} (완료 ${dayLogs.length}회)</div>${rows}`;
+      tooltipAttr = `data-tooltip="${escapeAttr(tooltipHtml)}" style="cursor:pointer;"`;
+    }
+
     cells += `
-      <div class="${cls}">
+      <div class="${cls}" ${tooltipAttr}>
         <span class="day-num">${date}</span>
         ${isDone ? '<span class="completed-check">✓</span>' : ''}
       </div>`;
@@ -188,7 +199,7 @@ function generateRecentActivity(logs) {
     const d = parseLogDate(l);
     const logId = l.id || l.completedAt;
     const dateStr = `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours() < 10 ? '0':''}${d.getHours()}:${d.getMinutes() < 10 ? '0':''}${d.getMinutes()}`;
-    const min = Math.round((l.durationSeconds || 0) / 60);
+    const durStr = formatDuration(l.durationSeconds);
     return `
       <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#f4faf8; border-radius:12px; margin-bottom:8px;">
         <div>
@@ -196,7 +207,7 @@ function generateRecentActivity(logs) {
           <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${dateStr}</div>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-          <div style="font-size:14px; font-weight:var(--fw-black); color:#00c6b8;">${min}분 완료</div>
+          <div style="font-size:14px; font-weight:var(--fw-black); color:#00c6b8;">${durStr} 완료</div>
           <button class="btn-xs btn-danger btn-icon" style="padding:4px 8px !important; font-size:12px !important;" onclick="window.deleteLog('${escapeAttr(logId)}')" title="기록 삭제">🗑️</button>
         </div>
       </div>`;
@@ -226,7 +237,7 @@ export function renderStats() {
   const totalCompleted = logs.length;
   let totalSeconds = 0;
   logs.forEach(l => totalSeconds += (l.durationSeconds || 0));
-  const totalMinutes = Math.round(totalSeconds / 60);
+  const totalDurationStr = formatDuration(totalSeconds);
   
   const streak = calculateStreak(logs);
   const chartHtml = generateWeeklyChart(logs);
@@ -262,7 +273,7 @@ export function renderStats() {
         </div>
         <div style="flex:1; background:#ffffff; border:1px solid var(--border-base); border-radius:20px; padding:16px; text-align:center;">
           <div style="font-size:12px; color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
-          <div style="font-size:24px; font-weight:var(--fw-black); color:#00c6b8; margin-top:4px;">${totalMinutes}분</div>
+          <div style="font-size:20px; font-weight:var(--fw-black); color:#00c6b8; margin-top:4px;">${totalDurationStr}</div>
         </div>
         <div style="flex:1; background:#ffffff; border:1px solid var(--border-base); border-radius:20px; padding:16px; text-align:center;">
           <div style="font-size:12px; color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
