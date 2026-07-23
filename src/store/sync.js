@@ -1,6 +1,5 @@
 import { state, DEFAULT_TVA_ROUTINE } from './state.js';
 import { supabaseClient } from '../config/supabase.js';
-import { showToast } from '../utils/helpers.js';
 
 export async function triggerCloudSync() {
   const now = Date.now();
@@ -27,6 +26,34 @@ export async function deleteRoutineStorage(id) {
   await triggerCloudSync();
 }
 
+// Helper to merge local and cloud history seamlessly by unique log ID/completedAt
+function mergeHistoryLogs(localLogs = [], cloudLogs = []) {
+  const map = new Map();
+  
+  // Add cloud logs
+  (cloudLogs || []).forEach(log => {
+    if (log && (log.id || log.completedAt)) {
+      const key = log.id || `${log.routineId}_${log.completedAt}`;
+      map.set(key, log);
+    }
+  });
+
+  // Add local logs (gives priority or union)
+  (localLogs || []).forEach(log => {
+    if (log && (log.id || log.completedAt)) {
+      const key = log.id || `${log.routineId}_${log.completedAt}`;
+      map.set(key, log);
+    }
+  });
+
+  // Convert back to array sorted descending by completedAt
+  const merged = Array.from(map.values()).sort((a, b) => {
+    return new Date(b.completedAt || 0) - new Date(a.completedAt || 0);
+  });
+
+  return merged;
+}
+
 export async function syncData() {
   if (!state.user || !supabaseClient) return;
   try {
@@ -45,7 +72,9 @@ export async function syncData() {
     const localRoutines = {};
     localOrder.forEach(id => {
       const raw = localStorage.getItem("routines:" + id);
-      if (raw) localRoutines[id] = JSON.parse(raw);
+      if (raw) {
+        try { localRoutines[id] = JSON.parse(raw); } catch(e) {}
+      }
     });
     
     if (!data) {
@@ -62,6 +91,10 @@ export async function syncData() {
       state.syncStatus = "synced";
       return;
     }
+
+    // Always merge history logs from both local and cloud so no device loses workout completions!
+    const mergedHistory = mergeHistoryLogs(localHistory, data.history || []);
+    localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
     
     const cloudUpdatedAt = new Date(data.updated_at).getTime();
     if (cloudUpdatedAt > localUpdatedAt) {
@@ -75,9 +108,6 @@ export async function syncData() {
           localStorage.setItem("routines:" + id, JSON.stringify(data.routines[id]));
         });
       }
-      if (data.history) {
-        localStorage.setItem("routines:history", JSON.stringify(data.history));
-      }
       state.syncStatus = "synced";
     } else {
       const now = new Date().toISOString();
@@ -86,11 +116,16 @@ export async function syncData() {
         .update({
           routine_order: localOrder,
           routines: localRoutines,
-          history: localHistory,
+          history: mergedHistory,
           updated_at: now
         })
         .eq('user_id', state.user.id);
       state.syncStatus = "synced";
+    }
+
+    // If on stats or list screen, trigger UI update
+    if (typeof window !== 'undefined' && typeof window.render === 'function') {
+      window.render();
     }
   } catch (e) {
     console.error("Sync error:", e);
