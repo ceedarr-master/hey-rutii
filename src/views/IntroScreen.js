@@ -6,7 +6,20 @@ import { renderList } from './ListScreen.js';
 export function renderIntro() {
   const r = state.routines[state.currentId];
   if (!r) { state.screen = "list"; return renderList(); }
+
+  const exerciseSteps = r.steps.filter(s => s.type !== 'transition');
+  const segs = exerciseSteps.map(() => '<div class="progress-seg"></div>').join('');
+
   return `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
+      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">0 of ${exerciseSteps.length}</div>
+      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-tertiary);">${escapeHtml(r.name)}</div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? "🔊" : "🔇"}</button>
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.goScreen('list')">✕</button>
+      </div>
+    </div>
+    <div class="progress-bar" style="margin-bottom:var(--space-16);">${segs}</div>
     <div class="card">
       <div class="card-group-header">
         <div class="intro-emoji">🧘</div>
@@ -21,7 +34,7 @@ export function renderIntro() {
 
       <div class="card-group-body">
         <div class="intro-list">
-          <div class="intro-list-item">총 <b>${r.steps.filter(s => s.type !== 'transition').length}단계</b>, 약 <b>${estimateMinutes(r)}분</b></div>
+          <div class="intro-list-item">총 <b>${exerciseSteps.length}단계</b>, 약 <b>${estimateMinutes(r)}분</b></div>
           <div class="intro-list-item">⏱ 시간 진행 단계는 자동 카운트다운 + 종료 시 알림음</div>
           <div class="intro-list-item">🔢 횟수 진행 단계는 직접 "다음" 버튼으로 넘기기</div>
         </div>
