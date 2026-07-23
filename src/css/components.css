@@ -24,6 +24,7 @@
   justify-content: space-between;
 }
 
+.exercise-form-card,
 .inline-edit-box {
   display: flex;
   flex-direction: column;

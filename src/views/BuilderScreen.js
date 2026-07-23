@@ -3,10 +3,88 @@ import { state, formDraft } from '../store/state.js';
 import { escapeHtml, escapeAttr } from '../utils/helpers.js';
 import { stepDetail } from '../utils/format.js';
 
+function renderExerciseFields({
+  name = '',
+  target = '',
+  desc = '',
+  type = 'timer',
+  mm = 0,
+  ss = 0,
+  reps = 10,
+  sets = 1,
+  rest = 0,
+  idBuilder = null,
+  onNameInput = '',
+  onTargetInput = '',
+  onDescInput = '',
+  onMmInput = '',
+  onSsInput = '',
+  onRepsInput = '',
+  onSetsInput = '',
+  onRestInput = '',
+  onTypeToggle = (t) => ''
+}) {
+  const isTimer = type === 'timer';
+  const idAttr = (field) => idBuilder ? `id="${idBuilder(field)}"` : '';
+
+  return `
+    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); display:block;">운동 이름<span class="lbl-req">*</span></label>
+    <input class="form-input-text" ${idAttr('name')} type="text" value="${escapeAttr(name)}" placeholder="운동 이름을 입력하세요" ${onNameInput ? `oninput="${onNameInput}"` : ''} />
+    
+    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">타겟 부위 (선택)</label>
+    <input class="form-input-text" ${idAttr('target')} type="text" value="${escapeAttr(target)}" placeholder="예: 대흉근, 코어" ${onTargetInput ? `oninput="${onTargetInput}"` : ''} />
+
+    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">설명 (선택)</label>
+    <textarea class="form-textarea-underline" ${idAttr('desc')} placeholder="동작 방법이나 주의사항" ${onDescInput ? `oninput="${onDescInput}"` : ''}>${escapeHtml(desc)}</textarea>
+
+    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">진행 방식<span class="lbl-req">*</span></label>
+    <div class="tabs-sm" style="margin-top:var(--space-6);">
+      <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="${onTypeToggle('timer')}">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+      <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="${onTypeToggle('manual')}">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
+    </div>
+
+    ${isTimer ? `
+      <div class="num-row" style="margin-top:var(--space-14);">
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('mm')} type="number" min="0" value="${mm}" ${onMmInput ? `oninput="${onMmInput}"` : ''} />
+          <span class="num-unit">분</span>
+        </div>
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('ss')} type="number" min="0" max="59" value="${ss}" ${onSsInput ? `oninput="${onSsInput}"` : ''} />
+          <span class="num-unit">초</span>
+        </div>
+      </div>
+      <div class="num-row" style="margin-top:var(--space-14);">
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('sets')} type="number" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} />
+          <span class="num-unit">세트</span>
+        </div>
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('rest')} type="number" min="0" value="${rest}" ${onRestInput ? `oninput="${onRestInput}"` : ''} />
+          <span class="num-unit">초 휴식</span>
+        </div>
+      </div>` : `
+      <div class="num-row" style="margin-top:var(--space-14);">
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('reps')} type="number" min="1" value="${reps}" ${onRepsInput ? `oninput="${onRepsInput}"` : ''} />
+          <span class="num-unit">개</span>
+        </div>
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('sets')} type="number" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} />
+          <span class="num-unit">세트</span>
+        </div>
+        <div class="num-group">
+          <input class="form-input-num" ${idAttr('rest')} type="number" min="0" value="${rest}" ${onRestInput ? `oninput="${onRestInput}"` : ''} />
+          <span class="num-unit">초 휴식</span>
+        </div>
+      </div>`}
+  `;
+}
+
 export function renderInlineStepEditor(i, s) {
   if (s.type === 'transition') {
     return `
-      <div class="inline-edit-box">
+      <div class="exercise-form-card">
         <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin:0;">휴식 및 전환 시간<span class="lbl-req">*</span></label>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:var(--space-12); width:100%;">
           <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px;">
@@ -29,58 +107,20 @@ export function renderInlineStepEditor(i, s) {
   const rest = s.restSeconds || 0;
 
   return `
-    <div class="inline-edit-box">
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 이름<span class="lbl-req">*</span></label>
-      <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" placeholder="운동 이름을 입력하세요" />
-      
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">타겟 부위 (선택)</label>
-      <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="예: 둔근" />
-
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">설명 (선택)</label>
-      <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 방법이나 주의사항">${escapeHtml(s.desc || '')}</textarea>
-
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">진행 방식<span class="lbl-req">*</span></label>
-      <div class="tabs-sm" style="margin-top:var(--space-6);">
-        <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-        <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
-      </div>
-
-      ${isTimer ? `
-        <div class="num-row" style="margin-top:var(--space-14);">
-          <div class="num-group">
-            <input class="form-input-num" id="edit-mm-${i}" type="number" min="0" value="${mm}" />
-            <span class="num-unit">분</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" id="edit-ss-${i}" type="number" min="0" max="59" value="${ss}" />
-            <span class="num-unit">초</span>
-          </div>
-        </div>
-        <div class="num-row" style="margin-top:var(--space-14);">
-          <div class="num-group">
-            <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" />
-            <span class="num-unit">세트</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" />
-            <span class="num-unit">초 휴식</span>
-          </div>
-        </div>` : `
-        <div class="num-row" style="margin-top:var(--space-14);">
-          <div class="num-group">
-            <input class="form-input-num" id="edit-reps-${i}" type="number" min="1" value="${reps}" />
-            <span class="num-unit">개</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" />
-            <span class="num-unit">세트</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" />
-            <span class="num-unit">초 휴식</span>
-          </div>
-        </div>`}
-
+    <div class="exercise-form-card">
+      ${renderExerciseFields({
+        name: s.name,
+        target: s.target || '',
+        desc: s.desc || '',
+        type: s.type,
+        mm,
+        ss,
+        reps,
+        sets,
+        rest,
+        idBuilder: (field) => `edit-${field}-${i}`,
+        onTypeToggle: (t) => `window.toggleInlineType(${i}, '${t}')`
+      })}
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:var(--space-20);">
         <button class="btn-xs btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
         <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
@@ -91,7 +131,6 @@ export function renderInlineStepEditor(i, s) {
 export function renderBuilder() {
   const b = state.builder;
   if (!b) return "";
-  const isTimer = formDraft.type === "timer";
 
   let stepsHtml = "";
   if (b.steps.length === 0) {
@@ -157,58 +196,27 @@ export function renderBuilder() {
     </div>
     ${stepsHtml}
 
-    <div class="card">
-      <label>운동 이름<span class="lbl-req">*</span></label>
-      <input class="form-input-text" type="text" placeholder="푸쉬업" value="${escapeAttr(formDraft.name)}" oninput="window.updateForm('name', this.value)" />
-
-      <label>타겟 부위</label>
-      <input class="form-input-text" type="text" placeholder="대흉근, 상완삼두근, 삼각근, 전거근, 코어" value="${escapeAttr(formDraft.target)}" oninput="window.updateForm('target', this.value)" />
-
-      <label>설명</label>
-      <textarea class="form-textarea-underline" placeholder="손은 어깨너비보다 살짝 넓게 가슴 옆에 두고, 머리부터 발끝까지 몸이 일자가 되도록 복부와 엉덩이에 힘을 준 뒤, 팔꿈치는 몸통에서 45도 정도만 벌려 가슴 쪽으로 내립니다." oninput="window.updateForm('desc', this.value)">${escapeHtml(formDraft.desc)}</textarea>
-
-      <label>진행 방식<span class="lbl-req">*</span></label>
-      <div class="tabs-sm" style="margin-top:var(--space-6);">
-        <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="window.setFormType('timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-        <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="window.setFormType('manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
-      </div>
-
-      ${isTimer ? `
-        <div class="num-row">
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="0" value="${formDraft.mm}" oninput="window.updateForm('mm', this.value)" />
-            <span class="num-unit">분</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="0" max="59" value="${formDraft.ss}" oninput="window.updateForm('ss', this.value)" />
-            <span class="num-unit">초</span>
-          </div>
-        </div>
-        <div class="num-row">
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="1" value="${formDraft.sets}" oninput="window.updateForm('sets', this.value)" />
-            <span class="num-unit">세트</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="0" value="${formDraft.restSeconds}" oninput="window.updateForm('restSeconds', this.value)" />
-            <span class="num-unit">초 휴식</span>
-          </div>
-        </div>` : `
-        <div class="num-row">
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="1" value="${formDraft.reps}" oninput="window.updateForm('reps', this.value)" />
-            <span class="num-unit">개</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="1" value="${formDraft.sets}" oninput="window.updateForm('sets', this.value)" />
-            <span class="num-unit">세트</span>
-          </div>
-          <div class="num-group">
-            <input class="form-input-num" type="number" min="0" value="${formDraft.restSeconds}" oninput="window.updateForm('restSeconds', this.value)" />
-            <span class="num-unit">초 휴식</span>
-          </div>
-        </div>`}
-
+    <div class="exercise-form-card" style="margin-top:var(--space-16);">
+      ${renderExerciseFields({
+        name: formDraft.name,
+        target: formDraft.target,
+        desc: formDraft.desc,
+        type: formDraft.type,
+        mm: formDraft.mm,
+        ss: formDraft.ss,
+        reps: formDraft.reps,
+        sets: formDraft.sets,
+        rest: formDraft.restSeconds,
+        onNameInput: "window.updateForm('name', this.value)",
+        onTargetInput: "window.updateForm('target', this.value)",
+        onDescInput: "window.updateForm('desc', this.value)",
+        onMmInput: "window.updateForm('mm', this.value)",
+        onSsInput: "window.updateForm('ss', this.value)",
+        onRepsInput: "window.updateForm('reps', this.value)",
+        onSetsInput: "window.updateForm('sets', this.value)",
+        onRestInput: "window.updateForm('restSeconds', this.value)",
+        onTypeToggle: (t) => `window.setFormType('${t}')`
+      })}
       <button class="btn-lg btn-secondary" style="width:100%; margin-top:var(--space-20);" onclick="window.addExerciseFromForm()">+ 운동 추가</button>
     </div>
 
