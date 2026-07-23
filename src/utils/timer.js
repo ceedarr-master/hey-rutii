@@ -41,8 +41,17 @@ export function startTimer(nextStepCallback) {
       elements.forEach(el => {
         el.textContent = fmt(state.play.remaining);
       });
+
+      // 3초, 2초, 1초 카운트다운 비프음 울리기 (soundEnabled 확인)
+      if (state.play.remaining <= 3 && state.play.remaining > 0) {
+        if (state.soundEnabled !== false) {
+          playBeep(1);
+        }
+      }
     } else {
-      playBeep(2);
+      if (state.soundEnabled !== false) {
+        playBeep(2);
+      }
       if (nextStepCallback) nextStepCallback();
     }
   }, 1000);
