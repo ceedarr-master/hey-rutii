@@ -374,7 +374,7 @@ label {
   color: var(--text-primary);
 }
 
-.log-subtitle {
+.log-meta {
   font-size: var(--typo-display-xs);
   font-weight: var(--fw-medium);
   color: var(--text-tertiary);
