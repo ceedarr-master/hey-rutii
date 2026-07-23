@@ -196,18 +196,21 @@ function generateRecentActivity(logs) {
   const startIdx = page * pageSize;
   const pageLogs = logs.slice(startIdx, startIdx + pageSize);
   
-  const items = pageLogs.map(l => {
+  const items = pageLogs.map((l, idx) => {
     const d = parseLogDate(l);
     const logId = l.id || l.completedAt;
     const dateStr = `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours() < 10 ? '0':''}${d.getHours()}:${d.getMinutes() < 10 ? '0':''}${d.getMinutes()}`;
     const durStr = formatDuration(l.durationSeconds);
+    const isLast = idx === pageLogs.length - 1;
     return `
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
-        <div class="log-title">${escapeHtml(l.routineName || '루틴')}</div>  
-        <div class="log-meta" style="display:flex; align-items:center; gap:var(--space-4);">
-          <span>${dateStr}</span>
-          <span style="opacity:0.6;">.</span>
-          <span>${durStr}</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; ${!isLast ? 'border-bottom:1px solid var(--border-base);' : ''}">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <div class="log-title" style="margin:0;">${escapeHtml(l.routineName || '루틴')}</div>  
+          <div class="log-meta" style="display:flex; align-items:center; gap:var(--space-4);">
+            <span>${dateStr}</span>
+            <span style="opacity:0.6;">.</span>
+            <span>${durStr}</span>
+          </div>
         </div>
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.deleteLog('${logId}')" title="삭제">${getSfSymbol("trash.fill", 14, "var(--text-warning)")}</button>
       </div>`;
