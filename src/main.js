@@ -86,14 +86,23 @@ window.goAuth = () => { state.screen = "auth"; render(); };
 window.goStatsTab = () => { state.screen = "stats"; render(); };
 
 window.deleteLog = (logId) => {
-  showConfirm("정말 이 기록을 삭제하시겠습니까?", async () => {
-    const historyRaw = localStorage.getItem("routines:history") || "[]";
-    let history = [];
-    try { history = JSON.parse(historyRaw); } catch(e) {}
-    history = history.filter(l => (l.id || l.completedAt) !== logId);
-    localStorage.setItem("routines:history", JSON.stringify(history));
-    await triggerCloudSync();
-    render();
+  showConfirmModal({
+    icon: getSfSymbol('trash.fill', 36, '#ff5e3a'),
+    title: '운동 기록 삭제',
+    message: '정말 이 운동 기록을 삭제하시겠습니까? 삭제된 기록은 복구할 수 없습니다.',
+    confirmText: '삭제하기',
+    cancelText: '취소',
+    isDanger: true,
+    onConfirm: async () => {
+      const historyRaw = localStorage.getItem("routines:history") || "[]";
+      let history = [];
+      try { history = JSON.parse(historyRaw); } catch(e) {}
+      history = history.filter(l => String(l.id || l.completedAt) !== String(logId));
+      localStorage.setItem("routines:history", JSON.stringify(history));
+      await triggerCloudSync();
+      showToast("운동 기록이 삭제되었습니다.");
+      render();
+    }
   });
 };
 

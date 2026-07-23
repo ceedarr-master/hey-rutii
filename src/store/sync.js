@@ -33,15 +33,15 @@ function mergeHistoryLogs(localLogs = [], cloudLogs = []) {
   // Add cloud logs
   (cloudLogs || []).forEach(log => {
     if (log && (log.id || log.completedAt)) {
-      const key = log.id || `${log.routineId}_${log.completedAt}`;
+      const key = String(log.id || log.completedAt);
       map.set(key, log);
     }
   });
 
-  // Add local logs (gives priority or union)
+  // Add local logs (gives priority to local)
   (localLogs || []).forEach(log => {
     if (log && (log.id || log.completedAt)) {
-      const key = log.id || `${log.routineId}_${log.completedAt}`;
+      const key = String(log.id || log.completedAt);
       map.set(key, log);
     }
   });
@@ -118,15 +118,14 @@ export async function syncData() {
       }
       state.syncStatus = "synced";
     } else {
-      const mergedHistory = mergeHistoryLogs(localHistory, data.history || []);
-      localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
+      localStorage.setItem("routines:history", JSON.stringify(localHistory));
       const now = new Date().toISOString();
       await supabaseClient
         .from('user_sync')
         .update({
           routine_order: localOrder,
           routines: localRoutines,
-          history: mergedHistory,
+          history: localHistory,
           updated_at: now
         })
         .eq('user_id', state.user.id);

@@ -190,15 +190,19 @@ function generateRecentActivity(logs) {
     return `<div class="empty-state">완료한 운동 기록이 없습니다.</div>`;
   }
   
-  const page = state.activityPage || 0;
   const pageSize = 5;
-  const totalPages = Math.ceil(logs.length / pageSize);
+  const totalPages = Math.ceil(logs.length / pageSize) || 1;
+  let page = state.activityPage || 0;
+  if (page >= totalPages) {
+    page = Math.max(0, totalPages - 1);
+    state.activityPage = page;
+  }
   const startIdx = page * pageSize;
   const pageLogs = logs.slice(startIdx, startIdx + pageSize);
   
   const items = pageLogs.map((l, idx) => {
     const d = parseLogDate(l);
-    const logId = l.id || l.completedAt;
+    const logId = String(l.id || l.completedAt || '');
     const dateStr = `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours() < 10 ? '0':''}${d.getHours()}:${d.getMinutes() < 10 ? '0':''}${d.getMinutes()}`;
     const durStr = formatDuration(l.durationSeconds);
     const isLast = idx === pageLogs.length - 1;
@@ -212,7 +216,7 @@ function generateRecentActivity(logs) {
             <span>${durStr}</span>
           </div>
         </div>
-        <button class="btn-xs btn-tertiary btn-icon" onclick="window.deleteLog('${logId}')" title="삭제">${getSfSymbol("trash.fill", 14, "var(--text-warning)")}</button>
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.deleteLog('${escapeAttr(logId)}')" title="삭제">${getSfSymbol("trash.fill", 14, "var(--text-warning)")}</button>
       </div>`;
   }).join('');
   
@@ -247,7 +251,7 @@ export function renderStats() {
   const filterBarHtml = `
     <div style="display:flex; align-items:center; gap:var(--space-10); margin-bottom:var(--space-16); background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-lg); padding:var(--space-12) var(--space-16);">
       <label for="stats-routine-filter" style="font-weight:var(--fw-bold); font-size:var(--typo-body-sm); color:var(--text-secondary); white-space:nowrap; margin:0;">${getSfSymbol("chart.bar.fill", 16, "var(--text-brand-accent)")} 분석 대상:</label>
-      <select id="stats-routine-filter" style="flex:1; border:none; background:transparent; font-size: var(--typo-body-sm); font-weight:var(--fw-black); color:var(--text-brand-accent); outline:none; cursor:pointer;" onchange="window.filterStatsByRoutine(this.value)">
+      <select id="stats-routine-filter" style="flex:1; border:none; background:transparent; font-size: var(--typo-body-sm); font-weight:var(--fw-black); color:var(--text-primary); outline:none; cursor:pointer;" onchange="window.filterStatsByRoutine(this.value)">
         <option value="all" ${filterVal === "all" ? "selected" : ""}>전체 루틴 (통합)</option>
         ${options}
       </select>
@@ -353,16 +357,16 @@ export function renderStats() {
     <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
       <div style="display:flex; gap:var(--space-12);">
         <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
-          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">총 완료</div>
-          <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${totalCompleted}회</div>
+          <label>총 완료 횟수</label>
+          <div class="stat-hero">${totalCompleted}회</div>
         </div>
         <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
-          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
-          <div style="font-size:var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${totalDurationStr}</div>
+          <label>누적 시간</label>
+          <div class="stat-hero">${totalDurationStr}</div>
         </div>
         <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
-          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
-          <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${streak}일</div>
+          <label>연속 일수</label>
+          <div class="stat-hero">${streak}일</div>
         </div>
       </div>
       
