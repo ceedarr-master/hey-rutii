@@ -64,10 +64,17 @@ export function renderBuilder() {
             <div class="step-item-figma ${isTrans ? 'transition-type' : ''}" data-id="${i}">
               <div style="display:flex; align-items:center; flex:1; gap:10px;">
                 <div class="step-drag-handle" style="${isTrans ? 'color:var(--text-tertiary);' : ''}">≡</div>
-                <div>
-                  <div style="font-size:15px; font-weight:var(--fw-bold); color:${isTrans ? 'var(--text-tertiary)' : 'var(--text-primary)'};">${escapeHtml(s.name)}</div>
-                  <div style="font-size:var(--text-xs); color:${isTrans ? 'var(--text-tertiary)' : 'var(--text-secondary)'}; margin-top:2px;">${stepDetail(s)}</div>
-                </div>
+                ${isTrans ? `
+                  <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:var(--fw-bold); color:var(--text-tertiary); white-space:nowrap;">
+                    <span>휴식 및 전환</span>
+                    <span style="font-weight:var(--fw-medium); opacity:0.85;">⏱ ${s.seconds || 15}초</span>
+                  </div>
+                ` : `
+                  <div>
+                    <div style="font-size:15px; font-weight:var(--fw-bold); color:var(--text-primary);">${escapeHtml(s.name)}</div>
+                    <div style="font-size:var(--text-xs); color:var(--text-secondary); margin-top:2px;">${stepDetail(s)}</div>
+                  </div>
+                `}
               </div>
               <div style="display:flex; gap: var(--space-6);">
                 <button class="btn-xs btn-tertiary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">✏️</button>
