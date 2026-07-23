@@ -715,6 +715,10 @@ label {
   text-align: center;
 }
 
+.typo-highlight-timer.warning {
+  color: var(--text-warning) !important;
+}
+
 .typo-highlight-title {
   font-size: var(--typo-highlight-title);
   line-height: var(--lh-150);
