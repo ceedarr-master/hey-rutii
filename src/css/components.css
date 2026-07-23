@@ -14,7 +14,7 @@
   border-radius: 26px;
   padding: var(--space-24);
   text-align: center;
-  box-shadow: 0 8px 24px rgba(255, 140, 90, 0.12);
+  box-shadow: 0 8px 24px var(--card-shadow);
   min-height: 448px;
   display: flex;
   flex-direction: column;
@@ -27,10 +27,19 @@
   border-radius: 26px;
   padding: var(--space-24);
   text-align: center;
-  box-shadow: 0 8px 24px rgba(255, 140, 90, 0.12);
+  box-shadow: 0 8px 24px var(--card-shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.card-hero {
+  background: var(--bg-card);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-xl);
+  padding: var(--space-16);
+  box-shadow: 0 8px 24px var(--card-shadow);
+  text-align: center;
 }
 
 .exercise-form-card,
@@ -42,7 +51,7 @@
   border-radius: var(--radius-xl, 20px);
   padding: var(--space-20);
   margin: var(--space-4) 0;
-  box-shadow: 0 5px 12px rgba(165, 223, 201, 0.3);
+  box-shadow: 0 5px 12px var(--card-shadow);
   text-align: left;
 }
 
@@ -54,7 +63,7 @@
   border-radius: var(--radius-xl, 20px);
   padding: var(--space-20);
   margin: var(--space-4) 0;
-  box-shadow: 0 5px 12px rgba(165, 223, 201, 0.3);
+  box-shadow: 0 5px 12px var(--card-shadow);
   text-align: left;
 }
 
