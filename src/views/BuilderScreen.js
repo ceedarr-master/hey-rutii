@@ -6,8 +6,8 @@ import { stepDetail } from '../utils/format.js';
 export function renderInlineStepEditor(i, s) {
   if (s.type === 'transition') {
     return `
-      <div class="inline-edit-box" style="background:var(--surface-light); border:1px solid var(--border-accent); border-radius:16px; padding:16px; margin:8px 0;">
-        <div style="font-size:14px; font-weight:var(--fw-bold); color:var(--text-tertiary); margin-bottom:8px;">휴식 및 전환 시간 수정</div>
+      <div class="inline-edit-box">
+        <div>휴식 및 전환 시간 수정</div>
         <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px; margin-top:8px;">
           <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" />
           <span class="num-unit">초</span>
