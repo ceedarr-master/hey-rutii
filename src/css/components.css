@@ -74,7 +74,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8); font-size: var(--typo-body-md); font-weight: var(--fw-bold); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; text-align: left;
 }
-.form-input-text:focus {border-bottom: 2px solid var(--border-accent);}
+.form-input-text:focus {border-bottom: 2px solid var(--border-accent); transition: border-color 0.2s;}
 .form-input-text::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .form-input-num {
@@ -82,7 +82,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   padding: var(--space-8) var(--space-4); font-size: var(--typo-body-xl); font-weight: var(--fw-black); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; text-align: right;
 }
-.form-input-num:focus {border-bottom: 2px solid var(--border-accent);}
+.form-input-num:focus {border-bottom: 2px solid var(--border-accent); transition: border-color 0.2s;}
 .form-input-num::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .form-textarea-underline {
@@ -90,7 +90,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8); font-size: var(--text-base); font-weight: var(--fw-bold); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; resize: none; min-height: 50px;
 }
-.form-textarea-underline:focus {border-bottom: 2px solid var(--border-accent);}
+.form-textarea-underline:focus {border-bottom: 2px solid var(--border-accent); transition: border-color 0.2s;}
 .form-textarea-underline::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .type-toggle { display: flex; gap: var(--space-8); margin-top: var(--space-6); }
@@ -103,8 +103,8 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* ---- tabs ---- */
 .main-tabs { display: flex; background: var(--bg-tabs); border-radius: var(--radius-lg); padding: var(--space-4); margin-bottom: var(--space-16); }
-.main-tab-btn { flex: 1; padding: 12px; border-radius: 16px; border: none; background: transparent; color: var(--text-secondary); font-size: var(--text-base); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
-.main-tab-btn.active { background: var(--surface-white); color: var(--accent-color); box-shadow: 0 2px 8px rgba(0, 198, 184, 0.3); font-weight: var(--fw-black); }
+.main-tab-btn { flex: 1; padding: var(--space-14) var(--space-12); border-radius: var(--radius-md); border: none; background: transparent; color: var(--text-secondary); font-size: var(--text-base); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
+.main-tab-btn.active { background: var(--surface-white); color: var(--accent-color); box-shadow: 0 2px 8px var(--active-shadow); font-weight: var(--fw-black); }
 
 /* ---- toast ---- */
 #toast-container { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: var(--space-10); pointer-events: none; width: 100%; align-items: center; }
@@ -133,20 +133,22 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 .set-dot.current { background:var(--color-brand-accent); color: var(--text-white);}
 .set-dot.upcoming { background: var(--color-brand-secondary); color: var(--text-brand-accent);}
 
-/* Giant Digital Timer */
-.digital-timer {
-  font-family: 'Panchang', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 64px;
-  font-weight: 800;
-  color: #00c6b8;
-  letter-spacing: -1px;
-  margin: 20px 0;
+/* ---- Figma Typography System Utility Classes ---- */
+.typo-highlight-timer { 
+  font-family: 'Panchang', -apple-system, BlinkMacSystemFont, sans-serif; 
+  font-size: var(--typo-highlight-timer); 
+  line-height: var(--lh-150); 
+  font-weight: var(--fw-black);
+  color: var(--text-brand-accent); 
+  letter-spacing: -1px; 
+  margin: var(--space-20) 0;
   text-align: center;
 }
-
-/* ---- Figma Typography System Utility Classes ---- */
-.typo-highlight-timer { font-family: 'Panchang', -apple-system, BlinkMacSystemFont, sans-serif; font-size: var(--typo-highlight-timer); line-height: var(--lh-150); font-weight: 800; letter-spacing: -1px; }
-.typo-highlight-title { font-size: var(--typo-highlight-title); line-height: var(--lh-150); font-weight: var(--fw-black); }
+.typo-highlight-title { 
+  font-size: var(--typo-highlight-title); 
+  line-height: var(--lh-150); 
+  font-weight: var(--fw-black); 
+}
 
 .typo-display-2xl { font-size: var(--typo-display-2xl); line-height: var(--lh-150); font-weight: var(--fw-black); }
 .typo-display-xl { font-size: var(--typo-display-xl); line-height: var(--lh-150); font-weight: var(--fw-black); }

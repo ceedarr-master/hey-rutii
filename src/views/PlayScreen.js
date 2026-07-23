@@ -58,7 +58,7 @@ export function renderPlay(routine) {
       <div style="font-size:var(--text-base); color:var(--text-secondary); margin-bottom:4px; text-align:center;">${escapeHtml(s.name)}</div>
       <div style="font-size:36px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">휴식</div>
       <div style="font-size:var(--text-base); color:var(--text-secondary); text-align:center; margin-bottom:16px;">다음 세트를 준비하세요</div>
-      <div class="digital-timer" style="font-size:64px; font-weight:900; color:#00c6b8; margin:20px 0; text-align:center;">${fmt(state.play.remaining)}</div>
+      <div class="typo-highlight-timer" style="font-size:64px; font-weight:900; color:#00c6b8; margin:20px 0; text-align:center;">${fmt(state.play.remaining)}</div>
       <button class="btn-lg btn-secondary" style="width:100%; font-size:18px; margin-top:16px;" onclick="window.nextStep()">바로 시작</button>`;
   } else if (s.type === "timer") {
     if (!state.play.remaining) state.play.remaining = s.seconds;
@@ -70,7 +70,7 @@ export function renderPlay(routine) {
       <div style="font-size:28px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">${escapeHtml(s.name)}</div>
       ${s.target ? `<div style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-secondary); text-align:center; margin-bottom:8px;">${escapeHtml(s.target)}</div>` : ""}
       ${s.desc ? `<div style="font-size:var(--text-sm); color:var(--text-secondary); text-align:center; margin-bottom:16px;">${escapeHtml(s.desc)}</div>` : ""}
-      <div class="digital-timer" style="font-size:64px; font-weight:900; color:#00c6b8; margin:20px 0; text-align:center;">${fmt(state.play.remaining)}</div>
+      <div class="typo-highlight-timer" style="font-size:64px; font-weight:900; color:#00c6b8; margin:20px 0; text-align:center;">${fmt(state.play.remaining)}</div>
       <div class="btn-row">
         <button class="btn-lg btn-secondary btn-flex" onclick="window.togglePause()">${state.play.paused ? "▶ 시작" : "⏸ 일시정지"}</button>
         <button class="btn-lg btn-primary btn-flex" onclick="window.nextStep()">다음 →</button>
