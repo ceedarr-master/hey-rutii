@@ -319,9 +319,9 @@ label {
   text-align: center;
 }
 .cal-header {
-  font-size: var(--typo-display-sm);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  font-size: var(--typo-body-xs);
+  font-weight: var(--fw-medium);
+  color: var(--text-tertiary);
   padding-bottom: var(--space-4);
 }
 .cal-day {
@@ -333,9 +333,8 @@ label {
   border-radius: 50%;
   font-size: var(--typo-display-xs);
   font-weight: var(--fw-bold);
-  color: var(--text-primary);
+  color: var(--text-secondary);
   position: relative;
-  background: #f8fcfb;
 }
 .cal-day.empty {
   background: transparent;
@@ -369,6 +368,7 @@ label {
 }
 
 .log-title {
+  display: flex;
   font-size: var(--typo-display-sm);
   font-weight: var(--fw-bold);
   color: var(--text-primary);
@@ -378,6 +378,8 @@ label {
   font-size: var(--typo-display-xs);
   font-weight: var(--fw-medium);
   color: var(--text-tertiary);
+  float: left;
+  gap: var(--space-4);
 }
 
 /* ---- Card Internal Group Layout ---- */
