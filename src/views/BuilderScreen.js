@@ -83,7 +83,7 @@ export function renderInlineStepEditor(i, s) {
   if (s.type === 'transition') {
     return `
       <div class="exercise-form-card">
-        <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin:0;">휴식 및 전환 시간<span class="lbl-req">*</span></label>
+        <label>트랜지션 시간<span class="lbl-req">*</span></label>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:var(--space-12); width:100%;">
           <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px;">
             <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" style="flex:1;" />
