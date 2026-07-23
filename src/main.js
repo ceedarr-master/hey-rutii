@@ -222,12 +222,9 @@ window.prevStep = () => {
     state.play.isResting = false;
     state.play.paused = false;
     render();
-  } else if (state.play.current > 0) {
-    state.play.current = 0;
-    state.play.currentSet = 1;
-    state.play.remaining = 0;
-    state.play.isResting = false;
-    state.play.paused = false;
+  } else {
+    // If on the first exercise step, go back to Intro screen!
+    state.screen = "intro";
     render();
   }
 };

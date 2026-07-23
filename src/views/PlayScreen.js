@@ -169,7 +169,7 @@ export function renderPlay(routine) {
       </div>`;
   }
 
-  const prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 이전';
+  const prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 루틴 소개';
   const nextText = nextEx ? `건너뛰기 ( ${escapeHtml(nextEx.name)} ) →` : '건너뛰기 →';
 
   return `
