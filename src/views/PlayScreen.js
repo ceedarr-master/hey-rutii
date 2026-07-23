@@ -148,7 +148,7 @@ export function renderPlay(routine) {
       </div>
 
       <div class="card-group-timer">
-        <div style="font-size: var(--typo-counter); font-weight:var(--fw-black); color: var(--text-brand-accent); text-align:center;">${s.reps} 개</div>
+        <div style="font-size: var(--typo-counter); color: var(--text-brand-accent); text-align:center;"><span style="font-family: 'Panchang', -apple-system, sans-serif; font-weight: 800;">${s.reps}</span><span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-weight: var(--fw-black); font-size: 0.75em; margin-left: 6px;">개</span></div>
       </div>
 
       <div class="card-group-footer">
