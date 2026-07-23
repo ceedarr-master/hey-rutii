@@ -12,20 +12,20 @@ export function renderInlineStepEditor(i, s) {
   const rest = s.restSeconds || 0;
 
   return `
-    <div class="inline-edit-box" style="background:#def7f2; border:1px solid #00c6b8; border-radius:16px; padding:16px; margin:8px 0;">
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 이름(필수)</label>
+    <div class="inline-edit-box">
+      <label>운동 이름(필수)</label>
       <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" />
       
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">타겟 부위</label>
+      <label>타겟 부위</label>
       <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="예: 둔근" />
 
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">설명</label>
+      <label>설명</label>
       <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 주의사항">${escapeHtml(s.desc || '')}</textarea>
 
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">진행 방식</label>
-      <div style="display:flex; gap:8px; margin-top:4px;">
-        <button class="btn-xs ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간</button>
-        <button class="btn-xs ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수</button>
+      <label>진행 방식</label>x
+      <div class="main-tabs">
+        <button class="main-tab-btn active ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간</button>
+        <button class="main-tab-btn ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수</button>
       </div>
 
       <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
@@ -126,8 +126,8 @@ export function renderBuilder() {
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
       <span style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 목록 (${b.steps.length})</span>
       ${b.steps.some(s => s.type === 'transition') 
-        ? '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">${getSfSymbol("stopwatch", 14)} 트랜지션타임 일괄수정</button>' 
-        : '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">${getSfSymbol("stopwatch", 14)} 휴식 및 전환 추가</button>'}
+        ? '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">트랜지션 타임 일괄수정</button>' 
+        : '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">트랜지션 타임 추가</button>'}
     </div>
     ${stepsHtml}
 
