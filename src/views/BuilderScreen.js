@@ -31,20 +31,20 @@ function renderExerciseFields({
     <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); display:block;">운동 이름<span class="lbl-req">*</span></label>
     <input class="form-input-text" ${idAttr('name')} type="text" value="${escapeAttr(name)}" placeholder="운동 이름을 입력하세요" ${onNameInput ? `oninput="${onNameInput}"` : ''} />
     
-    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">타겟 부위 (선택)</label>
+    <label>타겟 부위</label>
     <input class="form-input-text" ${idAttr('target')} type="text" value="${escapeAttr(target)}" placeholder="예: 대흉근, 코어" ${onTargetInput ? `oninput="${onTargetInput}"` : ''} />
 
-    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">설명 (선택)</label>
+    <label>설명</label>
     <textarea class="form-textarea-underline" ${idAttr('desc')} placeholder="동작 방법이나 주의사항" ${onDescInput ? `oninput="${onDescInput}"` : ''}>${escapeHtml(desc)}</textarea>
 
-    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">진행 방식<span class="lbl-req">*</span></label>
+    <label>진행 방식<span class="lbl-req">*</span></label>
     <div class="tabs-sm" style="margin-top:var(--space-6);">
       <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="${onTypeToggle('timer')}">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
       <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="${onTypeToggle('manual')}">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
     </div>
 
     ${isTimer ? `
-      <div class="num-row" style="margin-top:var(--space-14); gap:8px;">
+      <div class="num-row">
         <div class="num-group">
           <input class="form-input-num" ${idAttr('mm')} type="number" min="0" value="${mm}" ${onMmInput ? `oninput="${onMmInput}"` : ''} />
           <span class="num-unit">분</span>
@@ -62,7 +62,7 @@ function renderExerciseFields({
           <span class="num-unit">초 휴식</span>
         </div>
       </div>` : `
-      <div class="num-row" style="margin-top:var(--space-14);">
+      <div class="num-row">
         <div class="num-group">
           <input class="form-input-num" ${idAttr('reps')} type="number" min="1" value="${reps}" ${onRepsInput ? `oninput="${onRepsInput}"` : ''} />
           <span class="num-unit">개</span>

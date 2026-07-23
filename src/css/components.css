@@ -139,7 +139,7 @@ label {
   border-bottom: 2px solid var(--border-accent); 
   background: transparent;
   padding: var(--space-8) var(--space-4); font-size: var(--typo-body-xl); 
-  font-weight: var(--fw-black); 
+  font-weight: var(--fw-bold); 
   color: var(--text-primary);
   font-family: inherit; 
   outline: none; 
@@ -186,7 +186,7 @@ label {
 .type-toggle { display: flex; gap: var(--space-8); margin-top: var(--space-6); }
 .num-row { display: flex; gap: 16px; align-items: center; margin-top: 16px; }
 .num-group { flex: 1; display: flex; align-items: baseline; gap: 6px; position: relative; }
-.num-unit { font-size: 16px; font-weight: var(--fw-bold); color: var(--text-secondary); white-space: nowrap; }
+.num-unit { font-size: var(--typo-display-md); font-weight: var(--fw-medium); color: var(--text-secondary); white-space: nowrap; }
 
 .steps-section-title { font-size: var(--text-sm); font-weight: var(--fw-extra); color: var(--text-secondary); margin: var(--space-26) 0 var(--space-10); text-transform: uppercase; letter-spacing: 0.5px; }
 
