@@ -13,7 +13,7 @@ export function renderInlineStepEditor(i, s) {
 
   return `
     <div class="inline-edit-box">
-      <label>운동 이름(필수)</label>
+      <label>운동 이름<span class="lbl-req">*</span></label>
       <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" />
       
       <label>타겟 부위</label>
@@ -22,7 +22,7 @@ export function renderInlineStepEditor(i, s) {
       <label>설명</label>
       <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 주의사항">${escapeHtml(s.desc || '')}</textarea>
 
-      <label>진행 방식</label>x
+      <label>진행 방식<span class="lbl-req">*</span></label>
       <div class="main-tabs">
         <button class="main-tab-btn active ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간</button>
         <button class="main-tab-btn ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수</button>
@@ -125,7 +125,7 @@ export function renderBuilder() {
 
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
       <span style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 목록 (${b.steps.length})</span>
-      ${b.steps.some(s => s.type === 'transition') 
+      ${b.steps.some(s => s.type === 'transition')
         ? '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">트랜지션 타임 일괄수정</button>' 
         : '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">트랜지션 타임 추가</button>'}
     </div>
@@ -135,10 +135,10 @@ export function renderBuilder() {
       <label>운동 이름<span class="lbl-req">*</span></label>
       <input class="form-input-text" type="text" placeholder="푸쉬업" value="${escapeAttr(formDraft.name)}" oninput="window.updateForm('name', this.value)" />
 
-      <label>타겟 부위 (선택)</label>
+      <label>타겟 부위</label>
       <input class="form-input-text" type="text" placeholder="예: 갑빠, 둔근" value="${escapeAttr(formDraft.target)}" oninput="window.updateForm('target', this.value)" />
 
-      <label>설명 (선택)</label>
+      <label>설명</label>
       <textarea class="form-textarea-underline" placeholder="동작 방법이나 주의사항" oninput="window.updateForm('desc', this.value)">${escapeHtml(formDraft.desc)}</textarea>
 
       <label>진행 방식<span class="lbl-req">*</span></label>

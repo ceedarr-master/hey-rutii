@@ -87,13 +87,13 @@ label {
     font-weight: var(--fw-bold);
     color: var(--text-secondary);
     display:block;
-    margin-top: var(--space-16);
   }
 
 .form-input-text {
   width: 100%; border: none; border-bottom: 1px solid var(--border-accent); background: transparent;
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8); font-size: var(--typo-body-md); font-weight: var(--fw-bold); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; text-align: left;
+  margin-bottom: var(--space-16);
 }
 .form-input-text:focus {border-bottom: 2px solid var(--border-accent); transition: border-color 0.2s;}
 .form-input-text::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
