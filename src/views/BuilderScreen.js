@@ -28,7 +28,7 @@ function renderExerciseFields({
   const idAttr = (field) => idBuilder ? `id="${idBuilder(field)}"` : '';
 
   return `
-    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); display:block;">운동 이름<span class="lbl-req">*</span></label>
+    <label>운동 이름<span class="lbl-req">*</span></label>
     <input class="form-input-text" ${idAttr('name')} type="text" value="${escapeAttr(name)}" placeholder="운동 이름을 입력하세요" ${onNameInput ? `oninput="${onNameInput}"` : ''} />
     
     <label>타겟 부위</label>
