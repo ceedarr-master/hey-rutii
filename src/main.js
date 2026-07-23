@@ -1,3 +1,4 @@
+import { playBeep } from './utils/audio.js';
 import { state, DEFAULT_TVA_ROUTINE, formDraft, saveLocalUserProfile } from './store/state.js';
 import { supabaseClient, initSupabaseAuth } from './config/supabase.js';
 import { renderHeader } from './components/Header.js';
@@ -150,6 +151,7 @@ window.confirmResetAndStart = (id) => {
 
 window.nextStep = () => {
   clearTimer();
+  playBeep('finish');
   const routine = state.routines[state.currentId];
   if (!routine) return;
   const s = routine.steps[state.play.current];

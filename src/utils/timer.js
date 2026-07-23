@@ -35,23 +35,32 @@ export function startTimer(nextStepCallback) {
   clearTimer();
   state.play.timerId = setInterval(() => {
     if (!state.play || state.play.paused) return;
-    if (state.play.remaining > 0) {
+    
+    if (state.play.remaining > 1) {
       state.play.remaining--;
       const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
       elements.forEach(el => {
         el.textContent = fmt(state.play.remaining);
       });
 
-      // 3초, 2초, 1초 카운트다운 비프음 울리기 (soundEnabled 확인)
-      if (state.play.remaining <= 3 && state.play.remaining > 0) {
-        if (state.soundEnabled !== false) {
-          playBeep(1);
-        }
+      // 3초, 2초, 1초 저음 카운트다운 알림음 (520Hz)
+      if (state.play.remaining <= 3 && state.play.remaining >= 1) {
+        playBeep('count');
       }
+    } else if (state.play.remaining === 1) {
+      // 0:00 초에 고음 알림음 (1046Hz) 즉시 울리고 0:00 렌더 후 다음 화면으로 이동
+      state.play.remaining = 0;
+      const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
+      elements.forEach(el => {
+        el.textContent = fmt(0);
+      });
+
+      playBeep('finish');
+
+      setTimeout(() => {
+        if (nextStepCallback) nextStepCallback();
+      }, 120);
     } else {
-      if (state.soundEnabled !== false) {
-        playBeep(2);
-      }
       if (nextStepCallback) nextStepCallback();
     }
   }, 1000);
