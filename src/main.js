@@ -11,7 +11,7 @@ import { renderAuth, renderResetPassword } from './views/AuthScreen.js';
 import { renderIntro } from './views/IntroScreen.js';
 import { clearTimer, startTimer, requestWakeLock } from './utils/timer.js';
 import { triggerCloudSync, persistRoutine, persistList, deleteRoutineStorage } from './store/sync.js';
-import { showToast, showConfirm, escapeHtml, initTooltipListeners } from './utils/helpers.js';
+import { showToast, showConfirm, showConfirmModal, showPromptModal, escapeHtml, initTooltipListeners } from './utils/helpers.js';
 
 // ---- Sortable Initializer ----
 function initSortable() {
@@ -139,13 +139,20 @@ window.resumePlay = (id) => {
 };
 
 window.confirmResetAndStart = (id) => {
-  showConfirm("처음부터 다시 시작하시겠습니까?", () => {
-    delete state.routines[id].progress;
-    persistRoutine(state.routines[id]);
-    state.currentId = id;
-    state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false };
-    state.screen = "play";
-    render();
+  showConfirmModal({
+    icon: '🔄',
+    title: '처음부터 다시 시작',
+    message: '루틴 진행 상황을 초기화하고 첫 번째 동작부터 시작하시겠습니까?',
+    confirmText: '시작하기',
+    cancelText: '취소',
+    onConfirm: () => {
+      delete state.routines[id].progress;
+      persistRoutine(state.routines[id]);
+      state.currentId = id;
+      state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false };
+      state.screen = "play";
+      render();
+    }
   });
 };
 
