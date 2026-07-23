@@ -1,3 +1,4 @@
+import { getSfSymbol } from './icons.js';
 import { state } from '../store/state.js';
 
 export function escapeHtml(str) {
@@ -139,7 +140,7 @@ export function initTooltipListeners() {
 
 // Auto-run listener initialization upon module import
 initTooltipListeners();
-export function showConfirmModal({ icon = '❓', title, message, confirmText = '확인', cancelText = '취소', isDanger = false, onConfirm }) {
+export function showConfirmModal({ icon = getSfSymbol('questionmark.circle', 36, 'var(--text-brand-accent)'), title, message, confirmText = '확인', cancelText = '취소', isDanger = false, onConfirm }) {
   const existing = document.getElementById('common-modal-backdrop');
   if (existing) existing.remove();
 
@@ -172,7 +173,7 @@ export function showConfirmModal({ icon = '❓', title, message, confirmText = '
   };
 }
 
-export function showPromptModal({ icon = '⏳', title, message, defaultValue = '15', confirmText = '추가하기', cancelText = '취소', onConfirm }) {
+export function showPromptModal({ icon = getSfSymbol('stopwatch', 36, 'var(--text-brand-accent)'), title, message, defaultValue = '15', confirmText = '추가하기', cancelText = '취소', onConfirm }) {
   const existing = document.getElementById('common-modal-backdrop');
   if (existing) existing.remove();
 

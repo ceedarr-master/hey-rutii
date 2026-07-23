@@ -1,3 +1,4 @@
+import { getSfSymbol } from '../utils/icons.js';
 import { state, formDraft } from '../store/state.js';
 import { escapeHtml, escapeAttr } from '../utils/helpers.js';
 import { stepDetail } from '../utils/format.js';
@@ -23,8 +24,8 @@ export function renderInlineStepEditor(i, s) {
 
       <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">진행 방식</label>
       <div style="display:flex; gap:8px; margin-top:4px;">
-        <button class="btn-xs ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">⏱시간</button>
-        <button class="btn-xs ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">✓횟수</button>
+        <button class="btn-xs ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간</button>
+        <button class="btn-xs ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수</button>
       </div>
 
       <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
@@ -92,8 +93,8 @@ export function renderBuilder() {
                 `}
               </div>
               <div style="display:flex; gap: var(--space-6);">
-                <button class="btn-xs btn-tertiary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">✏️</button>
-                <button class="btn-xs btn-tertiary btn-icon" onclick="window.removeStep(${i})" title="삭제">🗑️</button>
+                <button class="btn-xs btn-tertiary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
+                <button class="btn-xs btn-tertiary btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
               </div>
             </div>`;
         }
@@ -108,11 +109,11 @@ export function renderBuilder() {
           ${state.routines[b.editingId]?.shareCode 
             ? `<button class="btn-xs btn-secondary" onclick="navigator.clipboard.writeText('${state.routines[b.editingId].shareCode}').then(() => showToast('코드가 복사되었습니다.'));">🔗 공유 코드 복사</button>` 
             : `<button class="btn-xs btn-secondary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 발급</button>`}
-          <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">🗑️</button>
+          <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
         </div>
       ` : `
         <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
-        <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${id}')">🗑️</button>
+        <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${id}')">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
       `}
     </div>
 
@@ -125,8 +126,8 @@ export function renderBuilder() {
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
       <span style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 목록 (${b.steps.length})</span>
       ${b.steps.some(s => s.type === 'transition') 
-        ? '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">⏳ 트랜지션타임 일괄수정</button>' 
-        : '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">⏳ 휴식 및 전환 추가</button>'}
+        ? '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">${getSfSymbol("stopwatch", 14)} 트랜지션타임 일괄수정</button>' 
+        : '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">${getSfSymbol("stopwatch", 14)} 휴식 및 전환 추가</button>'}
     </div>
     ${stepsHtml}
 
@@ -142,8 +143,8 @@ export function renderBuilder() {
 
       <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-16); display:block;">진행 방식<span class="lbl-req">*</span></label>
       <div class="type-toggle" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
-        <button class="btn-md btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">⏱시간 진행</button>
-        <button class="btn-md btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">✓횟수 진행</button>
+        <button class="btn-md btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+        <button class="btn-md btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
       </div>
 
       ${isTimer ? `

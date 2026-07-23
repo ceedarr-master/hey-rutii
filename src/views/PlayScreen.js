@@ -1,3 +1,4 @@
+import { getSfSymbol } from '../utils/icons.js';
 import { state } from '../store/state.js';
 import { escapeHtml } from '../utils/helpers.js';
 import { fmt } from '../utils/format.js';
@@ -177,8 +178,8 @@ export function renderPlay(routine) {
       <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">${currentExerciseIndex} of ${totalExerciseSteps}</div>
       <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-tertiary);">${escapeHtml(routine.name)}</div>
       <div style="display:flex; gap:12px;">
-        <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? "🔊" : "🔇"}</button>
-        <button class="btn-xs btn-tertiary btn-icon" onclick="window.confirmExitPlay()">✕</button>
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? getSfSymbol("speaker.wave.2.fill", 16) : getSfSymbol("speaker.slash.fill", 16)}</button>
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.confirmExitPlay()">${getSfSymbol("xmark", 16)}</button>
       </div>
     </div>
     <div class="progress-bar" style="margin-bottom:var(--space-16);">${segs}</div>

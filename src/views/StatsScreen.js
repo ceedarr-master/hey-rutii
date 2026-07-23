@@ -1,3 +1,4 @@
+import { getSfSymbol } from '../utils/icons.js';
 import { state } from '../store/state.js';
 import { escapeHtml, escapeAttr, parseLogDate, formatDuration } from '../utils/helpers.js';
 
@@ -208,7 +209,7 @@ function generateRecentActivity(logs) {
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <div style="font-size:14px; font-weight:var(--fw-black); color:#00c6b8;">${durStr} 완료</div>
-          <button class="btn-xs btn-danger btn-icon" style="padding:4px 8px !important; font-size:12px !important;" onclick="window.deleteLog('${escapeAttr(logId)}')" title="기록 삭제">🗑️</button>
+          <button class="btn-xs btn-danger btn-icon" style="padding:4px 8px !important; font-size:12px !important;" onclick="window.deleteLog('${escapeAttr(logId)}')" title="기록 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
         </div>
       </div>`;
   }).join('');
@@ -258,7 +259,7 @@ export function renderStats() {
     </div>
     
     <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; background:#ffffff; border:1px solid var(--border-base); border-radius:16px; padding:12px 16px;">
-      <label for="stats-routine-filter" style="font-weight:var(--fw-bold); font-size:14px; color:var(--text-secondary); white-space:nowrap;">📊 분석 대상:</label>
+      <label for="stats-routine-filter" style="font-weight:var(--fw-bold); font-size:14px; color:var(--text-secondary); white-space:nowrap;">${getSfSymbol("chart.bar.fill", 16, "var(--text-brand-accent)")} 분석 대상:</label>
       <select id="stats-routine-filter" style="flex:1; border:none; background:transparent; font-size:16px; font-weight:var(--fw-black); color:#00c6b8; outline:none; cursor:pointer;" onchange="window.filterStatsByRoutine(this.value)">
         <option value="all" ${filterVal === "all" ? "selected" : ""}>전체 루틴 (통합)</option>
         ${options}
@@ -282,17 +283,17 @@ export function renderStats() {
       </div>
       
       <div>
-        <div style="font-size:14px; font-weight:var(--fw-black); color:var(--text-secondary); margin-bottom:8px;">📊 주간 운동 통계 (분)</div>
+        <div style="font-size:14px; font-weight:var(--fw-black); color:var(--text-secondary); margin-bottom:8px;">${getSfSymbol("chart.bar.fill", 16, "var(--text-secondary)")} 주간 운동 통계 (분)</div>
         ${chartHtml}
       </div>
 
       <div>
-        <div style="font-size:14px; font-weight:var(--fw-black); color:var(--text-secondary); margin-bottom:8px;">📅 기록 달력</div>
+        <div style="font-size:14px; font-weight:var(--fw-black); color:var(--text-secondary); margin-bottom:8px;">${getSfSymbol("calendar", 16, "var(--text-secondary)")} 기록 달력</div>
         ${calendarHtml}
       </div>
 
       <div>
-        <div style="font-size:14px; font-weight:var(--fw-black); color:var(--text-secondary); margin-bottom:8px;">⏱ 최근 활동 로그</div>
+        <div style="font-size:14px; font-weight:var(--fw-black); color:var(--text-secondary); margin-bottom:8px;">${getSfSymbol("stopwatch", 16, "var(--text-secondary)")} 최근 활동 로그</div>
         ${recentActivityHtml}
       </div>
     </div>`;

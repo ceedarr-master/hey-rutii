@@ -1,3 +1,4 @@
+import { getSfSymbol } from '../utils/icons.js';
 import { state } from '../store/state.js';
 import { escapeHtml } from '../utils/helpers.js';
 

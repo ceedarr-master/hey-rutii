@@ -1,3 +1,4 @@
+import { getSfSymbol } from './utils/icons.js';
 import { playBeep } from './utils/audio.js';
 import { state, DEFAULT_TVA_ROUTINE, formDraft, saveLocalUserProfile } from './store/state.js';
 import { supabaseClient, initSupabaseAuth } from './config/supabase.js';
@@ -140,7 +141,7 @@ window.resumePlay = (id) => {
 
 window.confirmResetAndStart = (id) => {
   showConfirmModal({
-    icon: '🔄',
+    icon: getSfSymbol('arrow.clockwise', 36, 'var(--text-brand-accent)'),
     title: '처음부터 다시 시작',
     message: '루틴 진행 상황을 초기화하고 첫 번째 동작부터 시작하시겠습니까?',
     confirmText: '시작하기',
@@ -438,7 +439,7 @@ window.promptInsertTransitions = () => {
   const defaultVal = existingTrans ? String(existingTrans.seconds || 15) : '15';
 
   showPromptModal({
-    icon: '⏳',
+    icon: getSfSymbol('stopwatch', 36, 'var(--text-brand-accent)'),
     title: hasTrans ? '트랜지션타임 일괄수정' : '휴식 및 전환 추가',
     message: hasTrans 
       ? '모든 휴식 및 전환 시간을 일괄 수정할 시간(초)을 입력하세요:' 
