@@ -290,7 +290,7 @@ window.restartRoutine = () => {
 };
 
 window.goNewRoutine = () => {
-  state.builder = { editingId: null, name: "", steps: [], editingStepIndex: null, editingStep: null };
+  state.builder = { editingId: null, name: "", desc: "", steps: [], editingStepIndex: null, editingStep: null, original_author: null, is_modified: false };
   state.screen = "builder";
   render();
 };
@@ -304,7 +304,11 @@ window.goEditRoutine = (id) => {
     desc: r.desc || '',
     steps: JSON.parse(JSON.stringify(r.steps)),
     editingStepIndex: null,
-    editingStep: null
+    editingStep: null,
+    original_author: r.original_author || null,
+    initial_steps_json: JSON.stringify(r.steps),
+    initial_name: r.name || '',
+    is_modified: r.is_modified || false
   };
   state.screen = "builder";
   render();
@@ -379,14 +383,22 @@ window.saveRoutine = async () => {
 
   const id = b.editingId || "rt-" + Date.now();
   const existing = state.routines[id] || {};
+
+  let isModified = false;
+  if (b.original_author) {
+    const stepsChanged = JSON.stringify(b.steps) !== (b.initial_steps_json || "");
+    const nameChanged = b.name.trim() !== (b.initial_name || "").trim();
+    isModified = stepsChanged || nameChanged || (b.is_modified || false);
+  }
+
   const routineObj = {
     ...existing,
     id,
     name: b.name.trim(),
     desc: (b.desc || "").trim(),
     steps: b.steps,
-    original_author: b.original_author !== undefined ? b.original_author : (existing.original_author || null),
-    is_modified: b.original_author ? (existing.original_author ? true : false) : (existing.is_modified || false),
+    original_author: b.original_author || null,
+    is_modified: b.original_author ? isModified : false,
     updatedAt: new Date().toISOString()
   };
 
@@ -633,13 +645,6 @@ window.shareRoutine = async (id) => {
   const currentAuthorName = (state.userProfile && state.userProfile.display_name) || (state.user && state.user.email ? state.user.email.split('@')[0] : "나");
   const currentAuthorAvatar = (state.userProfile && state.userProfile.avatar_url) || "";
 
-  if (!r.original_author) {
-    r.original_author = {
-      name: currentAuthorName,
-      avatar: currentAuthorAvatar
-    };
-  }
-
   let code = r.shareCode;
   if (!code) {
     code = generate6CharShareCode();
@@ -647,15 +652,24 @@ window.shareRoutine = async (id) => {
     await persistRoutine(r);
   }
 
+  // Upload shared copy with author info to cloud
+  const sharedPayload = {
+    ...r,
+    original_author: r.original_author || {
+      name: currentAuthorName,
+      avatar: currentAuthorAvatar
+    }
+  };
+
   if (supabaseClient) {
     try {
       await supabaseClient
         .from('shared_routines')
         .upsert({
           share_code: code,
-          routine_data: r,
-          author_name: r.original_author?.name || currentAuthorName,
-          author_avatar: r.original_author?.avatar || currentAuthorAvatar,
+          routine_data: sharedPayload,
+          author_name: sharedPayload.original_author.name,
+          author_avatar: sharedPayload.original_author.avatar,
           created_at: new Date().toISOString()
         });
     } catch(e) {
@@ -665,7 +679,7 @@ window.shareRoutine = async (id) => {
 
   try {
     const sharedRegistry = JSON.parse(localStorage.getItem("routines:shared") || "{}");
-    sharedRegistry[code] = r;
+    sharedRegistry[code] = sharedPayload;
     localStorage.setItem("routines:shared", JSON.stringify(sharedRegistry));
   } catch(e) {}
 
@@ -704,9 +718,9 @@ window.promptImportRoutineToBuilder = () => {
 
           if (data && data.routine_data) {
             importedRoutine = data.routine_data;
-            if (!importedRoutine.original_author) {
+            if (!importedRoutine.original_author && data.author_name) {
               importedRoutine.original_author = {
-                name: data.author_name || "알 수 없음",
+                name: data.author_name,
                 avatar: data.author_avatar || ""
               };
             }
@@ -731,23 +745,26 @@ window.promptImportRoutineToBuilder = () => {
       }
 
       const authorObj = importedRoutine.original_author || {
-        name: "알 수 없음",
+        name: "익명",
         avatar: ""
       };
 
       state.builder = {
         editingId: null,
-        name: importedRoutine.name ? `${importedRoutine.name}` : "불러온 루틴",
+        name: importedRoutine.name || "불러온 루틴",
         desc: importedRoutine.desc || "",
         steps: JSON.parse(JSON.stringify(importedRoutine.steps || [])),
         editingStepIndex: null,
         editingStep: null,
-        original_author: authorObj
+        original_author: authorObj,
+        initial_steps_json: JSON.stringify(importedRoutine.steps || []),
+        initial_name: importedRoutine.name || "",
+        is_modified: false
       };
 
       state.screen = "builder";
       render();
-      showToast("${authorObj.name}님의 루틴을 불러왔습니다!");
+      showToast(`${authorObj.name}님의 루틴을 불러왔습니다!`);
     }
   });
 };

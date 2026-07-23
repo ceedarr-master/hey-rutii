@@ -24,10 +24,10 @@ export function renderIntro() {
     <div class="card">
       <div class="card-group-header">
         <div class="intro-emoji" style="display:flex; align-items:center; justify-content:center; width:64px; height:64px; background:var(--surface-light); border-radius:50%; margin:0 auto var(--space-12);">${getSfSymbol('figure.mind.and.body', 32, 'var(--text-brand-accent)')}</div>
-        ${r.original_author ? `
-          <div style="font-size:var(--text-sm); color:var(--text-tertiary); display:flex; align-items:center; justify-content:center; gap:var(--space-6); margin-bottom:var(--space-4);">
-            <span style="display:inline-flex; align-items:center;">${renderAvatarHtml(r.original_author.avatar, 18)}</span>
-            <span>${escapeHtml(r.original_author.name || '알 수 없음')}님의 루틴${r.is_modified ? '을 바탕으로 제작' : ''}</span>
+        ${(r.original_author && r.original_author.name) ? `
+          <div style="font-size:var(--text-xs); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; gap:var(--space-4); margin-top:var(--space-4);">
+            <span style="display:inline-flex; align-items:center;">${renderAvatarHtml(r.original_author.avatar, 16)}</span>
+            <span>${escapeHtml(r.original_author.name)}님의 루틴${r.is_modified ? '을 바탕으로 제작' : ''}</span>
           </div>
         ` : ''}
         <div class="intro-title">${escapeHtml(r.name)}</div>
