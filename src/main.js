@@ -10,7 +10,7 @@ import { renderAuth, renderResetPassword } from './views/AuthScreen.js';
 import { renderIntro } from './views/IntroScreen.js';
 import { clearTimer, startTimer, requestWakeLock } from './utils/timer.js';
 import { triggerCloudSync, persistRoutine, persistList, deleteRoutineStorage } from './store/sync.js';
-import { showToast, showConfirm, escapeHtml } from './utils/helpers.js';
+import { showToast, showConfirm, escapeHtml, initTooltipListeners } from './utils/helpers.js';
 
 // ---- Sortable Initializer ----
 function initSortable() {
@@ -82,6 +82,19 @@ window.goScreen = (scr) => { state.screen = scr; render(); };
 window.goList = () => { state.screen = "list"; render(); };
 window.goAuth = () => { state.screen = "auth"; render(); };
 window.goStatsTab = () => { state.screen = "stats"; render(); };
+
+window.deleteLog = (logId) => {
+  showConfirm("정말 이 기록을 삭제하시겠습니까?", async () => {
+    const historyRaw = localStorage.getItem("routines:history") || "[]";
+    let history = [];
+    try { history = JSON.parse(historyRaw); } catch(e) {}
+    history = history.filter(l => (l.id || l.completedAt) !== logId);
+    localStorage.setItem("routines:history", JSON.stringify(history));
+    await triggerCloudSync();
+    render();
+  });
+};
+
 
 window.filterStatsByRoutine = (val) => {
   state.statsFilter = val;
@@ -480,7 +493,8 @@ export function init() {
 // Start App when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    initSupabaseAuth(render);
+    initTooltipListeners();
+  initSupabaseAuth(render);
     init();
   });
 } else {

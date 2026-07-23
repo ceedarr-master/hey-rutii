@@ -7,6 +7,31 @@ export function escapeHtml(str) {
 
 export function escapeAttr(str) { return escapeHtml(str); }
 
+export function parseLogDate(l) {
+  if (!l) return new Date();
+  
+  if (l.completedAt) {
+    if (typeof l.completedAt === 'number') return new Date(l.completedAt);
+    const parsed = new Date(l.completedAt);
+    if (!isNaN(parsed.getTime())) return parsed;
+    
+    const cleaned = String(l.completedAt).replace(/\./g, '-');
+    const parsedCleaned = new Date(cleaned);
+    if (!isNaN(parsedCleaned.getTime())) return parsedCleaned;
+  }
+  
+  if (l.date) {
+    const parsed = new Date(l.date);
+    if (!isNaN(parsed.getTime())) return parsed;
+  }
+
+  if (l.id && !isNaN(Number(l.id)) && Number(l.id) > 1000000000000) {
+    return new Date(Number(l.id));
+  }
+
+  return new Date();
+}
+
 export function renderAvatarHtml(avatar, sizePx = 64) {
   if (!avatar || avatar === "👤") {
     return `<div style="width:${sizePx}px; height:${sizePx}px; border-radius:50%; background:#def7f2; display:inline-flex; align-items:center; justify-content:center;">
@@ -40,4 +65,26 @@ export function showConfirm(message, onConfirm) {
   if (confirm(message)) {
     onConfirm();
   }
+}
+
+export function initTooltipListeners() {
+  document.addEventListener('mouseover', (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    const tooltip = document.getElementById('custom-tooltip');
+    if (target && tooltip) {
+      tooltip.innerHTML = target.getAttribute('data-tooltip');
+      tooltip.style.opacity = '1';
+      const rect = target.getBoundingClientRect();
+      tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+      tooltip.style.top = (rect.top - 8) + 'px';
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    const target = e.target.closest('[data-tooltip]');
+    const tooltip = document.getElementById('custom-tooltip');
+    if (target && tooltip) {
+      tooltip.style.opacity = '0';
+    }
+  });
 }
