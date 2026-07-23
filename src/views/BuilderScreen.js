@@ -113,7 +113,6 @@ export function renderBuilder() {
         </div>
       ` : `
         <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
-        <button class="btn-xs btn-warning btn-icon" onclick="window.deleteRoutine('${id}')">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
       `}
     </div>
 
