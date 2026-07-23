@@ -52,11 +52,11 @@ export function renderPlay(routine) {
     if (!state.play.remaining) state.play.remaining = s.type === 'transition' ? s.seconds : (s.restSeconds || 15);
     body = `
       <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:var(--space-16);">
-        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px;">✓ ${s.type === 'transition' ? '휴식 및 전환' : '휴식 중'}</span>
+        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px;">✓ ${s.type === 'transition' ? '준비' : '휴식 중'}</span>
         ${setTrackHtml}
       </div>
       <div style="font-size:var(--text-base); color:var(--text-secondary); margin-bottom:4px; text-align:center;">${escapeHtml(s.name)}</div>
-      <div style="font-size:36px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">휴식</div>
+      <div style="font-size:36px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">트랜지션</div>
       <div style="font-size:var(--text-base); color:var(--text-secondary); text-align:center; margin-bottom: var(--space-16);">다음 세트를 준비하세요</div>
       <div class="typo-highlight-timer">${fmt(state.play.remaining)}</div>
       <button class="btn-lg btn-secondary" style="width:100%;" onclick="window.nextStep()">바로 시작</button>`;
@@ -104,8 +104,8 @@ export function renderPlay(routine) {
     <div class="card">
       ${body}
     </div>
-    <div style="display:flex; justify-content:space-between; margin-top:20px;">
-      <button class="btn-md btn-tertiary" onclick="window.prevStep()">${prevText}</button>
-      <button class="btn-md btn-tertiary" onclick="window.nextStep()">${nextText}</button>
+    <div style="display:flex; justify-content:space-between; margin-top: var(--space-16);">
+      <button class="btn-sm btn-tertiary" onclick="window.prevStep()">${prevText}</button>
+      <button class="btn-sm btn-tertiary" onclick="window.nextStep()">${nextText}</button>
     </div>`;
 }
