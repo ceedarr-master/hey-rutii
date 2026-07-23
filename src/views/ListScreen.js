@@ -1,3 +1,4 @@
+import { getSfSymbol } from '../utils/icons.js';
 import { state } from '../store/state.js';
 import { escapeHtml, renderAvatarHtml } from '../utils/helpers.js';
 import { estimateMinutes } from '../utils/format.js';
@@ -26,8 +27,8 @@ export function renderList() {
               </div>
             </div>
             <div class="icon-btns" style="display:flex; gap:8px;">
-              <button class="btn-xs btn-secondary btn-icon" onclick="window.goEditRoutine('${id}')">Edit</button>
-              <button class="btn-xs btn-secondary btn-icon" onclick="window.shareRoutine('${id}')" title="공유하기">${r.shareCode ? '🔗' : 'Share'}</button>
+              <button class="btn-xs btn-secondary btn-icon" onclick="window.goEditRoutine('${id}')" title="루틴 수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
+              <button class="btn-xs btn-secondary btn-icon" onclick="window.shareRoutine('${id}')" title="루틴 공유하기">${getSfSymbol("square.and.arrow.up", 14, "var(--text-secondary)")}</button>
             </div>
           </div>
           ${(state.routines[id] && state.routines[id].progress) 
