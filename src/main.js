@@ -653,13 +653,23 @@ window.shareRoutine = async (id) => {
     await persistRoutine(r);
   }
 
+  // Option 3: If modified by current user, current user becomes the new author of this shared variant!
+  let sharedAuthor = r.original_author;
+  let sharedIsModified = r.is_modified || false;
+
+  if (r.is_modified || !r.original_author) {
+    sharedAuthor = {
+      name: currentAuthorName,
+      avatar: currentAuthorAvatar
+    };
+    sharedIsModified = false;
+  }
+
   // Upload shared copy with author info to cloud
   const sharedPayload = {
     ...r,
-    original_author: r.original_author || {
-      name: currentAuthorName,
-      avatar: currentAuthorAvatar
-    }
+    original_author: sharedAuthor,
+    is_modified: sharedIsModified
   };
 
   if (supabaseClient) {
