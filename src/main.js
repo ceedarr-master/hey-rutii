@@ -420,6 +420,40 @@ window.startInlineEdit = (i) => {
   render();
 };
 
+window.toggleInlineType = (i, type) => {
+  const s = state.builder.steps[i];
+  if (!s || s.type === type) return;
+
+  const nameEl = document.getElementById(`edit-name-${i}`);
+  const targetEl = document.getElementById(`edit-target-${i}`);
+  const descEl = document.getElementById(`edit-desc-${i}`);
+  const setsEl = document.getElementById(`edit-sets-${i}`);
+  const restEl = document.getElementById(`edit-rest-${i}`);
+
+  if (nameEl) s.name = nameEl.value;
+  if (targetEl) s.target = targetEl.value;
+  if (descEl) s.desc = descEl.value;
+  if (setsEl) s.sets = parseInt(setsEl.value) || s.sets || 1;
+  if (restEl) s.restSeconds = parseInt(restEl.value) || s.restSeconds || 0;
+
+  if (s.type === 'timer') {
+    const mmEl = document.getElementById(`edit-mm-${i}`);
+    const ssEl = document.getElementById(`edit-ss-${i}`);
+    const mm = mmEl ? (parseInt(mmEl.value) || 0) : 0;
+    const ss = ssEl ? (parseInt(ssEl.value) || 0) : 0;
+    s.seconds = mm * 60 + ss;
+  } else {
+    const repsEl = document.getElementById(`edit-reps-${i}`);
+    if (repsEl) s.reps = parseInt(repsEl.value) || s.reps || 10;
+  }
+
+  s.type = type;
+  if (type === 'timer' && !s.seconds) s.seconds = 30;
+  if (type === 'manual' && !s.reps) s.reps = 10;
+
+  render();
+};
+
 window.cancelInlineEdit = () => {
   state.builder.editingStepIndex = null;
   render();
