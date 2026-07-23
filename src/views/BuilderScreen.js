@@ -117,10 +117,10 @@ export function renderBuilder() {
       `}
     </div>
 
-    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">루틴 이름<span class="lbl-req">*</span></label>
+    <label>루틴 이름<span class="lbl-req">*</span></label>
     <input class="form-input-text" style="font-size:20px; font-weight:var(--fw-black); margin-bottom:var(--space-12);" type="text" placeholder="예: TVA 코어 루틴" value="${escapeAttr(b.name)}" oninput="window.updateBuilderName(this.value)" />
 
-    <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">루틴 설명 (선택)</label>
+    <label>루틴 설명 (선택)</label>
     <input class="form-input-text" style="font-size:14px; margin-bottom:var(--space-20);" type="text" placeholder="예: 코어 근육 강화 및 자세 교정 루틴" value="${escapeAttr(b.desc || '')}" oninput="window.updateBuilderDesc(this.value)" />
 
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
@@ -132,19 +132,19 @@ export function renderBuilder() {
     ${stepsHtml}
 
     <div class="card" style="background:#ffffff; border-radius:20px; padding:20px; text-align:left; margin-top:var(--space-16); border:1px solid var(--border-base);">
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 이름<span class="lbl-req">*</span></label>
+      <label>운동 이름<span class="lbl-req">*</span></label>
       <input class="form-input-text" type="text" placeholder="푸쉬업" value="${escapeAttr(formDraft.name)}" oninput="window.updateForm('name', this.value)" />
 
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-16); display:block;">타겟 부위 (선택)</label>
+      <label>타겟 부위 (선택)</label>
       <input class="form-input-text" type="text" placeholder="예: 갑빠, 둔근" value="${escapeAttr(formDraft.target)}" oninput="window.updateForm('target', this.value)" />
 
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-16); display:block;">설명 (선택)</label>
+      <label>설명 (선택)</label>
       <textarea class="form-textarea-underline" placeholder="동작 방법이나 주의사항" oninput="window.updateForm('desc', this.value)">${escapeHtml(formDraft.desc)}</textarea>
 
-      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-16); display:block;">진행 방식<span class="lbl-req">*</span></label>
-      <div class="type-toggle" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
-        <button class="btn-md btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-        <button class="btn-md btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
+      <label>진행 방식<span class="lbl-req">*</span></label>
+      <div class="main-tabs" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
+        <button class="btn-sm btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+        <button class="btn-sm btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
       </div>
 
       ${isTimer ? `
