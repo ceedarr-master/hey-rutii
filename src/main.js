@@ -556,10 +556,11 @@ export function init() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initTooltipListeners();
-  initSupabaseAuth(render);
+    initSupabaseAuth(render);
     init();
   });
 } else {
+  initTooltipListeners();
   initSupabaseAuth(render);
   init();
 }

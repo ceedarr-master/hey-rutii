@@ -117,10 +117,30 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 
 /* ---- custom tooltip ---- */
 #custom-tooltip {
-  position: fixed; background: rgba(20, 45, 40, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  color: #eafff6; padding: var(--space-10) var(--space-16); border-radius: 14px; font-size: var(--text-sm); font-weight: var(--fw-bold);
-  pointer-events: none; z-index: 9999; opacity: 0; transition: opacity 0.2s, transform 0.2s; white-space: pre-wrap;
-  text-align: center; transform: translate(-50%, calc(-100% - 10px)); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  background: rgba(18, 38, 34, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 198, 184, 0.3);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: var(--fw-bold);
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  white-space: pre-wrap;
+  text-align: center;
+  transform: translate(-50%, calc(-100% - 10px));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+#custom-tooltip.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* ---- figma step item & progress dots ---- */
@@ -171,7 +191,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap:8px 18px;
   text-align: center;
 }
 .cal-header {
