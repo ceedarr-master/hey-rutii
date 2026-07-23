@@ -431,26 +431,43 @@ window.removeStep = (i) => {
 };
 
 window.promptInsertTransitions = () => {
+  const b = state.builder;
+  if (!b) return;
+  const hasTrans = b.steps.some(s => s.type === 'transition');
+  const existingTrans = b.steps.find(s => s.type === 'transition');
+  const defaultVal = existingTrans ? String(existingTrans.seconds || 15) : '15';
+
   showPromptModal({
     icon: '⏳',
-    title: '휴식 및 전환 추가',
-    message: '모든 운동 사이에 자동으로 삽입할 휴식 및 전환 시간(초)을 입력하세요:',
-    defaultValue: '15',
-    confirmText: '전환 추가',
+    title: hasTrans ? '트랜지션타임 일괄수정' : '휴식 및 전환 추가',
+    message: hasTrans 
+      ? '모든 휴식 및 전환 시간을 일괄 수정할 시간(초)을 입력하세요:' 
+      : '모든 운동 사이에 자동으로 삽입할 휴식 및 전환 시간(초)을 입력하세요:',
+    defaultValue: defaultVal,
+    confirmText: hasTrans ? '일괄 수정' : '전환 추가',
     cancelText: '취소',
     onConfirm: (sec) => {
       if (!sec || isNaN(sec)) return;
       const restSec = parseInt(sec);
-      const b = state.builder;
-      const newSteps = [];
-      b.steps.forEach((s, idx) => {
-        newSteps.push(s);
-        if (idx < b.steps.length - 1 && s.type !== 'transition' && b.steps[idx + 1].type !== 'transition') {
-          newSteps.push({ name: "휴식 및 전환", type: "transition", seconds: restSec, sets: 1, restSeconds: 0 });
-        }
-      });
-      b.steps = newSteps;
+      
+      if (hasTrans) {
+        b.steps.forEach(s => {
+          if (s.type === 'transition') {
+            s.seconds = restSec;
+          }
+        });
+      } else {
+        const newSteps = [];
+        b.steps.forEach((s, idx) => {
+          newSteps.push(s);
+          if (idx < b.steps.length - 1 && s.type !== 'transition' && b.steps[idx + 1].type !== 'transition') {
+            newSteps.push({ name: "휴식 및 전환", type: "transition", seconds: restSec, sets: 1, restSeconds: 0 });
+          }
+        });
+        b.steps = newSteps;
+      }
       render();
+      showToast(hasTrans ? "트랜지션타임이 일괄 수정되었습니다." : "휴식 및 전환이 추가되었습니다.");
     }
   });
 };

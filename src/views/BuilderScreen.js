@@ -109,7 +109,9 @@ export function renderBuilder() {
 
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
       <span style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 목록 (${b.steps.length})</span>
-      <button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">⏳ 휴식 및 전환 추가</button>
+      ${b.steps.some(s => s.type === 'transition') 
+        ? '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">⏳ 트랜지션타임 일괄수정</button>' 
+        : '<button class="btn-xs btn-secondary" onclick="window.promptInsertTransitions()">⏳ 휴식 및 전환 추가</button>'}
     </div>
     ${stepsHtml}
 
