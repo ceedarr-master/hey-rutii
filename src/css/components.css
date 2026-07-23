@@ -196,6 +196,13 @@ label {
 .main-tab-btn { flex: 1; padding: var(--space-14) var(--space-12); border-radius: var(--radius-md); border: none; background: transparent; color: var(--text-secondary); font-size: var(--text-base); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
 .main-tab-btn.active { background: var(--surface-white); color: var(--accent-color); box-shadow: 0 2px 8px var(--active-shadow); font-weight: var(--fw-black); }
 
+.tabs-sm { display: flex; background: var(--bg-tabs); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-16); }
+.tabs-sm-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-6); padding: var(--space-10) var(--space-8); border-radius: var(--radius-sm); border: none; background: transparent; color: var(--text-secondary); font-size: var(--typo-body-xs); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
+.tabs-sm-btn.active { background: var(--surface-white); color: var(--accent-color); box-shadow: 0 2px 8px var(--active-shadow); font-weight: var(--fw-bold); }
+
+
+
+
 /* ---- toast ---- */
 #toast-container { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: var(--space-10); pointer-events: none; width: 100%; align-items: center; }
 .toast { background: rgba(43, 43, 43, 0.95); color: var(--text-white); padding: var(--space-14) var(--space-22); border-radius: 12px; font-size: var(--text-base); font-weight: var(--fw-bold); box-shadow: 0 8px 24px rgba(0,0,0,0.2); animation: toast-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; text-align: center; max-width: 90vw; word-break: keep-all; }

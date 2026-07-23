@@ -40,9 +40,9 @@ export function renderInlineStepEditor(i, s) {
       <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 방법이나 주의사항">${escapeHtml(s.desc || '')}</textarea>
 
       <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">진행 방식<span class="lbl-req">*</span></label>
-      <div class="main-tabs" style="margin-top:var(--space-6);">
-        <button class="main-tab-btn ${isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-        <button class="main-tab-btn ${!isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
+      <div class="tabs-sm" style="margin-top:var(--space-6);">
+        <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+        <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
       </div>
 
       ${isTimer ? `
@@ -168,9 +168,9 @@ export function renderBuilder() {
       <textarea class="form-textarea-underline" placeholder="손은 어깨너비보다 살짝 넓게 가슴 옆에 두고, 머리부터 발끝까지 몸이 일자가 되도록 복부와 엉덩이에 힘을 준 뒤, 팔꿈치는 몸통에서 45도 정도만 벌려 가슴 쪽으로 내립니다." oninput="window.updateForm('desc', this.value)">${escapeHtml(formDraft.desc)}</textarea>
 
       <label>진행 방식<span class="lbl-req">*</span></label>
-      <div class="main-tabs" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
-        <button class="btn-sm btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-        <button class="btn-sm btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
+      <div class="tabs-sm" style="margin-top:var(--space-6);">
+        <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="window.setFormType('timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+        <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="window.setFormType('manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
       </div>
 
       ${isTimer ? `
