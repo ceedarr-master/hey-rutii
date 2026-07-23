@@ -44,7 +44,7 @@ function renderExerciseFields({
     </div>
 
     ${isTimer ? `
-      <div class="num-row" style="margin-top:var(--space-14);">
+      <div class="num-row" style="margin-top:var(--space-14); gap:8px;">
         <div class="num-group">
           <input class="form-input-num" ${idAttr('mm')} type="number" min="0" value="${mm}" ${onMmInput ? `oninput="${onMmInput}"` : ''} />
           <span class="num-unit">분</span>
@@ -53,8 +53,6 @@ function renderExerciseFields({
           <input class="form-input-num" ${idAttr('ss')} type="number" min="0" max="59" value="${ss}" ${onSsInput ? `oninput="${onSsInput}"` : ''} />
           <span class="num-unit">초</span>
         </div>
-      </div>
-      <div class="num-row" style="margin-top:var(--space-14);">
         <div class="num-group">
           <input class="form-input-num" ${idAttr('sets')} type="number" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} />
           <span class="num-unit">세트</span>
