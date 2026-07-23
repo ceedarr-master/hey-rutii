@@ -607,3 +607,120 @@ if (document.readyState === 'loading') {
 } else {
   startApp();
 }
+
+window.shareRoutine = async (id) => {
+  const r = state.routines[id];
+  if (!r) return;
+
+  let code = r.shareCode;
+  if (!code) {
+    const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
+    code = `RT-${rand}`;
+    r.shareCode = code;
+    r.original_author = r.original_author || {
+      name: (state.userProfile && state.userProfile.display_name) || "익명",
+      avatar: (state.userProfile && state.userProfile.avatar_url) || ""
+    };
+    await persistRoutine(r);
+  }
+
+  if (supabaseClient) {
+    try {
+      await supabaseClient
+        .from('shared_routines')
+        .upsert({
+          share_code: code,
+          routine_data: r,
+          author_name: r.original_author?.name || "익명",
+          author_avatar: r.original_author?.avatar || "",
+          created_at: new Date().toISOString()
+        });
+    } catch(e) {
+      console.warn("Shared routine cloud upsert warning:", e);
+    }
+  }
+
+  try {
+    const sharedRegistry = JSON.parse(localStorage.getItem("routines:shared") || "{}");
+    sharedRegistry[code] = r;
+    localStorage.setItem("routines:shared", JSON.stringify(sharedRegistry));
+  } catch(e) {}
+
+  try {
+    await navigator.clipboard.writeText(code);
+    showToast(`공유 코드(${code})가 복사되었습니다!`);
+  } catch(e) {
+    showToast(`공유 코드: ${code}`);
+  }
+  render();
+};
+
+window.promptImportRoutineToBuilder = () => {
+  showPromptModal({
+    icon: getSfSymbol('link', 36, 'var(--text-brand-accent)'),
+    title: '루틴 코드로 불러오기',
+    message: '공유받은 루틴 코드를 입력해 주세요 (예: RT-8X2K):',
+    defaultValue: '',
+    placeholder: 'RT-XXXX',
+    inputType: 'text',
+    unitLabel: '',
+    confirmText: '불러오기',
+    cancelText: '취소',
+    onConfirm: async (codeVal) => {
+      if (!codeVal || !codeVal.trim()) return;
+      const code = codeVal.trim().toUpperCase();
+      let importedRoutine = null;
+
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('shared_routines')
+            .select('routine_data, author_name, author_avatar')
+            .eq('share_code', code)
+            .maybeSingle();
+
+          if (data && data.routine_data) {
+            importedRoutine = data.routine_data;
+            if (!importedRoutine.original_author) {
+              importedRoutine.original_author = {
+                name: data.author_name || "알 수 없음",
+                avatar: data.author_avatar || ""
+              };
+            }
+          }
+        } catch(e) {
+          console.warn("Supabase fetch shared routine error:", e);
+        }
+      }
+
+      if (!importedRoutine) {
+        try {
+          const sharedRegistry = JSON.parse(localStorage.getItem("routines:shared") || "{}");
+          if (sharedRegistry[code]) {
+            importedRoutine = sharedRegistry[code];
+          }
+        } catch(e) {}
+      }
+
+      if (!importedRoutine) {
+        showToast("유효하지 않거나 존재하지 않는 루틴 코드입니다.");
+        return;
+      }
+
+      state.builder = {
+        editingId: null,
+        name: importedRoutine.name ? `${importedRoutine.name} (복사본)` : "불러온 루틴",
+        desc: importedRoutine.desc || "",
+        steps: JSON.parse(JSON.stringify(importedRoutine.steps || [])),
+        editingStepIndex: null,
+        editingStep: null
+      };
+
+      state.screen = "builder";
+      render();
+      showToast("루틴을 불러왔습니다! 내용을 확인 후 저장하세요.");
+    }
+  });
+};
+
+window.promptImportRoutine = window.promptImportRoutineToBuilder;

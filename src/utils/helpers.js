@@ -173,7 +173,18 @@ export function showConfirmModal({ icon = getSfSymbol('questionmark.circle', 36,
   };
 }
 
-export function showPromptModal({ icon = getSfSymbol('stopwatch', 36, 'var(--text-brand-accent)'), title, message, defaultValue = '15', confirmText = '추가하기', cancelText = '취소', onConfirm }) {
+export function showPromptModal({
+  icon = getSfSymbol('stopwatch', 36, 'var(--text-brand-accent)'),
+  title,
+  message,
+  defaultValue = '15',
+  placeholder = '',
+  inputType = 'number',
+  unitLabel = '초',
+  confirmText = '확인',
+  cancelText = '취소',
+  onConfirm
+}) {
   const existing = document.getElementById('common-modal-backdrop');
   if (existing) existing.remove();
 
@@ -181,14 +192,20 @@ export function showPromptModal({ icon = getSfSymbol('stopwatch', 36, 'var(--tex
   backdrop.id = 'common-modal-backdrop';
   backdrop.className = 'modal-backdrop';
 
+  const inputStyle = inputType === 'text'
+    ? 'font-size: 18px; text-align: center; width: 100%; text-transform: uppercase; letter-spacing: 2px;'
+    : 'font-size: 24px; text-align: center; width: 100px;';
+
+  const unitHtml = unitLabel ? `<span style="font-size: 16px; font-weight: var(--fw-bold); color: var(--text-secondary);">${escapeHtml(unitLabel)}</span>` : '';
+
   backdrop.innerHTML = `
     <div class="modal-box">
       <div class="modal-icon">${icon}</div>
       <div class="modal-title">${escapeHtml(title)}</div>
       <div class="modal-desc">${escapeHtml(message)}</div>
       <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <input id="modal-input-val" class="form-input-num" type="number" min="1" value="${escapeAttr(defaultValue)}" style="font-size: 24px; text-align: center; width: 100px;" />
-        <span style="font-size: 16px; font-weight: var(--fw-bold); color: var(--text-secondary);">초</span>
+        <input id="modal-input-val" class="${inputType === 'text' ? 'form-input-text' : 'form-input-num'}" type="${inputType}" ${inputType === 'number' ? 'min="1"' : ''} value="${escapeAttr(defaultValue)}" placeholder="${escapeAttr(placeholder)}" style="${inputStyle}" />
+        ${unitHtml}
       </div>
       <div class="modal-btn-row">
         <button class="btn-md btn-tertiary btn-flex" id="modal-cancel-btn">${escapeHtml(cancelText)}</button>
