@@ -7,14 +7,14 @@ export function renderInlineStepEditor(i, s) {
   if (s.type === 'transition') {
     return `
       <div class="inline-edit-box">
-        <div>휴식 및 전환 시간 수정</div>
+        <label>휴식 및 전환 시간 수정</label>
         <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px; margin-top:8px;">
           <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" />
           <span class="num-unit">초</span>
         </div>
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-          <button class="btn-xs btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
-          <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+          <button class="btn-md btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
+          <button class="btn-md btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
         </div>
       </div>`;
   }
@@ -27,20 +27,21 @@ export function renderInlineStepEditor(i, s) {
   const rest = s.restSeconds || 0;
 
   return `
-    <div class="card">
+    <div class="card" style="margin-bottom:4px;">
       <label>운동 이름<span class="lbl-req">*</span></label>
       <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" />
       
       <label>타겟 부위</label>
-      <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="예: 둔근" />
+      <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="대흉근, 상완삼두근, 삼각근, 전거근, 코어" />
 
       <label>설명</label>
-      <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 주의사항">${escapeHtml(s.desc || '')}</textarea>
+      <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="손은 어깨너비보다 살짝 넓게 가슴 옆에 두고, 머리부터 발끝까지 몸이 일자가 되도록 복부와 엉덩이에 힘을 준 뒤, 팔꿈치는 몸통에서 45도 정도만 벌려 가슴 쪽으로 내립니다.">${escapeHtml(s.desc || '')}</textarea>
 
       <label>진행 방식<span class="lbl-req">*</span></label>
-      <div class="main-tabs">
-        <button class="main-tab-btn active ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간</button>
-        <button class="main-tab-btn ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수</button>
+
+      <div class="main-tabs" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
+        <button class="btn-sm btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+        <button class="btn-sm btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
       </div>
 
       <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
@@ -70,8 +71,8 @@ export function renderInlineStepEditor(i, s) {
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-        <button class="btn-xs btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
-        <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+        <button class="btn-md btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
+        <button class="btn-md btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
       </div>
     </div>`;
 }
@@ -122,19 +123,19 @@ export function renderBuilder() {
       ${b.editingId ? `
         <div style="font-size:var(--text-sm); display:flex; align-items:center; gap:var(--space-8);">
           ${state.routines[b.editingId]?.shareCode 
-            ? `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 복사 (${state.routines[b.editingId].shareCode})</button>` 
-            : `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 발급</button>`}
+            ? `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">공유 코드 복사 (${state.routines[b.editingId].shareCode})</button>` 
+            : `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">공유 코드 발급</button>`}
           <button class="btn-sm btn-warning btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
         </div>
       ` : `
-        <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
+        <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">루틴코드로 불러오기</button>
       `}
     </div>
 
     <label>루틴 이름<span class="lbl-req">*</span></label>
     <input class="form-input-text" style="font-size:20px; font-weight:var(--fw-black); margin-bottom:var(--space-12);" type="text" placeholder="예: TVA 코어 루틴" value="${escapeAttr(b.name)}" oninput="window.updateBuilderName(this.value)" />
 
-    <label>루틴 설명 (선택)</label>
+    <label>루틴 설명</label>
     <input class="form-input-text" style="font-size:14px; margin-bottom:var(--space-20);" type="text" placeholder="예: 코어 근육 강화 및 자세 교정 루틴" value="${escapeAttr(b.desc || '')}" oninput="window.updateBuilderDesc(this.value)" />
 
     <div class="steps-section-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12);">
@@ -150,10 +151,10 @@ export function renderBuilder() {
       <input class="form-input-text" type="text" placeholder="푸쉬업" value="${escapeAttr(formDraft.name)}" oninput="window.updateForm('name', this.value)" />
 
       <label>타겟 부위</label>
-      <input class="form-input-text" type="text" placeholder="예: 갑빠, 둔근" value="${escapeAttr(formDraft.target)}" oninput="window.updateForm('target', this.value)" />
+      <input class="form-input-text" type="text" placeholder="대흉근, 상완삼두근, 삼각근, 전거근, 코어" value="${escapeAttr(formDraft.target)}" oninput="window.updateForm('target', this.value)" />
 
       <label>설명</label>
-      <textarea class="form-textarea-underline" placeholder="동작 방법이나 주의사항" oninput="window.updateForm('desc', this.value)">${escapeHtml(formDraft.desc)}</textarea>
+      <textarea class="form-textarea-underline" placeholder="손은 어깨너비보다 살짝 넓게 가슴 옆에 두고, 머리부터 발끝까지 몸이 일자가 되도록 복부와 엉덩이에 힘을 준 뒤, 팔꿈치는 몸통에서 45도 정도만 벌려 가슴 쪽으로 내립니다." oninput="window.updateForm('desc', this.value)">${escapeHtml(formDraft.desc)}</textarea>
 
       <label>진행 방식<span class="lbl-req">*</span></label>
       <div class="main-tabs" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
