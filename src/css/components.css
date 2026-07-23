@@ -1,12 +1,15 @@
 /* ---- shared card ---- */
 .card {
-  background: var(--surface-white);
-  border: 1px solid var(--color-stroke-dark);
-  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 26px;
   padding: var(--space-24);
   text-align: center;
-  box-shadow: 0 5px 12px var(--card-shadow);
+  box-shadow: 0 8px 24px rgba(255, 140, 90, 0.12);
   min-height: 448px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* ---- button system (Synced with Figma Component Set) ---- */
@@ -217,4 +220,12 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   font-size: 10px;
   font-weight: var(--fw-black);
   margin-top: 1px;
+}
+
+/* ---- Card Internal Group Layout ---- */
+.card-group-header,
+.card-group-body,
+.card-group-timer,
+.card-group-footer {
+  width: 100%;
 }
