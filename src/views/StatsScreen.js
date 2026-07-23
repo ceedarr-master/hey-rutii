@@ -269,16 +269,20 @@ export function renderStats() {
       ${tabsHtml}
       ${filterBarHtml}
       <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
-        <div style="display:flex; gap:var(--space-12);">
-          <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">총 완료</div>
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">루틴 실행 횟수</div>
             <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
           </div>
-          <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">완주 횟수</div>
+            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
+          </div>
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
             <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
             <div style="font-size:var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0초</div>
           </div>
-          <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
             <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
             <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0일</div>
           </div>
@@ -307,16 +311,20 @@ export function renderStats() {
       ${tabsHtml}
       ${filterBarHtml}
       <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
-        <div style="display:flex; gap:var(--space-12);">
-          <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
-            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">총 완료</div>
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">루틴 실행 횟수</div>
             <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
           </div>
-          <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+            <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">완주 횟수</div>
+            <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0회</div>
+          </div>
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
             <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
             <div style="font-size:var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0초</div>
           </div>
-          <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
+          <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center; opacity:0.6;">
             <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
             <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-secondary); margin-top:var(--space-4);">0일</div>
           </div>
@@ -340,7 +348,8 @@ export function renderStats() {
       </div>`;
   }
 
-  const totalCompleted = logs.length;
+  const totalExecutions = logs.length;
+  const fullCompletions = logs.filter(l => l.completed !== false && !l.routineName?.includes('(중단)')).length;
   let totalSeconds = 0;
   logs.forEach(l => totalSeconds += (l.durationSeconds || 0));
   const totalDurationStr = formatDuration(totalSeconds);
@@ -355,18 +364,22 @@ export function renderStats() {
     ${filterBarHtml}
     
     <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
-      <div style="display:flex; gap:var(--space-12);">
-        <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
-          <label>총 완료 횟수</label>
-          <div class="stat-hero">${totalCompleted}회</div>
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
+        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">루틴 실행 횟수</div>
+          <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${totalExecutions}회</div>
         </div>
-        <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
-          <label>누적 시간</label>
-          <div class="stat-hero">${totalDurationStr}</div>
+        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">완주 횟수</div>
+          <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${fullCompletions}회</div>
         </div>
-        <div style="flex:1; background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
-          <label>연속 일수</label>
-          <div class="stat-hero">${streak}일</div>
+        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">누적 시간</div>
+          <div style="font-size:var(--typo-display-xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${totalDurationStr}</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border-base); border-radius:var(--radius-xl); padding:var(--space-16); text-align:center;">
+          <div style="font-size:var(--typo-body-xs); color:var(--text-secondary); font-weight:var(--fw-bold);">연속 일수</div>
+          <div style="font-size:var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-brand-accent); margin-top:var(--space-4);">${streak}일</div>
         </div>
       </div>
       
