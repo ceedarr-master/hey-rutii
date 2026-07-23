@@ -5,7 +5,10 @@ export function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
 }
 
-export function escapeAttr(str) { return escapeHtml(str); }
+export function escapeAttr(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
 
 export function parseLogDate(l) {
   if (!l) return new Date();
