@@ -50,6 +50,7 @@
     --bg-accent: var(--color-brand-secondary);
     --border-accent: var(--color-brand-accent);
     --btn-shadow: rgba(70, 239, 197, 0.35);
+    --active-shadow: rgba(0, 198, 184, 0.3);
     --bg-card: var(--surface-white);
     --bg-secondary: var(--surface-light);
     --bg-tabs: var(--surface-tab);

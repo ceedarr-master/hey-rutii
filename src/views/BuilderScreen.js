@@ -70,8 +70,8 @@ export function renderBuilder() {
                 </div>
               </div>
               <div style="display:flex; gap: var(--space-8);">
-                <button class="btn-secondary" onclick="window.startInlineEdit(${i})">􀈊</button>
-                <button class="btn-warning" onclick="window.removeStep(${i})">􀈑</button>
+                <button class="btn-secondary" onclick="window.startInlineEdit(${i})">✏️</button>
+                <button class="btn-warning" onclick="window.removeStep(${i})">🗑️</button>
               </div>
             </div>`;
         }
