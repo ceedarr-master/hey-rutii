@@ -62,9 +62,14 @@ export function showToast(message) {
 }
 
 export function showConfirm(message, onConfirm) {
-  if (confirm(message)) {
-    onConfirm();
-  }
+  showConfirmModal({
+    icon: '❓',
+    title: '확인',
+    message: message,
+    confirmText: '확인',
+    cancelText: '취소',
+    onConfirm: onConfirm
+  });
 }
 
 export function initTooltipListeners() {

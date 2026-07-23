@@ -84,7 +84,7 @@ export function renderBuilder() {
       ${b.editingId ? `
         <div style="font-size:var(--text-sm); display:flex; align-items:center; gap:var(--space-8);">
           ${state.routines[b.editingId]?.shareCode 
-            ? `<button class="btn-xs btn-secondary" onclick="navigator.clipboard.writeText('${state.routines[b.editingId].shareCode}').then(() => alert('코드가 복사되었습니다.'));">🔗 공유 코드 복사</button>` 
+            ? `<button class="btn-xs btn-secondary" onclick="navigator.clipboard.writeText('${state.routines[b.editingId].shareCode}').then(() => showToast('코드가 복사되었습니다.'));">🔗 공유 코드 복사</button>` 
             : `<button class="btn-xs btn-secondary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 발급</button>`}
         </div>
       ` : `

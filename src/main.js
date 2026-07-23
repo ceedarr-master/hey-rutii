@@ -126,7 +126,7 @@ window.goIntro = (id) => {
 
 window.startPlay = () => {
   const routine = state.routines[state.currentId];
-  if (!routine || routine.steps.length === 0) return alert("운동 목록이 비어있습니다.");
+  if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
   state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false };
   state.screen = "play";
   render();
@@ -334,7 +334,7 @@ window.setFormType = (type) => {
 };
 
 window.addExerciseFromForm = () => {
-  if (!formDraft.name.trim()) return alert("운동 이름을 입력해 주세요.");
+  if (!formDraft.name.trim()) return showToast("운동 이름을 입력해 주세요.");
   const b = state.builder;
   const seconds = (formDraft.mm || 0) * 60 + (formDraft.ss || 0);
   const step = {
@@ -356,8 +356,8 @@ window.addExerciseFromForm = () => {
 
 window.saveRoutine = async () => {
   const b = state.builder;
-  if (!b.name.trim()) return alert("루틴 이름을 입력해 주세요.");
-  if (b.steps.length === 0) return alert("최소 1개 이상의 운동을 추가해 주세요.");
+  if (!b.name.trim()) return showToast("루틴 이름을 입력해 주세요.");
+  if (b.steps.length === 0) return showToast("최소 1개 이상의 운동을 추가해 주세요.");
 
   const id = b.editingId || "rt-" + Date.now();
   const routineObj = {
@@ -397,7 +397,7 @@ window.saveInlineEdit = (i) => {
   const setsEl = document.getElementById(`edit-sets-${i}`);
   const restEl = document.getElementById(`edit-rest-${i}`);
 
-  if (!nameEl || !nameEl.value.trim()) return alert("운동 이름을 입력하세요.");
+  if (!nameEl || !nameEl.value.trim()) return showToast("운동 이름을 입력하세요.");
 
   s.name = nameEl.value.trim();
   s.target = targetEl ? targetEl.value.trim() : "";
@@ -426,19 +426,28 @@ window.removeStep = (i) => {
 };
 
 window.promptInsertTransitions = () => {
-  const sec = prompt("운동 사이에 추가할 휴식 시간(초)을 입력해 주세요:", "15");
-  if (!sec || isNaN(sec)) return;
-  const restSec = parseInt(sec);
-  const b = state.builder;
-  const newSteps = [];
-  b.steps.forEach((s, idx) => {
-    newSteps.push(s);
-    if (idx < b.steps.length - 1 && s.type !== 'transition' && b.steps[idx + 1].type !== 'transition') {
-      newSteps.push({ name: "휴식 및 전환", type: "transition", seconds: restSec, sets: 1, restSeconds: 0 });
+  showPromptModal({
+    icon: '⏳',
+    title: '휴식 및 전환 추가',
+    message: '모든 운동 사이에 자동으로 삽입할 휴식 및 전환 시간(초)을 입력하세요:',
+    defaultValue: '15',
+    confirmText: '전환 추가',
+    cancelText: '취소',
+    onConfirm: (sec) => {
+      if (!sec || isNaN(sec)) return;
+      const restSec = parseInt(sec);
+      const b = state.builder;
+      const newSteps = [];
+      b.steps.forEach((s, idx) => {
+        newSteps.push(s);
+        if (idx < b.steps.length - 1 && s.type !== 'transition' && b.steps[idx + 1].type !== 'transition') {
+          newSteps.push({ name: "휴식 및 전환", type: "transition", seconds: restSec, sets: 1, restSeconds: 0 });
+        }
+      });
+      b.steps = newSteps;
+      render();
     }
   });
-  b.steps = newSteps;
-  render();
 };
 
 window.handleLogout = async () => {
@@ -458,7 +467,7 @@ window.saveProfile = async () => {
   const name = nameEl ? nameEl.value.trim() : "";
   const avatar = avatarEl ? avatarEl.value : "";
 
-  if (!name) return alert("닉네임을 입력해 주세요.");
+  if (!name) return showToast("닉네임을 입력해 주세요.");
 
   state.userProfile = { display_name: name, avatar_url: avatar };
   saveLocalUserProfile(state.userProfile);
@@ -479,7 +488,7 @@ window.saveProfile = async () => {
 window.uploadAvatar = async (event) => {
   const file = event.target.files[0];
   if (!file) return;
-  if (!state.user || !supabaseClient) return alert("로그인이 필요합니다.");
+  if (!state.user || !supabaseClient) return showToast("로그인이 필요합니다.");
 
   try {
     const fileExt = file.name.split('.').pop();
