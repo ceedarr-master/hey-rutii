@@ -176,15 +176,12 @@ export function renderPlay(routine) {
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
       <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">${currentExerciseIndex} of ${totalExerciseSteps}</div>
-      <div style="text-align:center;">
-        <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-bold); color:var(--text-primary);">${escapeHtml(routine.name)}</div>
-        ${(routine.original_author && routine.original_author.name) ? `
-          <div style="font-size:var(--text-xs); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; gap:var(--space-4); margin-top:2px;">
-            <span style="display:inline-flex; align-items:center;">${renderAvatarHtml(routine.original_author.avatar, 12)}</span>
-            <span>${escapeHtml(routine.original_author.name)}님의 루틴${routine.is_modified ? '을 바탕으로 제작' : ''}</span>
-          </div>
-        ` : ''}
+      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-tertiary);">${escapeHtml(routine.name)}</div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? getSfSymbol("speaker.wave.2.fill", 16) : getSfSymbol("speaker.slash.fill", 16)}</button>
+        <button class="btn-xs btn-tertiary btn-icon" onclick="window.confirmExitPlay()">${getSfSymbol("xmark", 16)}</button>
       </div>
+    </div>
     <div class="progress-bar" style="margin-bottom:var(--space-16);">${segs}</div>
     <div class="card">
       ${body}

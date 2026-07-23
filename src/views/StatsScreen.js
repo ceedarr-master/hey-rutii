@@ -203,7 +203,7 @@ function generateRecentActivity(logs) {
     const durStr = formatDuration(l.durationSeconds);
     const isLast = idx === pageLogs.length - 1;
     return `
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; ${!isLast ? 'border-bottom:1px solid var(--border-base);' : ''}">
+      <div style="display:flex; justify-content:space-between; align-items:center; ${!isLast ? 'margin-bottom: var(--space-16);' : ''}">
         <div style="display:flex; flex-direction:column; gap:2px;">
           <div class="log-title" style="margin:0;">${escapeHtml(l.routineName || '루틴')}</div>  
           <div class="log-meta" style="display:flex; align-items:center; gap:var(--space-4);">
