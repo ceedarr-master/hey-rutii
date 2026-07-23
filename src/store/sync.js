@@ -92,9 +92,12 @@ export async function syncData() {
       return;
     }
 
-    // Always merge history logs from both local and cloud so no device loses workout completions!
-    const mergedHistory = mergeHistoryLogs(localHistory, data.history || []);
-    localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
+    let mergedHistory = localHistory;
+    // Only merge cloud logs if local hasn't been updated more recently (e.g. after a deletion)
+    if (cloudUpdatedAt > localUpdatedAt) {
+      mergedHistory = mergeHistoryLogs(localHistory, data.history || []);
+      localStorage.setItem("routines:history", JSON.stringify(mergedHistory));
+    }
     
     const cloudUpdatedAt = new Date(data.updated_at).getTime();
     if (cloudUpdatedAt > localUpdatedAt) {
