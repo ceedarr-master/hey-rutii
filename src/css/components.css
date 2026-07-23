@@ -102,8 +102,23 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   font-weight: var(--fw-extra); 
   margin-bottom: var(--space-18); }
 
+.step-list-title {
+  font-size: var(--typo-display-sm);
+  font-weight: var(--fw-bold);
+}
+.step-list-subtitle {
+  font-size: var(--typo-body-xs);
+  font-weight: var(--fw-medium);
+}
+
+.step-break {
+  font-size: var(--typo-display-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text-tertiary)
+}
+
 label {
-    font-size: var(--text-xs);
+    font-size: var(--typo-body-xs);
     font-weight: var(--fw-bold);
     color: var(--text-secondary);
     display:block;

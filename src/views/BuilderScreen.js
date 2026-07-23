@@ -132,7 +132,7 @@ export function renderBuilder() {
 
   let stepsHtml = "";
   if (b.steps.length === 0) {
-    stepsHtml = `<div class="empty-state" style="padding:var(--space-20);">아직 추가된 운동이 없습니다.</div>`;
+    stepsHtml = `<div class="empty-state" style="font-size:var(--typo-body-sm); font-weight:var(--fw-medium); color:var(--text-tertiary); padding:var(--space-20);">아직 추가된 운동이 없습니다.</div>`;
   } else {
     stepsHtml = `<div class="step-list">` +
       b.steps.map((s, i) => {
@@ -145,14 +145,14 @@ export function renderBuilder() {
               <div style="display:flex; align-items:center; flex:1; gap:10px;">
                 <div class="step-drag-handle" style="${isTrans ? 'color:var(--text-tertiary);' : ''}">≡</div>
                 ${isTrans ? `
-                  <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:var(--fw-bold); color:var(--text-tertiary); white-space:nowrap;">
-                    <span>휴식 및 전환</span>
+                  <div class="step-break" style="display:flex; align-items:center; gap:8px; white-space:nowrap;">
+                    <span>트랜지션</span>
                     <span style="font-weight:var(--fw-medium); opacity:0.85;">⏱ ${s.seconds || 15}초</span>
                   </div>
                 ` : `
                   <div>
-                    <div style="font-size:15px; font-weight:var(--fw-bold); color:var(--text-primary);">${escapeHtml(s.name)}</div>
-                    <div style="font-size:var(--text-xs); color:var(--text-secondary); margin-top:2px;">${stepDetail(s)}</div>
+                    <div class="step-list-title">${escapeHtml(s.name)}</div>
+                    <div class="step-list-subtitle">${stepDetail(s)}</div>
                   </div>
                 `}
               </div>
