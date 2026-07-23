@@ -8,8 +8,9 @@ export function renderDone(routine) {
   return `
     <div class="card">
       <div class="card-group-header">
-        <div style="font-size:64px; margin-bottom:var(--space-16);">🎉</div>
-        <h2 style="font-size:var(--text-2xl); font-weight:var(--fw-black); color:var(--text-primary); margin-bottom:var(--space-8);">수고하셨습니다!</h2>
+        <div style="font-size:64px; margin-bottom:var(--space-16);">${getSfSymbol("checkmark.seal.fill", "var(--typo-highlight-title)", "var(--color-primary)")}</div>
+        <div class="step-title">루틴 완료</div>
+        <div class="step-description">대단해요!</div>
       </div>
 
       <div class="card-group-body">
@@ -17,7 +18,7 @@ export function renderDone(routine) {
       </div>
 
       <div class="card-group-footer" style="display:flex; gap:var(--space-10);">
-        <button class="btn-lg btn-secondary btn-flex" onclick="window.restartRoutine()">다시 시작 🔄</button>
+        <button class="btn-lg btn-secondary btn-flex" onclick="window.restartRoutine()">다시 시작</button>
         <button class="btn-lg btn-primary btn-flex" onclick="window.goScreen('list')">완료 ✓</button>
       </div>
     </div>`;
@@ -110,13 +111,13 @@ export function renderPlay(routine) {
     if (!state.play.remaining) state.play.remaining = s.type === 'transition' ? s.seconds : (s.restSeconds || 15);
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px; margin-bottom:0;">${s.type === 'transition' ? '준비' : '휴식 중'}</span>
+        <span class="badge">${s.type === 'transition' ? '트랜지션' : '휴식 중'}</span>
         ${setTrackHtml}
       </div>
 
       <div class="card-group-body">
-        <div style="font-size:28px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">${escapeHtml(s.name)}</div>
-        <div style="font-size:var(--text-base); color:var(--text-secondary); text-align:center;">다음 세트를 준비하세요</div>
+        <div class="step-title">${escapeHtml(s.name)}</div>
+        <div class="step-description">다음 세트를 준비하세요</div>
       </div>
 
       <div class="card-group-timer">
@@ -130,35 +131,35 @@ export function renderPlay(routine) {
     if (!state.play.remaining) state.play.remaining = s.seconds;
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px; margin-bottom:0;">⏱ 시간 진행</span>
+        <span class="badge">⏱ 시간 진행</span>
         ${setTrackHtml}
       </div>
 
       <div class="card-group-body">
-        <div style="font-size:28px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">${escapeHtml(s.name)}</div>
-        ${s.target ? `<div style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-secondary); text-align:center; margin-bottom:8px;">${escapeHtml(s.target)}</div>` : ""}
-        ${s.desc ? `<div style="font-size:var(--text-sm); color:var(--text-secondary); text-align:center;">${escapeHtml(s.desc)}</div>` : ""}
+        <div class="step-title">${escapeHtml(s.name)}</div>
+        ${s.target ? `<div class="step-subtitle">${escapeHtml(s.target)}</div>` : ""}
+        ${s.desc ? `<div class="step-description">${escapeHtml(s.desc)}</div>` : ""}
       </div>
 
       <div class="card-group-timer">
-        <div class="digital-timer typo-highlight-timer" style="font-size:64px; font-weight:900; color:#00c6b8; text-align:center;">${fmt(state.play.remaining)}</div>
+        <div class="digital-timer typo-highlight-timer" >${fmt(state.play.remaining)}</div>
       </div>
 
-      <div class="card-group-footer" style="display:flex; gap:12px;">
+      <div class="card-group-footer" style="display:flex; gap:var(--space-18);">
         <button class="btn-lg btn-secondary btn-flex" onclick="window.togglePause()">${state.play.paused ? "▶ 시작" : "⏸ 일시정지"}</button>
         <button class="btn-lg btn-primary btn-flex" onclick="window.nextStep()">다음 →</button>
       </div>`;
   } else {
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-        <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px; margin-bottom:0;">✓ 횟수 진행</span>
+        <span class="badge">✓ 횟수 진행</span>
         ${setTrackHtml}
       </div>
 
       <div class="card-group-body">
-        <div style="font-size: var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom: var(--space-8);">${escapeHtml(s.name)}</div>
-        ${s.target ? `<div style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-secondary); text-align:center; margin-bottom:var(--space-8);">${escapeHtml(s.target)}</div>` : ""}
-        ${s.desc ? `<div style="font-size:var(--text-md); color:var(--text-tertiary); font-weight: var(--fw-medium); text-align:center;">${escapeHtml(s.desc)}</div>` : ""}
+        <div class="step-title">${escapeHtml(s.name)}</div>
+        ${s.target ? `<div class="step-subtitle">${escapeHtml(s.target)}</div>` : ""}
+        ${s.desc ? `<div class="step-description">${escapeHtml(s.desc)}</div>` : ""}
       </div>
 
       <div class="card-group-timer">
@@ -175,8 +176,8 @@ export function renderPlay(routine) {
 
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
-      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">${currentExerciseIndex} of ${totalExerciseSteps}</div>
-      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-tertiary);">${escapeHtml(routine.name)}</div>
+      <div class="step-counter">${currentExerciseIndex} of ${totalExerciseSteps}</div>
+      <div class="play-routine-name">${escapeHtml(routine.name)}</div>
       <div style="display:flex; gap:12px;">
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? getSfSymbol("speaker.wave.2.fill", 16) : getSfSymbol("speaker.slash.fill", 16)}</button>
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.confirmExitPlay()">${getSfSymbol("xmark", 16)}</button>

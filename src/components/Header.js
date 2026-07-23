@@ -7,7 +7,7 @@ export function renderHeader() {
   if (state.user) {
     userStatusHtml = `
       <div style="display:flex; align-items:center; gap:var(--space-8);">
-        <span style="font-weight: var(--fw-bold); color:var(--accent-color); font-size: var(--text-xs); display:flex; align-items:center; gap:var(--space-4);" title="계정: ${escapeHtml(state.user.email)}">
+        <span class="header-status" title="계정: ${escapeHtml(state.user.email)}">
           <span style="display:inline-block; width:6px; height:6px; background:var(--accent-color); border-radius:50%;"></span>
           루틴과 기록 동기화 중
         </span>
