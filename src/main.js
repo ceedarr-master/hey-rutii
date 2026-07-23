@@ -83,6 +83,27 @@ window.goList = () => { state.screen = "list"; render(); };
 window.goAuth = () => { state.screen = "auth"; render(); };
 window.goStatsTab = () => { state.screen = "stats"; render(); };
 
+window.filterStatsByRoutine = (val) => {
+  state.statsFilter = val;
+  render();
+};
+
+window.changeCalendarMonth = (delta) => {
+  state.statsCalendarOffset = (state.statsCalendarOffset || 0) + delta;
+  render();
+};
+
+window.changeWeeklyChartWeek = (delta) => {
+  state.statsWeekOffset = (state.statsWeekOffset || 0) + delta;
+  render();
+};
+
+window.changeActivityPage = (delta) => {
+  state.activityPage = (state.activityPage || 0) + delta;
+  render();
+};
+
+
 window.goIntro = (id) => {
   state.currentId = id;
   state.screen = "intro";
