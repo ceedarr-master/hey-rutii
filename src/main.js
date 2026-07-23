@@ -412,6 +412,13 @@ window.cancelInlineEdit = () => {
 
 window.saveInlineEdit = (i) => {
   const s = state.builder.steps[i];
+  if (s.type === 'transition') {
+    const ssEl = document.getElementById(`edit-ss-${i}`);
+    s.seconds = ssEl ? (parseInt(ssEl.value) || 15) : 15;
+    state.builder.editingStepIndex = null;
+    render();
+    return;
+  }
   const nameEl = document.getElementById(`edit-name-${i}`);
   const targetEl = document.getElementById(`edit-target-${i}`);
   const descEl = document.getElementById(`edit-desc-${i}`);

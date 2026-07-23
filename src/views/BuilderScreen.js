@@ -4,6 +4,21 @@ import { escapeHtml, escapeAttr } from '../utils/helpers.js';
 import { stepDetail } from '../utils/format.js';
 
 export function renderInlineStepEditor(i, s) {
+  if (s.type === 'transition') {
+    return `
+      <div class="inline-edit-box" style="background:var(--surface-light); border:1px solid var(--border-accent); border-radius:16px; padding:16px; margin:8px 0;">
+        <div style="font-size:14px; font-weight:var(--fw-bold); color:var(--text-tertiary); margin-bottom:8px;">휴식 및 전환 시간 수정</div>
+        <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px; margin-top:8px;">
+          <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" />
+          <span class="num-unit">초</span>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+          <button class="btn-xs btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
+          <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+        </div>
+      </div>`;
+  }
+
   const isTimer = s.type === "timer";
   const mm = isTimer ? Math.floor((s.seconds || 0) / 60) : 0;
   const ss = isTimer ? (s.seconds || 0) % 60 : 0;
@@ -94,7 +109,7 @@ export function renderBuilder() {
               </div>
               <div style="display:flex; gap: var(--space-6);">
                 <button class="btn-sm btn-secondary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
-                <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
+                <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
               </div>
             </div>`;
         }
@@ -109,7 +124,7 @@ export function renderBuilder() {
           ${state.routines[b.editingId]?.shareCode 
             ? `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 복사 (${state.routines[b.editingId].shareCode})</button>` 
             : `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">🔗 공유 코드 발급</button>`}
-          <button class="btn-sm btn-warning btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
+          <button class="btn-sm btn-warning btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
         </div>
       ` : `
         <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
