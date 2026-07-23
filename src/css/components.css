@@ -26,13 +26,14 @@
 
 .inline-edit-box {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--surface-light);
-  border-radius: var(--radius-lg);
-  padding: var(--space-20) var(--space-12);
-  margin: var(--space-4) 0;
-  box-shadow: 0 8px 24px rgba(255, 140, 90, 0.12);
+  flex-direction: column;
+  background: var(--surface-white, #ffffff);
+  border: 1px solid var(--border-accent, #cbdfeb);
+  border-radius: var(--radius-xl, 20px);
+  padding: var(--space-24, 24px);
+  margin: var(--space-12, 12px) 0;
+  box-shadow: 0 5px 12px rgba(165, 223, 201, 0.3);
+  text-align: left;
 }
 
 /* ---- button system (Synced with Figma Component Set) ---- */

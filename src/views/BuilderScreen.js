@@ -7,14 +7,16 @@ export function renderInlineStepEditor(i, s) {
   if (s.type === 'transition') {
     return `
       <div class="inline-edit-box">
-        <label>휴식 및 전환 시간 수정</label>
-        <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px; margin-top:8px;">
-          <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" />
-          <span class="num-unit">초</span>
-        </div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-          <button class="btn-sm btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
-          <button class="btn-sm btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+        <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin:0;">휴식 및 전환 시간<span class="lbl-req">*</span></label>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:var(--space-12); width:100%;">
+          <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px;">
+            <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" style="flex:1;" />
+            <span class="num-unit">초</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-xs btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
+            <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+          </div>
         </div>
       </div>`;
   }
@@ -27,25 +29,24 @@ export function renderInlineStepEditor(i, s) {
   const rest = s.restSeconds || 0;
 
   return `
-    <div class="card" style="margin-bottom:4px;">
-      <label>운동 이름<span class="lbl-req">*</span></label>
-      <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" />
+    <div class="inline-edit-box">
+      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 이름<span class="lbl-req">*</span></label>
+      <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" placeholder="운동 이름을 입력하세요" />
       
-      <label>타겟 부위</label>
-      <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="대흉근, 상완삼두근, 삼각근, 전거근, 코어" />
+      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">타겟 부위 (선택)</label>
+      <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="예: 둔근" />
 
-      <label>설명</label>
-      <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="손은 어깨너비보다 살짝 넓게 가슴 옆에 두고, 머리부터 발끝까지 몸이 일자가 되도록 복부와 엉덩이에 힘을 준 뒤, 팔꿈치는 몸통에서 45도 정도만 벌려 가슴 쪽으로 내립니다.">${escapeHtml(s.desc || '')}</textarea>
+      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">설명 (선택)</label>
+      <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 방법이나 주의사항">${escapeHtml(s.desc || '')}</textarea>
 
-      <label>진행 방식<span class="lbl-req">*</span></label>
-
-      <div class="main-tabs" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
-        <button class="btn-sm btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-        <button class="btn-sm btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
+      <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-14); display:block;">진행 방식<span class="lbl-req">*</span></label>
+      <div class="main-tabs" style="margin-top:var(--space-6);">
+        <button class="main-tab-btn ${isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'timer')">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
+        <button class="main-tab-btn ${!isTimer ? 'active' : ''}" onclick="window.toggleInlineType(${i}, 'manual')">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
       </div>
 
-      <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
-        ${isTimer ? `
+      ${isTimer ? `
+        <div class="num-row" style="margin-top:var(--space-14);">
           <div class="num-group">
             <input class="form-input-num" id="edit-mm-${i}" type="number" min="0" value="${mm}" />
             <span class="num-unit">분</span>
@@ -54,25 +55,35 @@ export function renderInlineStepEditor(i, s) {
             <input class="form-input-num" id="edit-ss-${i}" type="number" min="0" max="59" value="${ss}" />
             <span class="num-unit">초</span>
           </div>
-        ` : `
+        </div>
+        <div class="num-row" style="margin-top:var(--space-14);">
+          <div class="num-group">
+            <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" />
+            <span class="num-unit">세트</span>
+          </div>
+          <div class="num-group">
+            <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" />
+            <span class="num-unit">초 휴식</span>
+          </div>
+        </div>` : `
+        <div class="num-row" style="margin-top:var(--space-14);">
           <div class="num-group">
             <input class="form-input-num" id="edit-reps-${i}" type="number" min="1" value="${reps}" />
             <span class="num-unit">개</span>
           </div>
-        `}
-        <div class="num-group">
-          <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" />
-          <span class="num-unit">세트</span>
-        </div>
-        <div class="num-group">
-          <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" />
-          <span class="num-unit">초 휴식</span>
-        </div>
-      </div>
+          <div class="num-group">
+            <input class="form-input-num" id="edit-sets-${i}" type="number" min="1" value="${sets}" />
+            <span class="num-unit">세트</span>
+          </div>
+          <div class="num-group">
+            <input class="form-input-num" id="edit-rest-${i}" type="number" min="0" value="${rest}" />
+            <span class="num-unit">초 휴식</span>
+          </div>
+        </div>`}
 
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-        <button class="btn-sm btn-secondary" onclick="window.cancelInlineEdit()">취소</button>
-        <button class="btn-sm btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:var(--space-20);">
+        <button class="btn-xs btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
+        <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
       </div>
     </div>`;
 }
