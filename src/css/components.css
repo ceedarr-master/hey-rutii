@@ -74,7 +74,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8); font-size: var(--typo-body-md); font-weight: var(--fw-bold); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; text-align: left;
 }
-.form-input-text:focus { border-bottom: 2px;}
+.form-input-text:focus {border-bottom: 2px solid var(--border-accent);}
 .form-input-text::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .form-input-num {
@@ -82,7 +82,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   padding: var(--space-8) var(--space-4); font-size: var(--typo-body-xl); font-weight: var(--fw-black); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; text-align: right;
 }
-.form-input-num:focus { border-bottom: 2px;}
+.form-input-num:focus {border-bottom: 2px solid var(--border-accent);}
 .form-input-num::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .form-textarea-underline {
@@ -90,7 +90,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8); font-size: var(--text-base); font-weight: var(--fw-bold); color: var(--text-primary);
   font-family: inherit; outline: none; transition: border-color 0.2s; resize: none; min-height: 50px;
 }
-.form-textarea-underline:focus { border-bottom: 2px;}
+.form-textarea-underline:focus {border-bottom: 2px solid var(--border-accent);}
 .form-textarea-underline::placeholder { color: var(--text-tertiary); font-weight: var(--fw-medium); }
 
 .type-toggle { display: flex; gap: var(--space-8); margin-top: var(--space-6); }
