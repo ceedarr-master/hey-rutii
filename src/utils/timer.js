@@ -37,8 +37,10 @@ export function startTimer(nextStepCallback) {
     if (!state.play || state.play.paused) return;
     if (state.play.remaining > 0) {
       state.play.remaining--;
-      const el = document.querySelector(".digital-timer");
-      if (el) el.textContent = fmt(state.play.remaining);
+      const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
+      elements.forEach(el => {
+        el.textContent = fmt(state.play.remaining);
+      });
     } else {
       playBeep(2);
       if (nextStepCallback) nextStepCallback();

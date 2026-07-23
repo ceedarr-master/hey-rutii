@@ -69,7 +69,7 @@ export function render() {
     const routine = state.routines[state.currentId];
     if (routine && state.play.current < routine.steps.length) {
       const s = routine.steps[state.play.current];
-      if ((s.type === "timer" || state.play.isResting) && !state.play.paused) {
+      if ((s.type === "timer" || s.type === "transition" || state.play.isResting) && !state.play.paused) {
         startTimer(window.nextStep);
       }
     }

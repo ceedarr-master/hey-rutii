@@ -106,7 +106,7 @@ export function renderPlay(routine) {
       </div>
 
       <div class="card-group-timer">
-        <div class="typo-highlight-timer">${fmt(state.play.remaining)}</div>
+        <div class="digital-timer typo-highlight-timer">${fmt(state.play.remaining)}</div>
       </div>
 
       <div class="card-group-footer">
@@ -127,7 +127,7 @@ export function renderPlay(routine) {
       </div>
 
       <div class="card-group-timer">
-        <div class="typo-highlight-timer" style="font-size:64px; font-weight:900; color:#00c6b8; text-align:center;">${fmt(state.play.remaining)}</div>
+        <div class="digital-timer typo-highlight-timer" style="font-size:64px; font-weight:900; color:#00c6b8; text-align:center;">${fmt(state.play.remaining)}</div>
       </div>
 
       <div class="card-group-footer" style="display:flex; gap:12px;">
