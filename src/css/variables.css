@@ -51,6 +51,7 @@
     --border-accent: var(--color-brand-accent);
     --btn-shadow: rgba(70, 239, 197, 0.35);
     --active-shadow: rgba(0, 198, 184, 0.3);
+    --card-shadow: rgba(165, 223, 201, 0.3);
     --bg-card: var(--surface-white);
     --bg-secondary: var(--surface-light);
     --bg-tabs: var(--surface-tab);
@@ -71,6 +72,7 @@
     /* Figma Typography System Tokens */
     --typo-highlight-timer: 62px;
     --typo-highlight-title: 36px;
+    --typo-counter: 48px;
     --typo-display-2xl: 28px;
     --typo-display-xl: 22px;
     --typo-display-lg: 18px;

@@ -57,9 +57,9 @@ export function renderPlay(routine) {
       </div>
       <div style="font-size:var(--text-base); color:var(--text-secondary); margin-bottom:4px; text-align:center;">${escapeHtml(s.name)}</div>
       <div style="font-size:36px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">휴식</div>
-      <div style="font-size:var(--text-base); color:var(--text-secondary); text-align:center; margin-bottom:16px;">다음 세트를 준비하세요</div>
-      <div class="typo-highlight-timer" style="font-size:64px; font-weight:900; color:#00c6b8; margin:20px 0; text-align:center;">${fmt(state.play.remaining)}</div>
-      <button class="btn-lg btn-secondary" style="width:100%; font-size:18px; margin-top:16px;" onclick="window.nextStep()">바로 시작</button>`;
+      <div style="font-size:var(--text-base); color:var(--text-secondary); text-align:center; margin-bottom: var(--space-16);">다음 세트를 준비하세요</div>
+      <div class="typo-highlight-timer">${fmt(state.play.remaining)}</div>
+      <button class="btn-lg btn-secondary" style="width:100%;" onclick="window.nextStep()">바로 시작</button>`;
   } else if (s.type === "timer") {
     if (!state.play.remaining) state.play.remaining = s.seconds;
     body = `
@@ -81,10 +81,10 @@ export function renderPlay(routine) {
         <span class="badge" style="background:#def7f2; color:#00c6b8; font-weight:var(--fw-bold); border-radius:20px; padding:6px 12px;">✓ 횟수 진행</span>
         ${setTrackHtml}
       </div>
-      <div style="font-size:28px; font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom:4px;">${escapeHtml(s.name)}</div>
-      ${s.target ? `<div style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-secondary); text-align:center; margin-bottom:8px;">${escapeHtml(s.target)}</div>` : ""}
-      ${s.desc ? `<div style="font-size:var(--text-sm); color:var(--text-secondary); text-align:center; margin-bottom:16px;">${escapeHtml(s.desc)}</div>` : ""}
-      <div style="font-size:48px; font-weight:var(--fw-black); color:#00c6b8; text-align:center; margin:20px 0;">${s.reps} 개</div>
+      <div style="font-size: var(--typo-display-2xl); font-weight:var(--fw-black); color:var(--text-primary); text-align:center; margin-bottom: var(--space-8);">${escapeHtml(s.name)}</div>
+      ${s.target ? `<div style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-secondary); text-align:center; margin-bottom:var(--space-8);">${escapeHtml(s.target)}</div>` : ""}
+      ${s.desc ? `<div style="font-size:var(--text-md); color:var(--text-tertiary); font-weight: var(--fw-medium); text-align:center; margin-bottom:var(--space-16);">${escapeHtml(s.desc)}</div>` : ""}
+      <div style="font-size: var(--typo-counter); font-weight:var(--fw-black); color: var(--text-brand-accent); text-align:center; margin: var(--space-20) 0;">${s.reps} 개</div>
       <button class="btn-lg btn-primary" style="width:100%;" onclick="window.nextStep()">세트 완료 ✓</button>`;
   }
 
@@ -93,15 +93,15 @@ export function renderPlay(routine) {
 
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
-      <div style="font-size:18px; font-weight:var(--fw-black); color:#00c6b8;">${state.play.current + 1} of ${routine.steps.length}</div>
-      <div style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-secondary);">${escapeHtml(routine.name)}</div>
+      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-brand-accent);">${state.play.current + 1} of ${routine.steps.length}</div>
+      <div style="font-size:var(--typo-display-sm); font-weight:var(--fw-medium); color:var(--text-tertiary);">${escapeHtml(routine.name)}</div>
       <div style="display:flex; gap:12px;">
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? "🔊" : "🔇"}</button>
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.confirmExitPlay()">✕</button>
       </div>
     </div>
     <div class="progress-bar" style="margin-bottom:var(--space-16);">${segs}</div>
-    <div class="card" style="background:#ffffff; border-radius:24px; padding:24px; border:1px solid var(--border-base); box-shadow:0 8px 24px rgba(0,200,222,0.08);">
+    <div class="card">
       ${body}
     </div>
     <div style="display:flex; justify-content:space-between; margin-top:20px;">
