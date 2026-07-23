@@ -552,15 +552,20 @@ export function init() {
   render();
 }
 
-// Start App when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
+// Start App immediately with fail-safe error handling
+function startApp() {
+  try {
+    init();
     initTooltipListeners();
     initSupabaseAuth(render);
-    init();
-  });
+  } catch (e) {
+    console.error("App startup error:", e);
+    render();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
 } else {
-  initTooltipListeners();
-  initSupabaseAuth(render);
-  init();
+  startApp();
 }
