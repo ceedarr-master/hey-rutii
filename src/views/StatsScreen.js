@@ -104,11 +104,11 @@ function generateWeeklyChart(logs) {
   const sunStr = `${sunday.getMonth()+1}/${sunday.getDate()}`;
   
   return `
-    <div style="background:#ffffff; border-radius:20px; padding:20px; border:1px solid var(--border-base);">
+    <div class="card-fit">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <button class="btn-xs btn-secondary" onclick="window.changeWeeklyChartWeek(-1)">← 이전 주</button>
-        <span style="font-size:14px; font-weight:var(--fw-bold); color:var(--text-primary);">${monStr} ~ ${sunStr}</span>
-        <button class="btn-xs btn-secondary" onclick="window.changeWeeklyChartWeek(1)" ${weekOffset >= 0 ? 'disabled' : ''}>다음 주 →</button>
+        <button class="btn-xs btn-tertiary" onclick="window.changeWeeklyChartWeek(-1)">←</button>
+        <span style="font-size: var(--typo-body-sm); font-weight:var(--fw-bold); color:var(--text-primary);">${monStr} ~ ${sunStr}</span>
+        <button class="btn-xs btn-secondary-tertiary" onclick="window.changeWeeklyChartWeek(1)" ${weekOffset >= 0 ? 'disabled' : ''}>→</button>
       </div>
       <div style="display:flex; gap:8px; align-items:flex-end;">
         ${bars}
@@ -174,9 +174,9 @@ function generateCalendarGrid(logs) {
   return `
     <div style="background:#ffffff; border-radius:20px; padding:20px; border:1px solid var(--border-base);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <button class="btn-xs btn-secondary" onclick="window.changeCalendarMonth(-1)">← 이전 달</button>
-        <span style="font-size:16px; font-weight:var(--fw-black); color:var(--text-primary);">${year}년 ${month + 1}월</span>
-        <button class="btn-xs btn-secondary" onclick="window.changeCalendarMonth(1)" ${offset >= 0 ? 'disabled' : ''}>다음 달 →</button>
+        <button class="btn-xs btn-tertiary" onclick="window.changeCalendarMonth(-1)">←</button>
+        <span class="stat-title">${year}년 ${month + 1}월</span>
+        <button class="btn-xs btn-tertiary" onclick="window.changeCalendarMonth(1)" ${offset >= 0 ? 'disabled' : ''}>→</button>
       </div>
       <div class="calendar-grid">
         ${headers}
@@ -202,13 +202,13 @@ function generateRecentActivity(logs) {
     const dateStr = `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours() < 10 ? '0':''}${d.getHours()}:${d.getMinutes() < 10 ? '0':''}${d.getMinutes()}`;
     const durStr = formatDuration(l.durationSeconds);
     return `
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#f4faf8; border-radius:12px; margin-bottom:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
         <div>
-          <div style="font-size:15px; font-weight:var(--fw-bold); color:var(--text-primary);">${escapeHtml(l.routineName || '루틴')}</div>
-          <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${dateStr}</div>
+          <div class="log-title">${escapeHtml(l.routineName || '루틴')}</div> • 
+          <div class="log-subtitle">${dateStr}</div> • 
+          <div class="log-subtitle">${durStr} 완료</div>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-          <div style="font-size:14px; font-weight:var(--fw-black); color:#00c6b8;">${durStr} 완료</div>
           <button class="btn-xs btn-danger btn-icon" style="padding:4px 8px !important; font-size:12px !important;" onclick="window.deleteLog('${escapeAttr(logId)}')" title="기록 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
         </div>
       </div>`;
@@ -260,7 +260,7 @@ export function renderStats() {
     
     <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; background:#ffffff; border:1px solid var(--border-base); border-radius:16px; padding:12px 16px;">
       <label for="stats-routine-filter" style="font-weight:var(--fw-bold); font-size:14px; color:var(--text-secondary); white-space:nowrap;">${getSfSymbol("chart.bar.fill", 16, "var(--text-brand-accent)")} 분석 대상:</label>
-      <select id="stats-routine-filter" style="flex:1; border:none; background:transparent; font-size:16px; font-weight:var(--fw-black); color:#00c6b8; outline:none; cursor:pointer;" onchange="window.filterStatsByRoutine(this.value)">
+      <select id="stats-routine-filter" style="flex:1; border:none; background:transparent; font-size: var(--typo-body-sm); font-weight:var(--fw-black); color:#00c6b8; outline:none; cursor:pointer;" onchange="window.filterStatsByRoutine(this.value)">
         <option value="all" ${filterVal === "all" ? "selected" : ""}>전체 루틴 (통합)</option>
         ${options}
       </select>

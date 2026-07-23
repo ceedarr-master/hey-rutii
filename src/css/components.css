@@ -28,8 +28,8 @@
 .inline-edit-box {
   display: flex;
   flex-direction: column;
-  background: var(--surface-white, #ffffff);
-  border: 1px solid var(--border-accent, #cbdfeb);
+  background: var(--surface-white);
+  border: 1px solid var(--color-stroke-dark);
   border-radius: var(--radius-xl, 20px);
   padding: var(--space-20);
   margin: var(--space-4) 0;
@@ -37,6 +37,17 @@
   text-align: left;
 }
 
+.exercise-form-card-transition {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-light);
+  border: 1px solid var(--color-stroke-dark);
+  border-radius: var(--radius-xl, 20px);
+  padding: var(--space-20);
+  margin: var(--space-4) 0;
+  box-shadow: 0 5px 12px rgba(165, 223, 201, 0.3);
+  text-align: left;
+}
 /* ---- button system (Synced with Figma Component Set) ---- */
 button {
   border: none;
@@ -109,6 +120,7 @@ button:disabled { opacity: 0.4; cursor: default; transform: none; }
 .step-list-subtitle {
   font-size: var(--typo-body-xs);
   font-weight: var(--fw-medium);
+  color: var(--text-tertiary);
 }
 
 .step-break {
@@ -153,7 +165,8 @@ label {
   border: none; 
   border-bottom: 2px solid var(--border-accent); 
   background: transparent;
-  padding: var(--space-8) var(--space-4); font-size: var(--typo-body-xl); 
+  padding: var(--space-8) var(--space-4); 
+  font-size: var(--typo-body-lg); 
   font-weight: var(--fw-bold); 
   color: var(--text-primary);
   font-family: inherit; 
@@ -201,7 +214,7 @@ label {
 .type-toggle { display: flex; gap: var(--space-8); margin-top: var(--space-6); }
 .num-row { display: flex; gap: var(--space-8); align-items: center; }
 .num-group { flex: 1; display: flex; align-items: baseline; gap: var(--space-4); position: relative; }
-.num-unit { font-size: var(--typo-display-md); font-weight: var(--fw-medium); color: var(--text-secondary); white-space: nowrap; }
+.num-unit { font-size: var(--typo-display-sm); font-weight: var(--fw-medium); color: var(--text-secondary); white-space: nowrap; }
 
 .steps-section-title { font-size: var(--text-sm); font-weight: var(--fw-extra); color: var(--text-secondary); margin: var(--space-26) 0 var(--space-10); text-transform: uppercase; letter-spacing: 0.5px; }
 
@@ -294,6 +307,11 @@ label {
 .typo-body-xs { font-size: var(--typo-body-xs); line-height: var(--lh-150); font-weight: var(--fw-medium); }
 
 /* ---- Calendar Grid System ---- */
+.stat-title {
+  font-size: var(--typo-display-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -318,14 +336,13 @@ label {
   color: var(--text-primary);
   position: relative;
   background: #f8fcfb;
-  border: 1px solid var(--border-base);
 }
 .cal-day.empty {
   background: transparent;
   border: none;
 }
 .cal-day.today {
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-primary) !important;
   color: #00c6b8;
 }
 .car-day.future {
@@ -349,6 +366,18 @@ label {
   font-size: 10px;
   font-weight: var(--fw-black);
   margin-top: 1px;
+}
+
+.log-title {
+  font-size: var(--typo-display-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+}
+
+.log-subtitle {
+  font-size: var(--typo-display-xs);
+  font-weight: var(--fw-medium);
+  color: var(--text-tertiary);
 }
 
 /* ---- Card Internal Group Layout ---- */

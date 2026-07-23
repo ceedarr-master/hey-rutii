@@ -29,18 +29,18 @@ function renderExerciseFields({
 
   return `
     <label>운동 이름<span class="lbl-req">*</span></label>
-    <input class="form-input-text" ${idAttr('name')} type="text" value="${escapeAttr(name)}" placeholder="운동 이름을 입력하세요" ${onNameInput ? `oninput="${onNameInput}"` : ''} />
+    <input class="form-input-text" ${idAttr('name')} type="text" value="${escapeAttr(name)}" placeholder="예: 플랭크" ${onNameInput ? `oninput="${onNameInput}"` : ''} />
     
     <label>타겟 부위</label>
-    <input class="form-input-text" ${idAttr('target')} type="text" value="${escapeAttr(target)}" placeholder="예: 대흉근, 코어" ${onTargetInput ? `oninput="${onTargetInput}"` : ''} />
+    <input class="form-input-text" ${idAttr('target')} type="text" value="${escapeAttr(target)}" placeholder="예: 복직근, 복사근, 복횡근" ${onTargetInput ? `oninput="${onTargetInput}"` : ''} />
 
     <label>설명</label>
-    <textarea class="form-textarea-underline" ${idAttr('desc')} placeholder="동작 방법이나 주의사항" ${onDescInput ? `oninput="${onDescInput}"` : ''}>${escapeHtml(desc)}</textarea>
+    <textarea class="form-textarea-underline" ${idAttr('desc')} placeholder="엎드린 상태에서 팔꿈치를 어깨 아래에 두고, 머리, 등, 엉덩이, 발뒤꿈치가 일직선이 되도록 합니다. 엉덩이가 너무 솟거나 처지지 않도록 복부와 엉덩이에 강하게 힘을 줍니다." ${onDescInput ? `oninput="${onDescInput}"` : ''}>${escapeHtml(desc)}</textarea>
 
     <label>진행 방식<span class="lbl-req">*</span></label>
     <div class="tabs-sm">
-      <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="${onTypeToggle('timer')}">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
-      <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="${onTypeToggle('manual')}">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
+      <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="${onTypeToggle('timer')}">${getSfSymbol("stopwatch", 14)}시간 진행</button>
+      <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="${onTypeToggle('manual')}">${getSfSymbol("checkmark", 14)}횟수 진행</button>
     </div>
 
     ${isTimer ? `
@@ -82,7 +82,7 @@ function renderExerciseFields({
 export function renderInlineStepEditor(i, s) {
   if (s.type === 'transition') {
     return `
-      <div class="exercise-form-card">
+      <div class="exercise-form-card-transition">
         <label>트랜지션 시간<span class="lbl-req">*</span></label>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:var(--space-12); width:100%;">
           <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px;">
@@ -90,8 +90,8 @@ export function renderInlineStepEditor(i, s) {
             <span class="num-unit">초</span>
           </div>
           <div style="display:flex; gap:8px;">
-            <button class="btn-xs btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
-            <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+            <button class="btn-sm btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
+            <button class="btn-sm btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
           </div>
         </div>
       </div>`;
@@ -120,8 +120,8 @@ export function renderInlineStepEditor(i, s) {
         onTypeToggle: (t) => `window.toggleInlineType(${i}, '${t}')`
       })}
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:var(--space-20);">
-        <button class="btn-xs btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
-        <button class="btn-xs btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
+        <button class="btn-sm btn-tertiary" onclick="window.cancelInlineEdit()">취소</button>
+        <button class="btn-sm btn-primary" onclick="window.saveInlineEdit(${i})">저장</button>
       </div>
     </div>`;
 }
