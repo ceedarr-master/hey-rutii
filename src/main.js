@@ -388,7 +388,8 @@ window.saveRoutine = async () => {
   if (b.original_author) {
     const stepsChanged = JSON.stringify(b.steps) !== (b.initial_steps_json || "");
     const nameChanged = b.name.trim() !== (b.initial_name || "").trim();
-    isModified = stepsChanged || nameChanged || (b.is_modified || false);
+    const descChanged = (b.desc || "").trim() !== (b.initial_desc || "").trim();
+    isModified = stepsChanged || nameChanged || descChanged || (existing.is_modified || false);
   }
 
   const routineObj = {
@@ -758,7 +759,8 @@ window.promptImportRoutineToBuilder = () => {
         editingStep: null,
         original_author: authorObj,
         initial_steps_json: JSON.stringify(importedRoutine.steps || []),
-        initial_name: importedRoutine.name || "",
+        initial_name: (importedRoutine.name || "").trim(),
+        initial_desc: (importedRoutine.desc || "").trim(),
         is_modified: false
       };
 
