@@ -379,7 +379,6 @@ label {
   font-weight: var(--fw-medium);
   color: var(--text-tertiary);
   float: left;
-  gap: var(--space-4);
 }
 
 /* ---- Card Internal Group Layout ---- */

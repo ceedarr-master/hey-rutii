@@ -203,13 +203,13 @@ function generateRecentActivity(logs) {
     const durStr = formatDuration(l.durationSeconds);
     return `
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <div>
+        <div style="display: flex; gap: var(--space-4);">
           <div class="log-title">${escapeHtml(l.routineName || '루틴')}</div> • 
-          <div class="log-subtitle">${dateStr}</div> • 
-          <div class="log-subtitle">${durStr} 완료</div>
+          <div class="log-meta">${dateStr}</div> • 
+          <div class="log-meta">${durStr} 완료</div>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-          <button class="btn-xs btn-danger btn-icon" style="padding:4px 8px !important; font-size:12px !important;" onclick="window.deleteLog('${escapeAttr(logId)}')" title="기록 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
+          <button class="btn-xs btn-tertiary btn-icon">${getSfSymbol("trash.fill", 14, "var(--text-warning)")}</button>
         </div>
       </div>`;
   }).join('');
