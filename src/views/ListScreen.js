@@ -26,9 +26,10 @@ export function renderList() {
                 ${r.steps.filter(s => s.type !== 'transition').length}단계 • 약 ${estimateMinutes(r)}분
               </div>
             </div>
-            <div class="icon-btns" style="display:flex; gap:8px;">
+            <div class="icon-btns" style="display:flex; gap:6px; align-items:center;">
               <button class="btn-xs btn-secondary btn-icon" onclick="window.goEditRoutine('${id}')" title="루틴 수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
               <button class="btn-xs btn-secondary btn-icon" onclick="window.shareRoutine('${id}')" title="루틴 공유하기">${getSfSymbol("square.and.arrow.up", 14, "var(--text-secondary)")}</button>
+              <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${id}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "var(--color-danger)")}</button>
             </div>
           </div>
           ${(state.routines[id] && state.routines[id].progress) 
