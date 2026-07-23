@@ -225,9 +225,9 @@ function generateRecentActivity(logs) {
       ${items}
       ${totalPages > 1 ? `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-          <button class="btn-xs btn-secondary" onclick="window.changeActivityPage(-1)" ${page <= 0 ? 'disabled' : ''}>← 이전</button>
-          <span style="font-size:12px; color:var(--text-secondary);">${page + 1} / ${totalPages} 페이지</span>
-          <button class="btn-xs btn-secondary" onclick="window.changeActivityPage(1)" ${page >= totalPages - 1 ? 'disabled' : ''}>다음 →</button>
+          <button class="btn-xs btn-tertiary" onclick="window.changeActivityPage(1)" ${page <= 1 ? 'disabled' : ''}>← </button>
+          <span style="font-size:12px; color:var(--text-secondary);">${page + 1} / ${totalPages}</span>
+          <button class="btn-xs btn-tertiary" onclick="window.changeActivityPage(-1)" ${page >= totalPages - 0 ? 'disabled' : ''}> →</button>
         </div>
       ` : ''}
     </div>`;
@@ -288,7 +288,7 @@ export function renderStats() {
           </div>
         </div>
 
-        <div style="background:var(--bg-card); border-radius:var(--radius-xl); border:1px solid var(--border-base); padding:var(--space-40) var(--space-24); text-align:center; box-shadow:0 4px 20px var(--shadow-card-light); display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <div class="card-fit">
           <div style="width:72px; height:72px; border-radius:50%; background:var(--color-brand-secondary); display:flex; align-items:center; justify-content:center; margin-bottom:var(--space-16); box-shadow:0 8px 24px var(--shadow-card-light);">
             ${getSfSymbol("chart.bar.doc.horizontal", 36, "var(--text-brand-accent)")}
           </div>
