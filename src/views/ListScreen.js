@@ -26,9 +26,8 @@ export function renderList() {
               </div>
             </div>
             <div class="icon-btns" style="display:flex; gap:8px;">
-              <button class="btn-xs btn-secondary btn-icon" onclick="window.goEditRoutine('${id}')">✏️</button>
-              <button class="btn-xs btn-secondary btn-icon" onclick="window.shareRoutine('${id}')" title="공유하기">${r.shareCode ? '🔗' : '📤'}</button>
-              <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${id}')">🗑️</button>
+              <button class="btn-xs btn-secondary btn-icon" onclick="window.goEditRoutine('${id}')">Edit</button>
+              <button class="btn-xs btn-secondary btn-icon" onclick="window.shareRoutine('${id}')" title="공유하기">${r.shareCode ? '🔗' : 'Share'}</button>
             </div>
           </div>
           ${(state.routines[id] && state.routines[id].progress) 

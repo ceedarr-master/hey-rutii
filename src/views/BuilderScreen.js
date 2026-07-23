@@ -12,19 +12,19 @@ export function renderInlineStepEditor(i, s) {
 
   return `
     <div class="inline-edit-box" style="background:#def7f2; border:1px solid #00c6b8; border-radius:16px; padding:16px; margin:8px 0;">
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 이름</label>
+      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary);">운동 이름(필수)</label>
       <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" />
       
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">타겟 부위 (선택)</label>
+      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">타겟 부위</label>
       <input class="form-input-text" id="edit-target-${i}" type="text" value="${escapeAttr(s.target || '')}" placeholder="예: 둔근" />
 
-      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">설명 (선택)</label>
+      <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">설명</label>
       <textarea class="form-textarea-underline" id="edit-desc-${i}" placeholder="동작 주의사항">${escapeHtml(s.desc || '')}</textarea>
 
       <label style="font-size:var(--text-xs); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:8px; display:block;">진행 방식</label>
       <div style="display:flex; gap:8px; margin-top:4px;">
-        <button class="btn-xs ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">⏱ 시간</button>
-        <button class="btn-xs ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">✓ 횟수</button>
+        <button class="btn-xs ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'timer')">⏱시간</button>
+        <button class="btn-xs ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.toggleInlineType(${i}, 'manual')">✓횟수</button>
       </div>
 
       <div style="display:flex; gap:8px; margin-top:12px;">
@@ -69,9 +69,9 @@ export function renderBuilder() {
                   <div style="font-size:var(--text-xs); color:var(--text-secondary); margin-top:2px;">${stepDetail(s)}</div>
                 </div>
               </div>
-              <div style="display:flex; gap:6px;">
-                <button class="icon-btn-edit" onclick="window.startInlineEdit(${i})">✏️</button>
-                <button class="icon-btn-delete" onclick="window.removeStep(${i})">🗑️</button>
+              <div style="display:flex; gap: var(--space-8);">
+                <button class="btn-secondary" onclick="window.startInlineEdit(${i})">􀈊</button>
+                <button class="btn-warning" onclick="window.removeStep(${i})">􀈑</button>
               </div>
             </div>`;
         }
@@ -89,6 +89,7 @@ export function renderBuilder() {
         </div>
       ` : `
         <button class="btn-xs btn-secondary" onclick="window.promptImportRoutineToBuilder()">🔗 루틴코드로 불러오기</button>
+        <button class="btn-xs btn-danger btn-icon" onclick="window.deleteRoutine('${id}')">🗑️</button>
       `}
     </div>
 
@@ -113,8 +114,8 @@ export function renderBuilder() {
 
       <label style="font-size:var(--text-sm); font-weight:var(--fw-bold); color:var(--text-secondary); margin-top:var(--space-16); display:block;">진행 방식<span class="lbl-req">*</span></label>
       <div class="type-toggle" style="display:flex; gap:var(--space-8); margin-top:var(--space-6);">
-        <button class="btn-md btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">⏱ 시간 진행</button>
-        <button class="btn-md btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">✓ 횟수 진행</button>
+        <button class="btn-md btn-flex ${isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('timer')">⏱시간 진행</button>
+        <button class="btn-md btn-flex ${!isTimer ? 'btn-secondary' : 'btn-tertiary'}" onclick="window.setFormType('manual')">✓횟수 진행</button>
       </div>
 
       ${isTimer ? `
