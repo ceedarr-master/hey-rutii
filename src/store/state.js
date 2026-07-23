@@ -32,7 +32,7 @@ export const state = {
   routineOrder: [],
   routines: {},
   currentId: null,
-  play: { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false },
+  play: { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: null },
   progress: {},
   builder: { editingId: null, name: "", steps: [], editingStepIndex: null, editingStep: null },
   statsFilter: "all",

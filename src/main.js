@@ -128,13 +128,27 @@ window.goIntro = (id) => {
 window.startPlay = () => {
   const routine = state.routines[state.currentId];
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
-  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false };
+  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };
 
 window.resumePlay = (id) => {
   state.currentId = id;
+  const routine = state.routines[id];
+  if (routine && routine.progress) {
+    state.play = {
+      current: routine.progress.current || 0,
+      remaining: routine.progress.remaining || 0,
+      paused: false,
+      timerId: null,
+      currentSet: routine.progress.currentSet || 1,
+      isResting: routine.progress.isResting || false,
+      startTime: Date.now()
+    };
+  } else {
+    state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  }
   state.screen = "play";
   render();
 };
@@ -146,11 +160,13 @@ window.confirmResetAndStart = (id) => {
     message: '루틴 진행 상황을 초기화하고 첫 번째 동작부터 시작하시겠습니까?',
     confirmText: '시작하기',
     cancelText: '취소',
-    onConfirm: () => {
-      delete state.routines[id].progress;
-      persistRoutine(state.routines[id]);
+    onConfirm: async () => {
+      if (state.routines[id]) {
+        delete state.routines[id].progress;
+        await persistRoutine(state.routines[id]);
+      }
       state.currentId = id;
-      state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false };
+      state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
       state.screen = "play";
       render();
     }
@@ -195,16 +211,25 @@ window.nextStep = (skipBeep = false) => {
     render();
   } else {
     // Routine completed! Play cheerful ascending chime & log history
+    if (routine.progress) {
+      delete routine.progress;
+      persistRoutine(routine);
+    }
     playBeep('routineComplete');
     const historyRaw = localStorage.getItem("routines:history") || "[]";
     let history = [];
     try { history = JSON.parse(historyRaw); } catch(e) {}
+    const duration = state.play.startTime 
+      ? Math.max(1, Math.round((Date.now() - state.play.startTime) / 1000))
+      : routine.steps.reduce((acc, step) => acc + (step.seconds || 30), 0);
+
     history.unshift({
       id: Date.now().toString(),
       routineId: routine.id,
       routineName: routine.name,
       completedAt: new Date().toISOString(),
-      durationSeconds: routine.steps.reduce((acc, step) => acc + (step.seconds || 30), 0)
+      durationSeconds: duration,
+      completed: true
     });
     localStorage.setItem("routines:history", JSON.stringify(history));
     triggerCloudSync();
@@ -278,14 +303,48 @@ window.toggleSound = () => {
 };
 
 window.confirmExitPlay = () => {
-  showConfirm("운동을 중단하고 목록으로 나가시겠습니까?", () => {
+  showConfirm("운동을 중단하고 목록으로 나가시겠습니까?\n현재까지 진행된 운동 시간과 상황이 기록됩니다.", async () => {
+    const routine = state.routines[state.currentId];
+    if (routine) {
+      const duration = state.play.startTime 
+        ? Math.max(1, Math.round((Date.now() - state.play.startTime) / 1000))
+        : 0;
+
+      const historyRaw = localStorage.getItem("routines:history") || "[]";
+      let history = [];
+      try { history = JSON.parse(historyRaw); } catch(e) {}
+      history.unshift({
+        id: Date.now().toString(),
+        routineId: routine.id,
+        routineName: routine.name + " (중단)",
+        completedAt: new Date().toISOString(),
+        durationSeconds: duration,
+        completed: false
+      });
+      localStorage.setItem("routines:history", JSON.stringify(history));
+
+      routine.progress = {
+        current: state.play.current,
+        currentSet: state.play.currentSet,
+        remaining: state.play.remaining,
+        isResting: state.play.isResting
+      };
+
+      await persistRoutine(routine);
+      await triggerCloudSync();
+    }
     state.screen = "list";
     render();
   });
 };
 
 window.restartRoutine = () => {
-  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false };
+  const routine = state.routines[state.currentId];
+  if (routine && routine.progress) {
+    delete routine.progress;
+    persistRoutine(routine);
+  }
+  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };
