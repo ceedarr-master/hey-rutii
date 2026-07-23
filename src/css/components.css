@@ -197,8 +197,8 @@ label {
 .main-tab-btn { flex: 1; padding: var(--space-14) var(--space-12); border-radius: var(--radius-md); border: none; background: transparent; color: var(--text-secondary); font-size: var(--text-base); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
 .main-tab-btn.active { background: var(--surface-white); color: var(--accent-color); box-shadow: 0 2px 8px var(--active-shadow); font-weight: var(--fw-black); }
 
-.tabs-sm { display: flex; background: var(--bg-tabs); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-16); }
-.tabs-sm-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-6); padding: var(--space-10) var(--space-8); border-radius: var(--radius-sm); border: none; background: transparent; color: var(--text-secondary); font-size: var(--typo-body-xs); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
+.tabs-sm { display: flex; background: var(--bg-tabs); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-16); width: fit-content; }
+.tabs-sm-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-6); padding: var(--space-10) var(--space-8); border-radius: var(--radius-sm); border: none; background: transparent; color: var(--text-secondary); font-size: var(--typo-body-xs); font-weight: var(--fw-bold); cursor: pointer; transition: all 0.2s ease; text-align: center; outline: none; }
 .tabs-sm-btn.active { background: var(--surface-white); color: var(--accent-color); box-shadow: 0 2px 8px var(--active-shadow); font-weight: var(--fw-bold); }
 
 

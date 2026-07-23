@@ -38,7 +38,7 @@ function renderExerciseFields({
     <textarea class="form-textarea-underline" ${idAttr('desc')} placeholder="동작 방법이나 주의사항" ${onDescInput ? `oninput="${onDescInput}"` : ''}>${escapeHtml(desc)}</textarea>
 
     <label>진행 방식<span class="lbl-req">*</span></label>
-    <div class="tabs-sm" style="margin-top:var(--space-6);">
+    <div class="tabs-sm">
       <button class="tabs-sm-btn ${isTimer ? 'active' : ''}" onclick="${onTypeToggle('timer')}">${getSfSymbol("stopwatch", 14)} 시간 진행</button>
       <button class="tabs-sm-btn ${!isTimer ? 'active' : ''}" onclick="${onTypeToggle('manual')}">${getSfSymbol("checkmark", 14)} 횟수 진행</button>
     </div>
@@ -156,7 +156,7 @@ export function renderBuilder() {
                   </div>
                 `}
               </div>
-              <div style="display:flex; gap: var(--space-6);">
+              <div style="display:flex; gap: var(--space-8);">
                 <button class="btn-sm btn-secondary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
                 <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
               </div>
