@@ -341,6 +341,16 @@ label {
   margin-bottom: var(--space-4);
 }
 
+.credit {
+  font-size: var(--typo-body-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--fw-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
 .form-input-text {
   width: 100%;
   border: none;

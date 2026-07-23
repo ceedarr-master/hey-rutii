@@ -16,7 +16,7 @@ export function renderList() {
           <div class="routine-card-top" style="display:flex; justify-content:space-between; align-items:flex-start;">
             <div onclick="window.goIntro('${id}')" style="flex:1;cursor:pointer;">
               ${(r.original_author && r.original_author.name) ? `
-                <div style="font-size:var(--text-xs); color:var(--text-secondary); display:flex; align-items:center; gap:var(--space-4); margin-bottom:var(--space-2);">
+                <div class="credit">
                   <span style="display:inline-flex; align-items:center;">${renderAvatarHtml(r.original_author.avatar, 14)}</span>
                   <span>${escapeHtml(r.original_author.name)}님의 루틴${r.is_modified ? '을 바탕으로 제작' : ''}</span>
                 </div>
