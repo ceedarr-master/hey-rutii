@@ -12,7 +12,7 @@ export function renderInlineStepEditor(i, s) {
   const rest = s.restSeconds || 0;
 
   return `
-    <div class="inline-edit-box">
+    <div class="card">
       <label>운동 이름<span class="lbl-req">*</span></label>
       <input class="form-input-text" id="edit-name-${i}" type="text" value="${escapeAttr(s.name)}" />
       
@@ -131,7 +131,7 @@ export function renderBuilder() {
     </div>
     ${stepsHtml}
 
-    <div class="card" style="background:#ffffff; border-radius:20px; padding:20px; text-align:left; margin-top:var(--space-16); border:1px solid var(--border-base);">
+    <div class="card">
       <label>운동 이름<span class="lbl-req">*</span></label>
       <input class="form-input-text" type="text" placeholder="푸쉬업" value="${escapeAttr(formDraft.name)}" oninput="window.updateForm('name', this.value)" />
 
