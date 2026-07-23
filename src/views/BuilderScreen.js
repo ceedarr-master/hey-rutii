@@ -171,8 +171,8 @@ export function renderBuilder() {
       ${b.editingId ? `
         <div style="font-size:var(--text-sm); display:flex; align-items:center; gap:var(--space-8);">
           ${state.routines[b.editingId]?.shareCode 
-            ? `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">공유 코드 복사 (${state.routines[b.editingId].shareCode})</button>` 
-            : `<button class="btn-sm btn-tertiary" onclick="window.shareRoutine('${b.editingId}')">공유 코드 발급</button>`}
+            ? `<button class="btn-sm btn-outlined" onclick="window.shareRoutine('${b.editingId}')">공유 코드 복사 (${state.routines[b.editingId].shareCode})</button>` 
+            : `<button class="btn-sm btn-outlined" onclick="window.shareRoutine('${b.editingId}')">공유 코드 발급</button>`}
           <button class="btn-sm btn-warning btn-icon" onclick="window.deleteRoutine('${b.editingId}')" title="루틴 삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
         </div>
       ` : `

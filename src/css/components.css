@@ -344,10 +344,10 @@ label {
 .form-input-text {
   width: 100%;
   border: none;
-  border-bottom: 2px solid var(--border-accent);
+  border-bottom: 1px solid var(--color-stroke-dark);
   background: transparent;
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8);
-  font-size: var(--typo-body-md);
+  font-size: var(--typo-body-sm);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   font-family: inherit;
@@ -371,7 +371,7 @@ label {
 .form-input-num {
   width: 100%;
   border: none;
-  border-bottom: 2px solid var(--border-accent);
+  border-bottom: 1px solid var(--color-stroke-dark);
   background: transparent;
   padding: var(--space-8) var(--space-4);
   font-size: var(--typo-body-lg);
@@ -399,10 +399,10 @@ label {
 .form-textarea-underline {
   width: 100%;
   border: none;
-  border-bottom: 2px solid var(--border-accent);
+  border-bottom: 1px solid var(--color-stroke-dark);
   background: transparent;
   padding: var(--space-8) var(--space-4) var(--space-8) var(--space-8);
-  font-size: var(--text-base);
+  font-size: var(--typo-body-sm);
   font-weight: var(--fw-medium);
   color: var(--text-primary);
   font-family: inherit;

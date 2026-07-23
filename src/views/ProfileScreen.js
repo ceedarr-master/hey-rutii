@@ -5,7 +5,7 @@ export function renderProfile() {
   const p = state.userProfile || { display_name: "", avatar_url: "" };
   return `
     <div style="padding-bottom:var(--space-60);">
-      <div class="card-fit" style="text-align:left; padding:var(--space-24); margin-bottom:var(--space-16); background:var(--bg-card); border-radius:var(--radius-xl); border:1px solid var(--border-base);">
+      <div class="card-fit">
         <div style="display:flex; align-items:center; gap:var(--space-20); margin-bottom:var(--space-20);">
           <div style="position:relative; flex-shrink:0;">
             <div id="avatarPreviewContainer" style="width:93px; height:93px; border-radius:50%; overflow:hidden; border:2px solid var(--border-accent); display:flex; align-items:center; justify-content:center;">
@@ -26,7 +26,7 @@ export function renderProfile() {
         </div>
       </div>
       
-      <div class="card-fit" style="text-align:left; padding:var(--space-24); background:var(--bg-card); border-radius:var(--radius-xl); border:1px solid var(--border-base);">
+      <div class="card-fit">
         <div style="font-size:var(--typo-display-lg); font-weight:var(--fw-black); color:var(--text-primary); margin-bottom:var(--space-12);">로그인된 계정</div>
         <p style="font-size:var(--typo-display-lg); font-weight:var(--fw-bold); color:var(--text-primary); margin-bottom:var(--space-20);">${state.user ? escapeHtml(state.user.email) : '로그인 정보 없음'}</p>
         
@@ -35,8 +35,10 @@ export function renderProfile() {
         <div style="display:flex; justify-content:flex-end;">
           <button class="btn-xs btn-secondary" onclick="window.handleProfileUpdatePassword()">변경하기</button>
         </div>
+      </div>
 
-        ${state.user ? `
+      <div class="card-fit">
+      ${state.user ? `
         <div style="margin-top:var(--space-24); padding-top:var(--space-16); border-top:1px solid var(--border-base); display:flex; justify-content:space-between; align-items:center;">
           <div>
             <div style="font-size:var(--typo-body-sm); font-weight:var(--fw-bold); color:var(--text-primary);">로그아웃</div>
