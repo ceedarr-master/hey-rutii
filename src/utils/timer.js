@@ -56,6 +56,26 @@ function triggerRepStart(secPerRep) {
 
 export function startTimer(nextStepCallback) {
   clearTimer();
+
+  const routine = state.routines[state.currentId];
+  if (routine && routine.steps && routine.steps[state.play.current]) {
+    const s = routine.steps[state.play.current];
+    if (s.type === 'manual' && !state.play.isResting && !state.play.paused) {
+      const secPerRep = s.secPerRep || 3;
+      if (state.play.remainingReps === undefined || state.play.remainingReps === null) {
+        state.play.remainingReps = s.reps;
+      }
+      if (state.play.repSec === undefined || state.play.repSec === null) {
+        state.play.repSec = secPerRep;
+      }
+      // 진입 즉시(t=0ms) 첫 횟수 시작 "똑"(740Hz) + 중간지점(1.5초 등) "딱"(580Hz) 알람음 즉시 예약
+      if (!state.play.repStarted) {
+        state.play.repStarted = true;
+        triggerRepStart(secPerRep);
+      }
+    }
+  }
+
   state.play.timerId = setInterval(() => {
     if (!state.play || state.play.paused) return;
 
@@ -70,12 +90,6 @@ export function startTimer(nextStepCallback) {
       }
       if (state.play.repSec === undefined || state.play.repSec === null) {
         state.play.repSec = secPerRep;
-      }
-
-      // 첫 횟수 시작 시점 "똑"(740Hz) + 중간 지점(1.5초 등) "딱"(580Hz) 알람음 재생
-      if (!state.play.repStarted) {
-        state.play.repStarted = true;
-        triggerRepStart(secPerRep);
       }
 
       state.play.repSec--;
