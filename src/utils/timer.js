@@ -25,9 +25,32 @@ export function releaseWakeLock() {
 }
 
 export function clearTimer() {
-  if (state.play && state.play.timerId) {
-    clearInterval(state.play.timerId);
-    state.play.timerId = null;
+  if (state.play) {
+    if (state.play.timerId) {
+      clearInterval(state.play.timerId);
+      state.play.timerId = null;
+    }
+    if (state.play.halfTimerId) {
+      clearTimeout(state.play.halfTimerId);
+      state.play.halfTimerId = null;
+    }
+  }
+}
+
+function triggerRepStart(secPerRep) {
+  playBeep('repStart'); // "똑" (740Hz)
+  if (state.play) {
+    if (state.play.halfTimerId) {
+      clearTimeout(state.play.halfTimerId);
+      state.play.halfTimerId = null;
+    }
+    const halfMs = (secPerRep / 2) * 1000;
+    state.play.halfTimerId = setTimeout(() => {
+      if (state.play && !state.play.paused && state.screen === 'play') {
+        playBeep('repHalf'); // "딱" (580Hz)
+      }
+      if (state.play) state.play.halfTimerId = null;
+    }, halfMs);
   }
 }
 
@@ -49,10 +72,10 @@ export function startTimer(nextStepCallback) {
         state.play.repSec = secPerRep;
       }
 
-      // 첫 횟수 시작 시점 알람음 재생
+      // 첫 횟수 시작 시점 "똑"(740Hz) + 중간 지점(1.5초 등) "딱"(580Hz) 알람음 재생
       if (!state.play.repStarted) {
         state.play.repStarted = true;
-        playBeep('rep');
+        triggerRepStart(secPerRep);
       }
 
       state.play.repSec--;
@@ -62,8 +85,8 @@ export function startTimer(nextStepCallback) {
           state.play.remainingReps--;
           state.play.repSec = secPerRep;
 
-          // 다음 횟수 시작 시점 740Hz 알람음 재생
-          playBeep('rep');
+          // 다음 횟수 시작 시점 "똑" + 중간 지점 "딱" 알람음 재생
+          triggerRepStart(secPerRep);
 
           // DOM update
           const elements = document.querySelectorAll(".rep-digital-counter");
@@ -78,6 +101,10 @@ export function startTimer(nextStepCallback) {
           });
         } else if (state.play.remainingReps === 1) {
           state.play.remainingReps = 0;
+          if (state.play.halfTimerId) {
+            clearTimeout(state.play.halfTimerId);
+            state.play.halfTimerId = null;
+          }
           const elements = document.querySelectorAll(".rep-digital-counter");
           elements.forEach(el => {
             const numSpan = el.querySelector(".rep-val");
