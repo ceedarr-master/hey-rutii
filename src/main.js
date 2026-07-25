@@ -309,6 +309,12 @@ window.prevStep = () => {
   const routine = state.routines[state.currentId];
   if (!routine) return;
 
+  if (state.play.isPrep) {
+    state.screen = "intro";
+    render();
+    return;
+  }
+
   let targetIdx = -1;
   for (let i = state.play.current - 1; i >= 0; i--) {
     if (routine.steps[i] && routine.steps[i].type !== 'transition') {
@@ -338,6 +344,14 @@ window.skipStep = () => {
   clearTimer();
   const routine = state.routines[state.currentId];
   if (!routine) return;
+
+  if (state.play.isPrep) {
+    state.play.isPrep = false;
+    state.play.remaining = 0;
+    state.play.fromTimerFinish = true;
+    render();
+    return;
+  }
 
   let targetIdx = -1;
   for (let i = state.play.current + 1; i < routine.steps.length; i++) {
