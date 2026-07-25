@@ -62,7 +62,16 @@ export function playBeep(type = 'finish') {
     const gain = ctx.createGain();
     osc.type = 'sine';
 
-    if (type === 'count' || type === 1) {
+    if (type === 'rep' || type === 'repTick') {
+      // 횟수 카운트다운 전용 알람음 (740 Hz F#5, 맑고 가벼운 숏 비프)
+      osc.frequency.setValueAtTime(740, ctx.currentTime);
+      gain.gain.setValueAtTime(0.20, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.06);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.06);
+    } else if (type === 'count' || type === 1) {
       // 3초, 2초, 1초 카운트다운 부드럽고 작은 저음 비프 (520 Hz)
       osc.frequency.setValueAtTime(520, ctx.currentTime);
       gain.gain.setValueAtTime(0.18, ctx.currentTime);

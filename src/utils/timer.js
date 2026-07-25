@@ -35,39 +35,99 @@ export function startTimer(nextStepCallback) {
   clearTimer();
   state.play.timerId = setInterval(() => {
     if (!state.play || state.play.paused) return;
-    
-    if (state.play.remaining > 1) {
-      state.play.remaining--;
-      const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
-      elements.forEach(el => {
-        el.textContent = fmt(state.play.remaining);
-        if (state.play.remaining <= 3) {
-          el.classList.add("warning");
-        } else {
-          el.classList.remove("warning");
-        }
-      });
 
-      // 3초, 2초, 1초 저음 카운트다운 알림음 (520Hz)
-      if (state.play.remaining <= 3 && state.play.remaining >= 1) {
-        playBeep('count');
+    const routine = state.routines[state.currentId];
+    if (!routine || !routine.steps || !routine.steps[state.play.current]) return;
+    const s = routine.steps[state.play.current];
+
+    if (s.type === 'manual' && !state.play.isResting) {
+      const secPerRep = s.secPerRep || 3;
+      if (state.play.remainingReps === undefined || state.play.remainingReps === null) {
+        state.play.remainingReps = s.reps;
       }
-    } else if (state.play.remaining === 1) {
-      // 0:00 초에 고음 알림음 (1046.5Hz) 즉시 울리고 0:00 렌더 후 다음 화면으로 이동
-      state.play.remaining = 0;
-      const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
-      elements.forEach(el => {
-        el.textContent = fmt(0);
-        el.classList.add("warning");
-      });
+      if (state.play.repSec === undefined || state.play.repSec === null) {
+        state.play.repSec = secPerRep;
+      }
 
-      playBeep('finish');
+      // 첫 횟수 시작 시점 알람음 재생
+      if (!state.play.repStarted) {
+        state.play.repStarted = true;
+        playBeep('rep');
+      }
 
-      setTimeout(() => {
-        if (nextStepCallback) nextStepCallback(true);
-      }, 120);
+      state.play.repSec--;
+
+      if (state.play.repSec <= 0) {
+        if (state.play.remainingReps > 1) {
+          state.play.remainingReps--;
+          state.play.repSec = secPerRep;
+
+          // 다음 횟수 시작 시점 740Hz 알람음 재생
+          playBeep('rep');
+
+          // DOM update
+          const elements = document.querySelectorAll(".rep-digital-counter");
+          elements.forEach(el => {
+            const numSpan = el.querySelector(".rep-val");
+            if (numSpan) numSpan.textContent = state.play.remainingReps;
+            if (state.play.remainingReps <= 3) {
+              el.classList.add("warning");
+            } else {
+              el.classList.remove("warning");
+            }
+          });
+        } else if (state.play.remainingReps === 1) {
+          state.play.remainingReps = 0;
+          const elements = document.querySelectorAll(".rep-digital-counter");
+          elements.forEach(el => {
+            const numSpan = el.querySelector(".rep-val");
+            if (numSpan) numSpan.textContent = 0;
+            el.classList.add("warning");
+          });
+
+          playBeep('finish');
+
+          setTimeout(() => {
+            if (nextStepCallback) nextStepCallback(true);
+          }, 120);
+        } else {
+          if (nextStepCallback) nextStepCallback(true);
+        }
+      }
     } else {
-      if (nextStepCallback) nextStepCallback(true);
+      if (state.play.remaining > 1) {
+        state.play.remaining--;
+        const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
+        elements.forEach(el => {
+          el.textContent = fmt(state.play.remaining);
+          if (state.play.remaining <= 3) {
+            el.classList.add("warning");
+          } else {
+            el.classList.remove("warning");
+          }
+        });
+
+        // 3초, 2초, 1초 저음 카운트다운 알림음 (520Hz)
+        if (state.play.remaining <= 3 && state.play.remaining >= 1) {
+          playBeep('count');
+        }
+      } else if (state.play.remaining === 1) {
+        // 0:00 초에 고음 알림음 (1046.5Hz) 즉시 울리고 0:00 렌더 후 다음 화면으로 이동
+        state.play.remaining = 0;
+        const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
+        elements.forEach(el => {
+          el.textContent = fmt(0);
+          el.classList.add("warning");
+        });
+
+        playBeep('finish');
+
+        setTimeout(() => {
+          if (nextStepCallback) nextStepCallback(true);
+        }, 120);
+      } else {
+        if (nextStepCallback) nextStepCallback(true);
+      }
     }
   }, 1000);
 }

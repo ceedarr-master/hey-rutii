@@ -152,6 +152,13 @@ export function renderPlay(routine) {
         <button class="btn-lg btn-primary btn-flex" onclick="window.nextStep()">다음 →</button>
       </div>`;
   } else {
+    if (state.play.remainingReps === undefined || state.play.remainingReps === null) {
+      state.play.remainingReps = s.reps;
+      state.play.repSec = s.secPerRep || 3;
+    }
+    const currentReps = state.play.remainingReps;
+    const isWarning = currentReps <= 3 && currentReps > 0;
+
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
         <span class="badge">✓ 횟수 진행</span>
@@ -165,11 +172,12 @@ export function renderPlay(routine) {
       </div>
 
       <div class="card-group-timer">
-        <div style="font-size: var(--typo-counter); color: var(--text-brand-accent); text-align:center;"><span style="font-family: 'Panchang', -apple-system, sans-serif; font-weight: 800;">${s.reps}</span><span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-weight: var(--fw-black); font-size: 0.75em; margin-left: 6px;">개</span></div>
+        <div class="rep-digital-counter ${isWarning ? 'warning' : ''}" style="font-size: var(--typo-counter); color: var(--text-brand-accent); text-align:center;"><span class="rep-val" style="font-family: 'Panchang', -apple-system, sans-serif; font-weight: 800;">${currentReps}</span><span style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-weight: var(--fw-black); font-size: 0.75em; margin-left: 6px;">개</span></div>
       </div>
 
-      <div class="card-group-footer">
-        <button class="btn-lg btn-primary" style="width:100%;" onclick="window.nextStep()">세트 완료 ✓</button>
+      <div class="card-group-footer" style="display:flex; gap:var(--space-18);">
+        <button class="btn-lg btn-secondary btn-flex" onclick="window.togglePause()">${state.play.paused ? "▶ 시작" : "⏸ 일시정지"}</button>
+        <button class="btn-lg btn-primary btn-flex" onclick="window.nextStep()">세트 완료 ✓</button>
       </div>`;
   }
 

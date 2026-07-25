@@ -11,6 +11,7 @@ function renderExerciseFields({
   mm = 0,
   ss = 0,
   reps = 10,
+  secPerRep = 3,
   sets = 1,
   rest = 0,
   idBuilder = null,
@@ -20,6 +21,7 @@ function renderExerciseFields({
   onMmInput = '',
   onSsInput = '',
   onRepsInput = '',
+  onSecPerRepInput = '',
   onSetsInput = '',
   onRestInput = '',
   onTypeToggle = (t) => ''
@@ -68,6 +70,11 @@ function renderExerciseFields({
           <span class="num-unit">개</span>
         </div>
         <div class="num-group">
+          <span class="num-unit">회당</span>
+          <input class="form-input-num" ${idAttr('secPerRep')} type="number" min="1" value="${secPerRep}" ${onSecPerRepInput ? `oninput="${onSecPerRepInput}"` : ''} />
+          <span class="num-unit">초</span>
+        </div>
+        <div class="num-group">
           <input class="form-input-num" ${idAttr('sets')} type="number" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} />
           <span class="num-unit">세트</span>
         </div>
@@ -101,6 +108,7 @@ export function renderInlineStepEditor(i, s) {
   const mm = isTimer ? Math.floor((s.seconds || 0) / 60) : 0;
   const ss = isTimer ? (s.seconds || 0) % 60 : 0;
   const reps = s.reps || 10;
+  const secPerRep = s.secPerRep || 3;
   const sets = s.sets || 1;
   const rest = s.restSeconds || 0;
 
@@ -114,6 +122,7 @@ export function renderInlineStepEditor(i, s) {
         mm,
         ss,
         reps,
+        secPerRep,
         sets,
         rest,
         idBuilder: (field) => `edit-${field}-${i}`,
@@ -203,6 +212,7 @@ export function renderBuilder() {
         mm: formDraft.mm,
         ss: formDraft.ss,
         reps: formDraft.reps,
+        secPerRep: formDraft.secPerRep || 3,
         sets: formDraft.sets,
         rest: formDraft.restSeconds,
         onNameInput: "window.updateForm('name', this.value)",
@@ -211,6 +221,7 @@ export function renderBuilder() {
         onMmInput: "window.updateForm('mm', this.value)",
         onSsInput: "window.updateForm('ss', this.value)",
         onRepsInput: "window.updateForm('reps', this.value)",
+        onSecPerRepInput: "window.updateForm('secPerRep', this.value)",
         onSetsInput: "window.updateForm('sets', this.value)",
         onRestInput: "window.updateForm('restSeconds', this.value)",
         onTypeToggle: (t) => `window.setFormType('${t}')`

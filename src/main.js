@@ -71,7 +71,7 @@ export function render() {
     const routine = state.routines[state.currentId];
     if (routine && state.play.current < routine.steps.length) {
       const s = routine.steps[state.play.current];
-      if ((s.type === "timer" || s.type === "transition" || state.play.isResting) && !state.play.paused) {
+      if ((s.type === "timer" || s.type === "transition" || s.type === "manual" || state.play.isResting) && !state.play.paused) {
         startTimer(window.nextStep);
       }
     }
@@ -137,7 +137,7 @@ window.goIntro = (id) => {
 window.startPlay = () => {
   const routine = state.routines[state.currentId];
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
-  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };
@@ -149,6 +149,9 @@ window.resumePlay = (id) => {
     state.play = {
       current: routine.progress.current || 0,
       remaining: routine.progress.remaining || 0,
+      remainingReps: routine.progress.remainingReps || null,
+      repSec: routine.progress.repSec || null,
+      repStarted: false,
       paused: false,
       timerId: null,
       currentSet: routine.progress.currentSet || 1,
@@ -156,7 +159,7 @@ window.resumePlay = (id) => {
       startTime: Date.now()
     };
   } else {
-    state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+    state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   }
   state.screen = "play";
   render();
@@ -175,7 +178,7 @@ window.confirmResetAndStart = (id) => {
         await persistRoutine(state.routines[id]);
       }
       state.currentId = id;
-      state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+      state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
       state.screen = "play";
       render();
     }
@@ -188,6 +191,10 @@ window.nextStep = (skipBeep = false) => {
   const routine = state.routines[state.currentId];
   if (!routine) return;
   const s = routine.steps[state.play.current];
+
+  delete state.play.remainingReps;
+  delete state.play.repSec;
+  delete state.play.repStarted;
 
   if (!state.play.isResting && s.restSeconds > 0 && state.play.currentSet < (s.sets || 1)) {
     state.play.isResting = true;
@@ -264,6 +271,9 @@ window.prevStep = () => {
     state.play.current = targetIdx;
     state.play.currentSet = 1;
     state.play.remaining = 0;
+    delete state.play.remainingReps;
+    delete state.play.repSec;
+    delete state.play.repStarted;
     state.play.isResting = false;
     state.play.paused = false;
     render();
@@ -291,6 +301,9 @@ window.skipStep = () => {
     state.play.current = targetIdx;
     state.play.currentSet = 1;
     state.play.remaining = 0;
+    delete state.play.remainingReps;
+    delete state.play.repSec;
+    delete state.play.repStarted;
     state.play.isResting = false;
     state.play.paused = false;
     render();
@@ -336,6 +349,8 @@ window.confirmExitPlay = () => {
         current: state.play.current,
         currentSet: state.play.currentSet,
         remaining: state.play.remaining,
+        remainingReps: state.play.remainingReps,
+        repSec: state.play.repSec,
         isResting: state.play.isResting
       };
 
@@ -353,7 +368,7 @@ window.restartRoutine = () => {
     delete routine.progress;
     persistRoutine(routine);
   }
-  state.play = { current: 0, remaining: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };
@@ -412,7 +427,7 @@ window.updateBuilderName = (val) => { state.builder.name = val; };
 window.updateBuilderDesc = (val) => { state.builder.desc = val; };
 
 window.updateForm = (field, val) => {
-  if (['mm', 'ss', 'reps', 'sets', 'restSeconds'].includes(field)) {
+  if (['mm', 'ss', 'reps', 'secPerRep', 'sets', 'restSeconds'].includes(field)) {
     formDraft[field] = parseInt(val) || 0;
   } else {
     formDraft[field] = val;
@@ -435,6 +450,7 @@ window.addExerciseFromForm = () => {
     type: formDraft.type,
     seconds: formDraft.type === 'timer' ? seconds : 0,
     reps: formDraft.type === 'manual' ? formDraft.reps : 0,
+    secPerRep: formDraft.type === 'manual' ? (formDraft.secPerRep || 3) : 0,
     sets: formDraft.sets || 1,
     restSeconds: formDraft.restSeconds || 0
   };
@@ -513,12 +529,17 @@ window.toggleInlineType = (i, type) => {
     s.seconds = mm * 60 + ss;
   } else {
     const repsEl = document.getElementById(`edit-reps-${i}`);
+    const secPerRepEl = document.getElementById(`edit-secPerRep-${i}`);
     if (repsEl) s.reps = parseInt(repsEl.value) || s.reps || 10;
+    if (secPerRepEl) s.secPerRep = parseInt(secPerRepEl.value) || s.secPerRep || 3;
   }
 
   s.type = type;
   if (type === 'timer' && !s.seconds) s.seconds = 30;
-  if (type === 'manual' && !s.reps) s.reps = 10;
+  if (type === 'manual') {
+    if (!s.reps) s.reps = 10;
+    if (!s.secPerRep) s.secPerRep = 3;
+  }
 
   render();
 };
@@ -559,7 +580,9 @@ window.saveInlineEdit = (i) => {
     s.seconds = mm * 60 + ss;
   } else {
     const repsEl = document.getElementById(`edit-reps-${i}`);
+    const secPerRepEl = document.getElementById(`edit-secPerRep-${i}`);
     s.reps = repsEl ? (parseInt(repsEl.value) || 10) : 10;
+    s.secPerRep = secPerRepEl ? (parseInt(secPerRepEl.value) || 3) : 3;
   }
 
   state.builder.editingStepIndex = null;

@@ -366,19 +366,19 @@ export function renderStats() {
     <div class="stats-dashboard" style="display:flex; flex-direction:column; gap:var(--space-16);">
       <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-12);">
         <div class="card-hero">
-          <label>루틴 실행 횟수</label>
+          <label class"hero">루틴 실행 횟수</label>
           <div class="stat-hero">${totalExecutions}회</div>
         </div>
         <div class="card-hero">
-          <label>완주 횟수</label>
+          <label class="hero">완주 횟수</label>
           <div class="stat-hero">${fullCompletions}회</div>
         </div>
         <div class="card-hero">
-          <label>누적 시간</label>
+          <label class="hero">누적 시간</label>
           <div class="stat-hero">${totalDurationStr}</div>
         </div>
         <div class="card-hero">
-          <label>연속 일수</label>
+          <label class="hero">연속 일수</label>
           <div class="stat-hero">${streak}일</div>
         </div>
       </div>

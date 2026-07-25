@@ -745,7 +745,8 @@ label.hero {
   text-align: center;
 }
 
-.typo-highlight-timer.warning {
+.typo-highlight-timer.warning,
+.rep-digital-counter.warning {
   color: var(--text-warning) !important;
 }
 

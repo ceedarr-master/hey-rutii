@@ -15,7 +15,8 @@ export function estimateMinutes(routine) {
     if (s.type === 'timer' || s.type === 'transition') {
       stepSec = s.seconds || 0;
     } else {
-      stepSec = (s.reps || 10) * 3; // 1 rep = 3 seconds
+      const secPerRep = s.secPerRep || 3;
+      stepSec = (s.reps || 10) * secPerRep;
     }
     totalSec += (stepSec + rest) * sets;
   });
@@ -27,5 +28,6 @@ export function stepDetail(s) {
   const rest = s.restSeconds ? ` (${s.restSeconds}초 휴식)` : '';
   if (s.type === 'transition') return `${s.seconds}초 휴식 및 전환`;
   if (s.type === 'timer') return `${s.seconds}초 • ${sets}세트${rest}`;
-  return `${s.reps}개 • ${sets}세트${rest}`;
+  const secPerRep = s.secPerRep || 3;
+  return `${s.reps}개 • 회당 ${secPerRep}초 • ${sets}세트${rest}`;
 }
