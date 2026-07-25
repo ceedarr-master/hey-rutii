@@ -107,7 +107,28 @@ export function renderPlay(routine) {
     </div>`;
 
   let body = "";
-  if (s.type === 'transition' || state.play.isResting) {
+  if (state.play.isPrep) {
+    if (!state.play.remaining) state.play.remaining = 5;
+    const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
+    body = `
+      <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+        <span class="badge">🚀 루틴 준비</span>
+        ${setTrackHtml}
+      </div>
+
+      <div class="card-group-body">
+        <div class="step-title">루틴을 시작합니다</div>
+        <div class="step-description">준비하세요</div>
+      </div>
+
+      <div class="card-group-timer">
+        <div class="digital-timer typo-highlight-timer ${isWarning ? 'warning' : ''}">${fmt(state.play.remaining)}</div>
+      </div>
+
+      <div class="card-group-footer">
+        <button class="btn-lg btn-secondary" style="width:100%;" onclick="window.nextStep()">바로 시작</button>
+      </div>`;
+  } else if (s.type === 'transition' || state.play.isResting) {
     if (!state.play.remaining) state.play.remaining = s.type === 'transition' ? s.seconds : (s.restSeconds || 15);
     const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
     body = `

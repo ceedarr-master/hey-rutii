@@ -137,7 +137,20 @@ window.goIntro = (id) => {
 window.startPlay = () => {
   const routine = state.routines[state.currentId];
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
-  state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  state.play = {
+    current: 0,
+    remaining: 5,
+    remainingReps: null,
+    repSec: null,
+    repStarted: false,
+    isPrep: true,
+    fromTimerFinish: false,
+    paused: false,
+    timerId: null,
+    currentSet: 1,
+    isResting: false,
+    startTime: Date.now()
+  };
   state.screen = "play";
   render();
 };
@@ -152,6 +165,8 @@ window.resumePlay = (id) => {
       remainingReps: routine.progress.remainingReps || null,
       repSec: routine.progress.repSec || null,
       repStarted: false,
+      isPrep: false,
+      fromTimerFinish: false,
       paused: false,
       timerId: null,
       currentSet: routine.progress.currentSet || 1,
@@ -159,7 +174,20 @@ window.resumePlay = (id) => {
       startTime: Date.now()
     };
   } else {
-    state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+    state.play = {
+      current: 0,
+      remaining: 5,
+      remainingReps: null,
+      repSec: null,
+      repStarted: false,
+      isPrep: true,
+      fromTimerFinish: false,
+      paused: false,
+      timerId: null,
+      currentSet: 1,
+      isResting: false,
+      startTime: Date.now()
+    };
   }
   state.screen = "play";
   render();
@@ -178,7 +206,20 @@ window.confirmResetAndStart = (id) => {
         await persistRoutine(state.routines[id]);
       }
       state.currentId = id;
-      state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+      state.play = {
+        current: 0,
+        remaining: 5,
+        remainingReps: null,
+        repSec: null,
+        repStarted: false,
+        isPrep: true,
+        fromTimerFinish: false,
+        paused: false,
+        timerId: null,
+        currentSet: 1,
+        isResting: false,
+        startTime: Date.now()
+      };
       state.screen = "play";
       render();
     }
@@ -190,6 +231,15 @@ window.nextStep = (skipBeep = false) => {
   if (!skipBeep) playBeep('finish');
   const routine = state.routines[state.currentId];
   if (!routine) return;
+
+  if (state.play.isPrep) {
+    state.play.isPrep = false;
+    state.play.remaining = 0;
+    state.play.fromTimerFinish = true;
+    render();
+    return;
+  }
+
   const s = routine.steps[state.play.current];
 
   delete state.play.remainingReps;
