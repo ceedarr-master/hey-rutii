@@ -72,9 +72,9 @@ export function playBeep(type = 'finish') {
       osc.start();
       osc.stop(ctx.currentTime + 0.05);
     } else if (type === 'repHalf' || type === 'repTack') {
-      // "딱" - 회당 소요시간 중간(1.5초 등) 지점 보조 알람음 (580 Hz, 은은한 서브 비프)
-      osc.frequency.setValueAtTime(580, ctx.currentTime);
-      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      // "딱" - 회당 소요시간 중간(1.5초 등) 지점 보조 알람음 ("똑" 740Hz보다 높은 880 Hz A5, 경쾌하고 산뜻한 비프)
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
       osc.connect(gain);
       gain.connect(ctx.destination);
