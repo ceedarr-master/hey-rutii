@@ -63,8 +63,8 @@ export function playBeep(type = 'finish') {
     osc.type = 'sine';
 
     if (type === 'rep' || type === 'repStart' || type === 'repTick') {
-      // "똑" - 횟수 시작 시점 알람음 (740 Hz F#5, 맑고 경쾌한 숏 비프)
-      osc.frequency.setValueAtTime(740, ctx.currentTime);
+      // "똑" - 횟수 시작 시점 알람음 (1046.5 Hz C6, 높고 맑은 비프)
+      osc.frequency.setValueAtTime(1046.50, ctx.currentTime);
       gain.gain.setValueAtTime(0.20, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
       osc.connect(gain);
@@ -72,8 +72,8 @@ export function playBeep(type = 'finish') {
       osc.start();
       osc.stop(ctx.currentTime + 0.05);
     } else if (type === 'repHalf' || type === 'repTack') {
-      // "딱" - 회당 소요시간 중간(1.5초 등) 지점 보조 알람음 ("똑" 740Hz보다 높은 880 Hz A5, 경쾌하고 산뜻한 비프)
-      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      // "딱" - 회당 소요시간 중간(1.5초 등) 지점 알람음 ("똑"보다 높은 1318.51 Hz E6, 경쾌한 스냅 비프)
+      osc.frequency.setValueAtTime(1318.51, ctx.currentTime);
       gain.gain.setValueAtTime(0.15, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
       osc.connect(gain);
@@ -90,9 +90,9 @@ export function playBeep(type = 'finish') {
       osc.start();
       osc.stop(ctx.currentTime + 0.08);
     } else {
-      // 0초 도달 (타이머 종료), 전환/휴식 시작, 세트 완료 버튼 클릭 고음 비프 (1046.5 Hz C6)
-      osc.frequency.setValueAtTime(1046.5, ctx.currentTime);
-      gain.gain.setValueAtTime(0.35, ctx.currentTime);
+      // 0초 도달 (타이머 종료), 전환/휴식 시작 따뜻한 미디엄 차임 (783.99 Hz G5)
+      osc.frequency.setValueAtTime(783.99, ctx.currentTime);
+      gain.gain.setValueAtTime(0.30, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
       osc.connect(gain);
       gain.connect(ctx.destination);
