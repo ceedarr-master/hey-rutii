@@ -90,14 +90,28 @@ export function playBeep(type = 'finish') {
       osc.start();
       osc.stop(ctx.currentTime + 0.08);
     } else {
-      // 0초 도달 (타이머 종료), 전환/휴식 시작 따뜻한 미디엄 차임 (783.99 Hz G5)
-      osc.frequency.setValueAtTime(783.99, ctx.currentTime);
-      gain.gain.setValueAtTime(0.30, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.18);
+      // 0초 도달 (타이머 종료 / 휴식 / 트랜지션 완료): "띵-동" 2단 차임벨 (880 Hz A5 -> 587.33 Hz D5)
+      const notes = [
+        { freq: 880.00, time: 0, duration: 0.12, gain: 0.28 },    // "띵"
+        { freq: 587.33, time: 0.11, duration: 0.28, gain: 0.30 }   // "동"
+      ];
+
+      const now = ctx.currentTime;
+      notes.forEach(n => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle'; // 따뜻한 차임벨 톤
+
+        osc.frequency.setValueAtTime(n.freq, now + n.time);
+        gain.gain.setValueAtTime(n.gain, now + n.time);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + n.time + n.duration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + n.time);
+        osc.stop(now + n.time + n.duration);
+      });
     }
   } catch (e) {
     console.error("Audio error:", e);
