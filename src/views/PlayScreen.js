@@ -30,8 +30,6 @@ export function renderPlay(routine) {
     return renderList();
   }
   const s = routine.steps[state.play.current];
-  const isPrep = state.play.isPrep;
-  const firstEx = routine.steps.find(step => step.type !== 'transition');
 
   // 1. Exclude transition steps from step count & progress bar segments
   const exerciseStepIndices = [];
@@ -43,13 +41,11 @@ export function renderPlay(routine) {
 
   const totalExerciseSteps = exerciseStepIndices.length;
 
-  // Calculate current exercise step index (1-indexed, 0 if isPrep)
+  // Calculate current exercise step index (1-indexed)
   let currentExerciseIndex = 1;
   let activeExerciseStepOriginalIdx = exerciseStepIndices[0];
 
-  if (isPrep) {
-    currentExerciseIndex = 0;
-  } else if (s.type === 'transition') {
+  if (s.type === 'transition') {
     // If transition step, find next exercise step or last exercise step
     const nextExerciseIdx = exerciseStepIndices.find(idx => idx > state.play.current);
     if (nextExerciseIdx !== undefined) {
@@ -69,9 +65,7 @@ export function renderPlay(routine) {
   // 2. Render Progress Bar Segments (only for exercise steps)
   const segs = exerciseStepIndices.map((origIdx) => {
     let cls = "progress-seg";
-    if (isPrep) {
-      // no filled segments during initial prep
-    } else if (state.play.current > origIdx) {
+    if (state.play.current > origIdx) {
       cls += " done";
     } else if (state.play.current === origIdx) {
       cls += " current";
@@ -113,20 +107,18 @@ export function renderPlay(routine) {
     </div>`;
 
   let body = "";
-  if (isPrep) {
+  if (state.play.isPrep) {
     if (!state.play.remaining) state.play.remaining = 5;
     const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
         <span class="badge">🚀 루틴 준비</span>
+        ${setTrackHtml}
       </div>
 
       <div class="card-group-body">
         <div class="step-title">루틴을 시작합니다</div>
-        <div class="step-subtitle" style="font-size:var(--text-base); font-weight:var(--fw-bold); color:var(--text-brand-accent); margin-top:var(--space-8);">
-          첫 번째 운동: ${escapeHtml(firstEx ? firstEx.name : s.name)}
-        </div>
-        <div class="step-description" style="margin-top:var(--space-4);">준비 자세를 취해주세요</div>
+        <div class="step-description">준비하세요</div>
       </div>
 
       <div class="card-group-timer">
@@ -210,23 +202,12 @@ export function renderPlay(routine) {
       </div>`;
   }
 
-  let prevText = '← 루틴 소개';
-  if (isPrep) {
-    prevText = '← 루틴 소개';
-  } else if (prevEx) {
-    prevText = `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`;
-  }
-
-  let nextText = '건너뛰기 →';
-  if (isPrep) {
-    nextText = firstEx ? `시작 ( ${escapeHtml(firstEx.name)} ) →` : '시작 →';
-  } else if (nextEx) {
-    nextText = `건너뛰기 ( ${escapeHtml(nextEx.name)} ) →`;
-  }
+  const prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 루틴 소개';
+  const nextText = nextEx ? `건너뛰기 ( ${escapeHtml(nextEx.name)} ) →` : '건너뛰기 →';
 
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
-      <div class="step-counter">${isPrep ? '0' : currentExerciseIndex} of ${totalExerciseSteps}</div>
+      <div class="step-counter">${currentExerciseIndex} of ${totalExerciseSteps}</div>
       <div class="play-routine-name">${escapeHtml(routine.name)}</div>
       <div style="display:flex; gap:12px;">
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? getSfSymbol("speaker.wave.2.fill", 16) : getSfSymbol("speaker.slash.fill", 16)}</button>
