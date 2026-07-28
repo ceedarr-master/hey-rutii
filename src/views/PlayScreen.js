@@ -62,15 +62,20 @@ export function renderPlay(routine) {
     activeExerciseStepOriginalIdx = state.play.current;
   }
 
-  // 2. Render Progress Bar Segments (only for exercise steps)
-  const segs = exerciseStepIndices.map((origIdx) => {
+  // 2. Render Progress Bar Segments (prep segment + exercise step segments)
+  const prepCls = `progress-seg prep-seg ${state.play.isPrep ? 'current' : 'done'}`;
+  const prepSegHtml = `<div class="${prepCls}"></div>`;
+
+  const segs = prepSegHtml + exerciseStepIndices.map((origIdx) => {
     let cls = "progress-seg";
-    if (state.play.current > origIdx) {
-      cls += " done";
-    } else if (state.play.current === origIdx) {
-      cls += " current";
-    } else if (s.type === 'transition' && origIdx === activeExerciseStepOriginalIdx) {
-      cls += " current";
+    if (!state.play.isPrep) {
+      if (state.play.current > origIdx) {
+        cls += " done";
+      } else if (state.play.current === origIdx) {
+        cls += " current";
+      } else if (s.type === 'transition' && origIdx === activeExerciseStepOriginalIdx) {
+        cls += " current";
+      }
     }
     return `<div class="${cls}"></div>`;
   }).join("");
@@ -92,19 +97,22 @@ export function renderPlay(routine) {
   }
   const totalSets = s.sets || 1;
 
-  let dotsHtml = "";
-  for (let i = 1; i <= totalSets; i++) {
-    let dCls = "set-dot";
-    if (i < state.play.currentSet) dCls += " done";
-    else if (i === state.play.currentSet) dCls += " current";
-    else dCls += " upcoming";
-    dotsHtml += `<div class="${dCls}">${i < state.play.currentSet ? '✓' : i}</div>`;
+  let setTrackHtml = "";
+  if (!state.play.isPrep) {
+    let dotsHtml = "";
+    for (let i = 1; i <= totalSets; i++) {
+      let dCls = "set-dot";
+      if (i < state.play.currentSet) dCls += " done";
+      else if (i === state.play.currentSet) dCls += " current";
+      else dCls += " upcoming";
+      dotsHtml += `<div class="${dCls}">${i < state.play.currentSet ? '✓' : i}</div>`;
+    }
+    setTrackHtml = `
+      <div class="set-progress-track">
+        <div class="set-progress-line"></div>
+        ${dotsHtml}
+      </div>`;
   }
-  const setTrackHtml = `
-    <div class="set-progress-track">
-      <div class="set-progress-line"></div>
-      ${dotsHtml}
-    </div>`;
 
   let body = "";
   if (state.play.isPrep) {
@@ -113,7 +121,6 @@ export function renderPlay(routine) {
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
         <span class="badge">🚀 루틴 준비</span>
-        ${setTrackHtml}
       </div>
 
       <div class="card-group-body">
@@ -202,12 +209,22 @@ export function renderPlay(routine) {
       </div>`;
   }
 
-  const prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 루틴 소개';
-  const nextText = nextEx ? `건너뛰기 ( ${escapeHtml(nextEx.name)} ) →` : '건너뛰기 →';
+  let prevText = "";
+  let nextText = "";
+  if (state.play.isPrep) {
+    const firstEx = routine.steps.find(step => step.type !== 'transition');
+    prevText = '← 루틴 소개';
+    nextText = firstEx ? `첫 운동 시작 ( ${escapeHtml(firstEx.name)} ) →` : '첫 운동 시작 →';
+  } else {
+    prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 루틴 준비';
+    nextText = nextEx ? `건너뛰기 ( ${escapeHtml(nextEx.name)} ) →` : '건너뛰기 →';
+  }
+
+  const counterText = state.play.isPrep ? `0 of ${totalExerciseSteps}` : `${currentExerciseIndex} of ${totalExerciseSteps}`;
 
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-12); width:100%;">
-      <div class="step-counter">${currentExerciseIndex} of ${totalExerciseSteps}</div>
+      <div class="step-counter">${counterText}</div>
       <div class="play-routine-name">${escapeHtml(routine.name)}</div>
       <div style="display:flex; gap:12px;">
         <button class="btn-xs btn-tertiary btn-icon" onclick="window.toggleSound()">${state.soundEnabled ? getSfSymbol("speaker.wave.2.fill", 16) : getSfSymbol("speaker.slash.fill", 16)}</button>

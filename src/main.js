@@ -309,6 +309,12 @@ window.prevStep = () => {
   const routine = state.routines[state.currentId];
   if (!routine) return;
 
+  if (state.play.isPrep) {
+    state.screen = "intro";
+    render();
+    return;
+  }
+
   let targetIdx = -1;
   for (let i = state.play.current - 1; i >= 0; i--) {
     if (routine.steps[i] && routine.steps[i].type !== 'transition') {
@@ -328,8 +334,12 @@ window.prevStep = () => {
     state.play.paused = false;
     render();
   } else {
-    // If on the first exercise step, go back to Intro screen!
-    state.screen = "intro";
+    // 첫 번째 운동에서 이전 클릭 시 준비 스크린으로 복귀
+    state.play.isPrep = true;
+    state.play.remaining = 5;
+    delete state.play.remainingReps;
+    delete state.play.repSec;
+    delete state.play.repStarted;
     render();
   }
 };
@@ -338,6 +348,11 @@ window.skipStep = () => {
   clearTimer();
   const routine = state.routines[state.currentId];
   if (!routine) return;
+
+  if (state.play.isPrep) {
+    window.nextStep(true);
+    return;
+  }
 
   let targetIdx = -1;
   for (let i = state.play.current + 1; i < routine.steps.length; i++) {

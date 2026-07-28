@@ -207,6 +207,10 @@ button:disabled {
   background: var(--color-brand-accent);
 }
 
+.progress-seg.prep-seg {
+  flex: 0 0 16px;
+}
+
 
 /* ---- badge ---- */
 .badge {
