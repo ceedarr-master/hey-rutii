@@ -478,7 +478,9 @@ window.updateBuilderName = (val) => { state.builder.name = val; };
 window.updateBuilderDesc = (val) => { state.builder.desc = val; };
 
 window.updateForm = (field, val) => {
-  if (['mm', 'ss', 'reps', 'secPerRep', 'sets', 'restSeconds'].includes(field)) {
+  if (field === 'secPerRep') {
+    formDraft[field] = parseFloat(val) || 0;
+  } else if (['mm', 'ss', 'reps', 'sets', 'restSeconds'].includes(field)) {
     formDraft[field] = parseInt(val) || 0;
   } else {
     formDraft[field] = val;
@@ -501,7 +503,7 @@ window.addExerciseFromForm = () => {
     type: formDraft.type,
     seconds: formDraft.type === 'timer' ? seconds : 0,
     reps: formDraft.type === 'manual' ? formDraft.reps : 0,
-    secPerRep: formDraft.type === 'manual' ? (formDraft.secPerRep || 3) : 0,
+    secPerRep: formDraft.type === 'manual' ? (parseFloat(formDraft.secPerRep) || 3) : 0,
     sets: formDraft.sets || 1,
     restSeconds: formDraft.restSeconds || 0
   };
@@ -582,7 +584,7 @@ window.toggleInlineType = (i, type) => {
     const repsEl = document.getElementById(`edit-reps-${i}`);
     const secPerRepEl = document.getElementById(`edit-secPerRep-${i}`);
     if (repsEl) s.reps = parseInt(repsEl.value) || s.reps || 10;
-    if (secPerRepEl) s.secPerRep = parseInt(secPerRepEl.value) || s.secPerRep || 3;
+    if (secPerRepEl) s.secPerRep = parseFloat(secPerRepEl.value) || s.secPerRep || 3;
   }
 
   s.type = type;
@@ -633,7 +635,7 @@ window.saveInlineEdit = (i) => {
     const repsEl = document.getElementById(`edit-reps-${i}`);
     const secPerRepEl = document.getElementById(`edit-secPerRep-${i}`);
     s.reps = repsEl ? (parseInt(repsEl.value) || 10) : 10;
-    s.secPerRep = secPerRepEl ? (parseInt(secPerRepEl.value) || 3) : 3;
+    s.secPerRep = secPerRepEl ? (parseFloat(secPerRepEl.value) || 3) : 3;
   }
 
   state.builder.editingStepIndex = null;

@@ -204,7 +204,7 @@ export function showPromptModal({
       <div class="modal-title">${escapeHtml(title)}</div>
       <div class="modal-desc">${escapeHtml(message)}</div>
       <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <input id="modal-input-val" class="${inputType === 'text' ? 'form-input-text' : 'form-input-num'}" type="${inputType}" ${inputType === 'number' ? 'min="1"' : ''} value="${escapeAttr(defaultValue)}" placeholder="${escapeAttr(placeholder)}" style="${inputStyle}" />
+        <input id="modal-input-val" class="${inputType === 'text' ? 'form-input-text' : 'form-input-num'}" type="${inputType}" ${inputType === 'number' ? 'inputmode="numeric" pattern="[0-9]*" min="1"' : ''} value="${escapeAttr(defaultValue)}" placeholder="${escapeAttr(placeholder)}" style="${inputStyle}" onfocus="this.select()" />
         ${unitHtml}
       </div>
       <div class="modal-btn-row">

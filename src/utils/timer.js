@@ -97,7 +97,7 @@ export function startTimer(nextStepCallback) {
           state.play.repSec = secPerRep;
         }
 
-        state.play.repSec--;
+        state.play.repSec = Math.max(0, Math.round((state.play.repSec - 0.1) * 100) / 100);
 
         if (state.play.repSec <= 0) {
           if (state.play.remainingReps > 1) {
@@ -145,6 +145,10 @@ export function startTimer(nextStepCallback) {
       }
     }
 
+    state.play.secTick = (state.play.secTick || 0) + 100;
+    if (state.play.secTick < 1000) return;
+    state.play.secTick = 0;
+
     if (state.play.remaining > 1) {
       state.play.remaining--;
       const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
@@ -179,5 +183,5 @@ export function startTimer(nextStepCallback) {
     } else {
       if (nextStepCallback) nextStepCallback(true);
     }
-  }, 1000);
+  }, 100);
 }

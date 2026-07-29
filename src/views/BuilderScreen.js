@@ -48,38 +48,38 @@ function renderExerciseFields({
     ${isTimer ? `
       <div class="num-row">
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('mm')} type="number" min="0" value="${mm}" ${onMmInput ? `oninput="${onMmInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('mm')} type="number" inputmode="numeric" pattern="[0-9]*" min="0" value="${mm}" ${onMmInput ? `oninput="${onMmInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">분</span>
         </div>
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('ss')} type="number" min="0" max="59" value="${ss}" ${onSsInput ? `oninput="${onSsInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('ss')} type="number" inputmode="numeric" pattern="[0-9]*" min="0" max="59" value="${ss}" ${onSsInput ? `oninput="${onSsInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">초</span>
         </div>
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('sets')} type="number" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('sets')} type="number" inputmode="numeric" pattern="[0-9]*" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">세트</span>
         </div>
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('rest')} type="number" min="0" value="${rest}" ${onRestInput ? `oninput="${onRestInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('rest')} type="number" inputmode="numeric" pattern="[0-9]*" min="0" value="${rest}" ${onRestInput ? `oninput="${onRestInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">초 휴식</span>
         </div>
       </div>` : `
       <div class="num-row">
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('reps')} type="number" min="1" value="${reps}" ${onRepsInput ? `oninput="${onRepsInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('reps')} type="number" inputmode="numeric" pattern="[0-9]*" min="1" value="${reps}" ${onRepsInput ? `oninput="${onRepsInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">개</span>
         </div>
         <div class="num-group">
           <span class="num-unit">회당</span>
-          <input class="form-input-num" ${idAttr('secPerRep')} type="number" min="1" value="${secPerRep}" ${onSecPerRepInput ? `oninput="${onSecPerRepInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('secPerRep')} type="number" inputmode="decimal" step="0.5" min="0.5" value="${secPerRep}" ${onSecPerRepInput ? `oninput="${onSecPerRepInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">초</span>
         </div>
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('sets')} type="number" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('sets')} type="number" inputmode="numeric" pattern="[0-9]*" min="1" value="${sets}" ${onSetsInput ? `oninput="${onSetsInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">세트</span>
         </div>
         <div class="num-group">
-          <input class="form-input-num" ${idAttr('rest')} type="number" min="0" value="${rest}" ${onRestInput ? `oninput="${onRestInput}"` : ''} />
+          <input class="form-input-num" ${idAttr('rest')} type="number" inputmode="numeric" pattern="[0-9]*" min="0" value="${rest}" ${onRestInput ? `oninput="${onRestInput}"` : ''} onfocus="this.select()" />
           <span class="num-unit">초 휴식</span>
         </div>
       </div>`}
@@ -93,7 +93,7 @@ export function renderInlineStepEditor(i, s) {
         <label>트랜지션 시간<span class="lbl-req">*</span></label>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-top:var(--space-12); width:100%;">
           <div class="num-group" style="display:flex; align-items:baseline; gap:6px; max-width:140px;">
-            <input class="form-input-num" id="edit-ss-${i}" type="number" min="1" value="${s.seconds || 15}" style="flex:1;" />
+            <input class="form-input-num" id="edit-ss-${i}" type="number" inputmode="numeric" pattern="[0-9]*" min="1" value="${s.seconds || 15}" style="flex:1;" onfocus="this.select()" />
             <span class="num-unit">초</span>
           </div>
           <div style="display:flex; gap:8px;">
