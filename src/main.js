@@ -206,21 +206,7 @@ window.confirmResetAndStart = (id) => {
         await persistRoutine(state.routines[id]);
       }
       state.currentId = id;
-      state.play = {
-        current: 0,
-        remaining: 5,
-        remainingReps: null,
-        repSec: null,
-        repStarted: false,
-        isPrep: true,
-        fromTimerFinish: false,
-        paused: false,
-        timerId: null,
-        currentSet: 1,
-        isResting: false,
-        startTime: Date.now()
-      };
-      state.screen = "play";
+      state.screen = "intro";
       render();
     }
   });
