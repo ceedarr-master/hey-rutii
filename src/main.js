@@ -1,5 +1,5 @@
 import { getSfSymbol } from './utils/icons.js';
-import { playBeep, playRoutineCompleteSound } from './utils/audio.js';
+import { playBeep, playRoutineCompleteSound, initAudio } from './utils/audio.js';
 import { state, DEFAULT_TVA_ROUTINE, formDraft, saveLocalUserProfile } from './store/state.js';
 import { supabaseClient, initSupabaseAuth } from './config/supabase.js';
 import { renderHeader } from './components/Header.js';
@@ -69,9 +69,9 @@ export function render() {
   } else if (state.screen === "play") {
     requestWakeLock();
     const routine = state.routines[state.currentId];
-    if (routine && state.play.current < routine.steps.length) {
+    if (routine && (state.play.isPrep || state.play.current < routine.steps.length)) {
       const s = routine.steps[state.play.current];
-      if ((s.type === "timer" || s.type === "transition" || s.type === "manual" || state.play.isResting) && !state.play.paused) {
+      if ((state.play.isPrep || s.type === "timer" || s.type === "transition" || s.type === "manual" || state.play.isResting) && !state.play.paused) {
         startTimer(window.nextStep);
       }
     }
@@ -135,6 +135,7 @@ window.goIntro = (id) => {
 };
 
 window.startPlay = () => {
+  initAudio();
   const routine = state.routines[state.currentId];
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
   state.play = {
@@ -144,6 +145,7 @@ window.startPlay = () => {
     repSec: null,
     repStarted: false,
     isPrep: true,
+    secTick: 0,
     fromTimerFinish: false,
     paused: false,
     timerId: null,
@@ -156,6 +158,7 @@ window.startPlay = () => {
 };
 
 window.resumePlay = (id) => {
+  initAudio();
   state.currentId = id;
   const routine = state.routines[id];
   if (routine && routine.progress) {
@@ -181,6 +184,7 @@ window.resumePlay = (id) => {
       repSec: null,
       repStarted: false,
       isPrep: true,
+      secTick: 0,
       fromTimerFinish: false,
       paused: false,
       timerId: null,
@@ -194,6 +198,7 @@ window.resumePlay = (id) => {
 };
 
 window.confirmResetAndStart = (id) => {
+  initAudio();
   showConfirmModal({
     icon: getSfSymbol('arrow.clockwise', 36, 'var(--text-brand-accent)'),
     title: '처음부터 다시 시작',
@@ -206,14 +211,14 @@ window.confirmResetAndStart = (id) => {
         await persistRoutine(state.routines[id]);
       }
       state.currentId = id;
-      state.screen = "intro";
-      render();
+      window.startPlay();
     }
   });
 };
 
 window.nextStep = (skipBeep = false) => {
   clearTimer();
+  initAudio();
   if (!skipBeep) playBeep('finish');
   const routine = state.routines[state.currentId];
   if (!routine) return;
@@ -366,12 +371,14 @@ window.skipStep = () => {
 
 
 window.togglePause = () => {
+  initAudio();
   state.play.paused = !state.play.paused;
   render();
 };
 
 window.toggleSound = () => {
   state.soundEnabled = !state.soundEnabled;
+  if (state.soundEnabled) initAudio();
   render();
 };
 
@@ -414,12 +421,13 @@ window.confirmExitPlay = () => {
 };
 
 window.restartRoutine = () => {
+  initAudio();
   const routine = state.routines[state.currentId];
   if (routine && routine.progress) {
     delete routine.progress;
     persistRoutine(routine);
   }
-  state.play = { current: 0, remaining: 5, remainingReps: null, repSec: null, repStarted: false, isPrep: true, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  state.play = { current: 0, remaining: 5, remainingReps: null, repSec: null, repStarted: false, isPrep: true, secTick: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };

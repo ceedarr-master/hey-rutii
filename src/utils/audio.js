@@ -1,7 +1,7 @@
 import { state, audioCtx, setAudioCtx } from '../store/state.js';
 
-export function playRoutineCompleteSound() {
-  if (state.soundEnabled === false) return;
+export function initAudio() {
+  if (state.soundEnabled === false) return null;
   try {
     let ctx = audioCtx;
     if (!ctx) {
@@ -11,6 +11,18 @@ export function playRoutineCompleteSound() {
     if (ctx.state === 'suspended') {
       ctx.resume();
     }
+    return ctx;
+  } catch (e) {
+    console.error("Audio init error:", e);
+    return null;
+  }
+}
+
+export function playRoutineCompleteSound() {
+  if (state.soundEnabled === false) return;
+  try {
+    const ctx = initAudio();
+    if (!ctx) return;
 
     // 경쾌한 상승음 (C5 -> E5 -> G5 -> C6)
     const notes = [
@@ -49,14 +61,8 @@ export function playBeep(type = 'finish') {
 
   if (state.soundEnabled === false) return;
   try {
-    let ctx = audioCtx;
-    if (!ctx) {
-      ctx = new (window.AudioContext || window.webkitAudioContext)();
-      setAudioCtx(ctx);
-    }
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
+    const ctx = initAudio();
+    if (!ctx) return;
 
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
