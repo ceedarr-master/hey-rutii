@@ -215,7 +215,7 @@ export function renderPlay(routine) {
     prevText = '← 루틴 소개';
     nextText = firstEx ? `첫 운동 시작 ( ${escapeHtml(firstEx.name)} ) →` : '첫 운동 시작 →';
   } else {
-    prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 루틴 준비';
+    prevText = prevEx ? `← 이전 세트 ( ${escapeHtml(prevEx.name)} )`: '← 루틴 소개';
     nextText = nextEx ? `건너뛰기 ( ${escapeHtml(nextEx.name)} ) →` : '건너뛰기 →';
   }
 

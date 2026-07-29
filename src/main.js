@@ -1,5 +1,5 @@
 import { getSfSymbol } from './utils/icons.js';
-import { playBeep, playRoutineCompleteSound, initAudio } from './utils/audio.js';
+import { playBeep, playRoutineCompleteSound, initAudio, unlockAudio } from './utils/audio.js';
 import { state, DEFAULT_TVA_ROUTINE, formDraft, saveLocalUserProfile } from './store/state.js';
 import { supabaseClient, initSupabaseAuth } from './config/supabase.js';
 import { renderHeader } from './components/Header.js';
@@ -13,6 +13,14 @@ import { renderIntro } from './views/IntroScreen.js';
 import { clearTimer, startTimer, requestWakeLock } from './utils/timer.js';
 import { triggerCloudSync, persistRoutine, persistList, deleteRoutineStorage } from './store/sync.js';
 import { showToast, showConfirm, showConfirmModal, showPromptModal, escapeHtml, initTooltipListeners } from './utils/helpers.js';
+
+if (typeof window !== 'undefined') {
+  ['click', 'touchstart', 'touchend', 'pointerdown'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      unlockAudio();
+    }, { passive: true });
+  });
+}
 
 // ---- Sortable Initializer ----
 function initSortable() {
@@ -140,11 +148,11 @@ window.startPlay = () => {
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
   state.play = {
     current: 0,
-    remaining: 5,
+    remaining: 0,
     remainingReps: null,
     repSec: null,
     repStarted: false,
-    isPrep: true,
+    isPrep: false,
     secTick: 0,
     fromTimerFinish: false,
     paused: false,
@@ -179,11 +187,11 @@ window.resumePlay = (id) => {
   } else {
     state.play = {
       current: 0,
-      remaining: 5,
+      remaining: 0,
       remainingReps: null,
       repSec: null,
       repStarted: false,
-      isPrep: true,
+      isPrep: false,
       secTick: 0,
       fromTimerFinish: false,
       paused: false,
@@ -325,12 +333,8 @@ window.prevStep = () => {
     state.play.paused = false;
     render();
   } else {
-    // 첫 번째 운동에서 이전 클릭 시 준비 스크린으로 복귀
-    state.play.isPrep = true;
-    state.play.remaining = 5;
-    delete state.play.remainingReps;
-    delete state.play.repSec;
-    delete state.play.repStarted;
+    // 첫 번째 운동에서 이전 클릭 시 루틴 소개 스크린으로 이동
+    state.screen = "intro";
     render();
   }
 };
@@ -427,7 +431,7 @@ window.restartRoutine = () => {
     delete routine.progress;
     persistRoutine(routine);
   }
-  state.play = { current: 0, remaining: 5, remainingReps: null, repSec: null, repStarted: false, isPrep: true, secTick: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, isPrep: false, secTick: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };
