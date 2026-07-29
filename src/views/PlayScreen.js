@@ -62,11 +62,8 @@ export function renderPlay(routine) {
     activeExerciseStepOriginalIdx = state.play.current;
   }
 
-  // 2. Render Progress Bar Segments (prep segment + exercise step segments)
-  const prepCls = `progress-seg prep-seg ${state.play.isPrep ? 'current' : 'done'}`;
-  const prepSegHtml = `<div class="${prepCls}"></div>`;
-
-  const segs = prepSegHtml + exerciseStepIndices.map((origIdx) => {
+  // 2. Render Progress Bar Segments (exercise step segments)
+  const segs = exerciseStepIndices.map((origIdx) => {
     let cls = "progress-seg";
     if (!state.play.isPrep) {
       if (state.play.current > origIdx) {
@@ -118,14 +115,16 @@ export function renderPlay(routine) {
   if (state.play.isPrep) {
     if (!state.play.remaining) state.play.remaining = 5;
     const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
+    const firstEx = routine.steps.find(step => step.type !== 'transition');
+    const firstExName = firstEx ? escapeHtml(firstEx.name) : '';
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-        <span class="badge">🚀 루틴 준비</span>
+        <span class="badge transition">휴식 및 전환</span>
       </div>
 
       <div class="card-group-body">
-        <div class="step-title">루틴을 시작합니다</div>
-        <div class="step-description">준비하세요</div>
+        <div class="step-title">휴식 및 전환</div>
+        <div class="step-description">${firstExName ? `다음: ${firstExName}` : '첫 운동을 준비하세요'}</div>
       </div>
 
       <div class="card-group-timer">

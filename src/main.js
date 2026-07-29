@@ -419,7 +419,7 @@ window.restartRoutine = () => {
     delete routine.progress;
     persistRoutine(routine);
   }
-  state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
+  state.play = { current: 0, remaining: 5, remainingReps: null, repSec: null, repStarted: false, isPrep: true, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
   state.screen = "play";
   render();
 };
