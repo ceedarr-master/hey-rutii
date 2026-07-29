@@ -132,9 +132,11 @@ export async function syncData() {
       state.syncStatus = "synced";
     }
 
-    // If on stats or list screen, trigger UI update
+    // Only trigger UI update if on stats or list screen to prevent interrupting timer/intro flow
     if (typeof window !== 'undefined' && typeof window.render === 'function') {
-      window.render();
+      if (state.screen === "list" || state.screen === "stats") {
+        window.render();
+      }
     }
   } catch (e) {
     console.error("Sync error:", e);
