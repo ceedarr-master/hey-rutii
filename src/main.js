@@ -194,20 +194,11 @@ window.resumePlay = (id) => {
 
 window.confirmResetAndStart = (id) => {
   initAudio();
-  showConfirmModal({
-    icon: getSfSymbol('arrow.clockwise', 36, 'var(--text-brand-accent)'),
-    title: '처음부터 다시 시작',
-    message: '루틴 진행 상황을 초기화하고 첫 번째 동작부터 시작하시겠습니까?',
-    confirmText: '시작하기',
-    cancelText: '취소',
-    onConfirm: async () => {
-      if (state.routines[id]) {
-        delete state.routines[id].progress;
-        await persistRoutine(state.routines[id]);
-      }
-      window.goIntro(id);
-    }
-  });
+  if (state.routines[id]) {
+    delete state.routines[id].progress;
+    persistRoutine(state.routines[id]);
+  }
+  window.goIntro(id);
 };
 
 window.nextStep = (skipBeep = false) => {
