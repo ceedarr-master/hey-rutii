@@ -148,11 +148,11 @@ window.startPlay = () => {
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
   state.play = {
     current: 0,
-    remaining: 0,
+    remaining: 5,
     remainingReps: null,
     repSec: null,
     repStarted: false,
-    isPrep: false,
+    isPrep: true,
     secTick: 0,
     fromTimerFinish: false,
     paused: false,
@@ -185,21 +185,8 @@ window.resumePlay = (id) => {
       startTime: Date.now()
     };
   } else {
-    state.play = {
-      current: 0,
-      remaining: 0,
-      remainingReps: null,
-      repSec: null,
-      repStarted: false,
-      isPrep: false,
-      secTick: 0,
-      fromTimerFinish: false,
-      paused: false,
-      timerId: null,
-      currentSet: 1,
-      isResting: false,
-      startTime: Date.now()
-    };
+    window.goIntro(id);
+    return;
   }
   state.screen = "play";
   render();
@@ -218,8 +205,7 @@ window.confirmResetAndStart = (id) => {
         delete state.routines[id].progress;
         await persistRoutine(state.routines[id]);
       }
-      state.currentId = id;
-      window.startPlay();
+      window.goIntro(id);
     }
   });
 };
@@ -431,9 +417,7 @@ window.restartRoutine = () => {
     delete routine.progress;
     persistRoutine(routine);
   }
-  state.play = { current: 0, remaining: 0, remainingReps: null, repSec: null, repStarted: false, isPrep: false, secTick: 0, paused: false, timerId: null, currentSet: 1, isResting: false, startTime: Date.now() };
-  state.screen = "play";
-  render();
+  window.goIntro(state.currentId);
 };
 
 window.goNewRoutine = () => {
