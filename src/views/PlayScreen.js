@@ -113,18 +113,18 @@ export function renderPlay(routine) {
 
   let body = "";
   if (state.play.isPrep) {
-    if (!state.play.remaining) state.play.remaining = 5;
+    if (!state.play.remaining || state.play.remaining <= 0) state.play.remaining = 5;
     const isWarning = state.play.remaining <= 3 && state.play.remaining > 0;
     const firstEx = routine.steps.find(step => step.type !== 'transition');
     const firstExName = firstEx ? escapeHtml(firstEx.name) : '';
     body = `
       <div class="card-group-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-        <span class="badge transition">휴식 및 전환</span>
+        <span class="badge transition">🚀 루틴 준비</span>
       </div>
 
       <div class="card-group-body">
-        <div class="step-title">휴식 및 전환</div>
-        <div class="step-description">${firstExName ? `다음: ${firstExName}` : '첫 운동을 준비하세요'}</div>
+        <div class="step-title">준비하세요</div>
+        <div class="step-description">${firstExName ? `첫 운동: ${firstExName}` : '첫 번째 운동을 준비하세요'}</div>
       </div>
 
       <div class="card-group-timer">
