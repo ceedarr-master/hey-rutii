@@ -132,8 +132,8 @@ export function playBeep(type = 'finish') {
     } else {
       // 0초 도달 (타이머 종료 / 휴식 / 트랜지션 완료): "띵-동" 2단 차임벨 (880 Hz A5 -> 587.33 Hz D5)
       const notes = [
-        { freq: 587.00, time: 0, duration: 0.18, gain: 0.45 },    // "띵"
-        { freq: 880.00, time: 0.14, duration: 0.35, gain: 0.50 }   // "동"
+        { freq: 600.00, time: 0, duration: 0.18, gain: 0.45 },    // "띵"
+        { freq: 900.00, time: 0.14, duration: 0.35, gain: 0.50 }   // "동"
       ];
 
       notes.forEach(n => {
