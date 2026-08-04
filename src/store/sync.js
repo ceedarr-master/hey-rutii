@@ -108,6 +108,16 @@ export async function syncData() {
       }
       if (data.routines && typeof data.routines === 'object') {
         state.routines = data.routines;
+        const cloudIds = new Set(Object.keys(data.routines));
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith("routines:") && key !== "routines:list" && key !== "routines:history" && key !== "routines:updated_at" && key !== "routines:shared") {
+            const id = key.replace("routines:", "");
+            if (!cloudIds.has(id)) {
+              localStorage.removeItem(key);
+            }
+          }
+        }
         Object.keys(data.routines).forEach(id => {
           localStorage.setItem("routines:" + id, JSON.stringify(data.routines[id]));
         });

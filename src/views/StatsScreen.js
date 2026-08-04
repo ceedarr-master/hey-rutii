@@ -225,9 +225,9 @@ function generateRecentActivity(logs) {
       ${items}
       ${totalPages > 1 ? `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-          <button class="btn-xs btn-tertiary" onclick="window.changeActivityPage(1)" ${page <= 1 ? 'disabled' : ''}>← </button>
+          <button class="btn-xs btn-tertiary" onclick="window.changeActivityPage(-1)" ${page <= 0 ? 'disabled' : ''}>←</button>
           <span style="font-size:12px; color:var(--text-secondary);">${page + 1} / ${totalPages}</span>
-          <button class="btn-xs btn-tertiary" onclick="window.changeActivityPage(-1)" ${page >= totalPages - 0 ? 'disabled' : ''}> →</button>
+          <button class="btn-xs btn-tertiary" onclick="window.changeActivityPage(1)" ${page >= totalPages - 1 ? 'disabled' : ''}>→</button>
         </div>
       ` : ''}
     </div>`;

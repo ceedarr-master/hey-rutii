@@ -216,7 +216,39 @@ window.nextStep = (skipBeep = false) => {
     return;
   }
 
+  if (state.play.current >= routine.steps.length) {
+    if (routine.progress) {
+      delete routine.progress;
+      persistRoutine(routine);
+    }
+    playBeep('routineComplete');
+    const historyRaw = localStorage.getItem("routines:history") || "[]";
+    let history = [];
+    try { history = JSON.parse(historyRaw); } catch(e) {}
+    const duration = state.play.startTime 
+      ? Math.max(1, Math.round((Date.now() - state.play.startTime) / 1000))
+      : routine.steps.reduce((acc, step) => acc + (step.seconds || 30), 0);
+
+    history.unshift({
+      id: Date.now().toString(),
+      routineId: routine.id,
+      routineName: routine.name,
+      completedAt: new Date().toISOString(),
+      durationSeconds: duration,
+      completed: true
+    });
+    localStorage.setItem("routines:history", JSON.stringify(history));
+    triggerCloudSync();
+    render();
+    return;
+  }
+
   const s = routine.steps[state.play.current];
+  if (!s) {
+    state.play.current = routine.steps.length;
+    window.nextStep(skipBeep);
+    return;
+  }
 
   delete state.play.remainingReps;
   delete state.play.repSec;
@@ -291,6 +323,29 @@ window.prevStep = () => {
     return;
   }
 
+  if (state.play.isResting) {
+    state.play.isResting = false;
+    state.play.remaining = 0;
+    delete state.play.remainingReps;
+    delete state.play.repSec;
+    delete state.play.repStarted;
+    state.play.paused = false;
+    render();
+    return;
+  }
+
+  if (state.play.currentSet > 1) {
+    state.play.currentSet--;
+    state.play.remaining = 0;
+    delete state.play.remainingReps;
+    delete state.play.repSec;
+    delete state.play.repStarted;
+    state.play.isResting = false;
+    state.play.paused = false;
+    render();
+    return;
+  }
+
   let targetIdx = -1;
   for (let i = state.play.current - 1; i >= 0; i--) {
     if (routine.steps[i] && routine.steps[i].type !== 'transition') {
@@ -346,7 +401,7 @@ window.skipStep = () => {
     render();
   } else {
     state.play.current = routine.steps.length;
-    window.nextStep();
+    window.nextStep(true);
   }
 };
 
@@ -762,6 +817,30 @@ window.handleLogout = async () => {
   }
 
   await window.performLocalLogoutCleanup();
+};
+
+window.resetProfile = () => {
+  showConfirmModal({
+    icon: getSfSymbol('trash.fill', 36, '#ff5e3a'),
+    title: '프로필 초기화',
+    message: '정말 프로필 닉네임과 사진을 초기화하시겠습니까?',
+    confirmText: '초기화',
+    cancelText: '취소',
+    isDanger: true,
+    onConfirm: async () => {
+      state.userProfile = null;
+      saveLocalUserProfile(null);
+      if (state.user && supabaseClient) {
+        try {
+          await supabaseClient.from('profiles').delete().eq('id', state.user.id);
+        } catch(e) {
+          console.warn("Profile cloud delete warning:", e);
+        }
+      }
+      showToast("프로필이 초기화되었습니다.");
+      render();
+    }
+  });
 };
 
 window.saveProfile = async () => {

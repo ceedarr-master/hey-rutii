@@ -121,6 +121,7 @@ export function startTimer(nextStepCallback) {
           } else if (state.play.remainingReps === 1) {
             state.play.remainingReps = 0;
             state.play.fromTimerFinish = true;
+            clearTimer();
             if (state.play.halfTimerId) {
               clearTimeout(state.play.halfTimerId);
               state.play.halfTimerId = null;
@@ -138,6 +139,7 @@ export function startTimer(nextStepCallback) {
               if (nextStepCallback) nextStepCallback(true);
             }, 120);
           } else {
+            clearTimer();
             if (nextStepCallback) nextStepCallback(true);
           }
         }
@@ -169,6 +171,7 @@ export function startTimer(nextStepCallback) {
       // 0:00 초에 고음 알림음 (1046.5Hz) 즉시 울리고 0:00 렌더 후 다음 화면으로 이동
       state.play.remaining = 0;
       state.play.fromTimerFinish = true;
+      clearTimer();
       const elements = document.querySelectorAll(".digital-timer, .typo-highlight-timer");
       elements.forEach(el => {
         el.textContent = fmt(0);
@@ -181,6 +184,7 @@ export function startTimer(nextStepCallback) {
         if (nextStepCallback) nextStepCallback(true);
       }, 120);
     } else {
+      clearTimer();
       if (nextStepCallback) nextStepCallback(true);
     }
   }, 100);
