@@ -111,7 +111,7 @@ export function playBeep(type = 'finish') {
       const gain = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(1318.51, now);
-      gain.gain.setValueAtTime(0.10, now);
+      gain.gain.setValueAtTime(0.25, now);
       gain.gain.linearRampToValueAtTime(0.0001, now + 0.06);
       osc.connect(gain);
       gain.connect(ctx.destination);
