@@ -640,7 +640,6 @@ label.hero {
   border: 1px solid var(--color-stroke-dark);
   border-radius: var(--radius-lg);
   padding: var(--space-16);
-  margin-bottom: var(--space-4);
 }
 
 .step-item-figma.transition-type {
@@ -662,7 +661,7 @@ label.hero {
   align-items: center;
   justify-content: center;
   margin: -4px 0;
-  padding: 6px 0;
+  padding: var(--space-4) 0;
   min-height: 20px;
   z-index: 10;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -727,43 +726,24 @@ label.hero {
   position: relative;
   z-index: 20;
   display: flex;
-  align-items: center;
-  gap: var(--space-6, 6px);
+  gap: var(--space-8, 8px);
   background: var(--surface-white, #ffffff);
-  border: 1.5px solid var(--color-brand-accent, #34c759);
-  border-radius: 20px;
-  padding: 4px 6px;
-  box-shadow: 0 4px 16px rgba(52, 199, 89, 0.25);
+  border: 1px solid var(--border-card, #e2e8f0);
+  border-radius: var(--radius-xs);
+  padding: var(--space-4);
+  margin-top: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   animation: popover-bounce 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.step-insert-close-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 2px;
-  transition: background-color 0.15s ease;
-}
-
-.step-insert-close-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
 }
 
 @keyframes popover-bounce {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(-8px) scale(0.92);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
