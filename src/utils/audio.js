@@ -26,17 +26,19 @@ export function unlockAudio() {
     const ctx = initAudio();
     if (!ctx) return;
 
-    if (!isUnlocked || ctx.state === 'suspended') {
-      ctx.resume().then(() => {
-        // Play 1ms silent buffer to force unlock WebAudio on iOS Safari & mobile browsers
-        const buffer = ctx.createBuffer(1, 1, 22050);
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(ctx.destination);
-        source.start(0);
-        isUnlocked = true;
-      }).catch(() => {});
+    if (ctx.state === 'suspended') {
+      ctx.resume();
     }
+
+    // Play 1ms silent buffer synchronously in current user interaction tick
+    // Note: Do NOT place source.start inside a promise .then() on iOS Safari
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+
+    isUnlocked = true;
   } catch (e) {
     console.warn("Audio unlock warning:", e);
   }

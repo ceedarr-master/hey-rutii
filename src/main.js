@@ -15,10 +15,14 @@ import { triggerCloudSync, persistRoutine, persistList, deleteRoutineStorage } f
 import { showToast, showConfirm, showConfirmModal, showPromptModal, escapeHtml, initTooltipListeners } from './utils/helpers.js';
 
 if (typeof window !== 'undefined') {
+  const handleUnlock = () => {
+    unlockAudio();
+  };
   ['click', 'touchstart', 'touchend', 'pointerdown'].forEach(evt => {
-    window.addEventListener(evt, () => {
-      unlockAudio();
-    }, { passive: true });
+    window.addEventListener(evt, handleUnlock, { capture: true, passive: true });
+    if (typeof document !== 'undefined') {
+      document.addEventListener(evt, handleUnlock, { capture: true, passive: true });
+    }
   });
 }
 
@@ -170,7 +174,7 @@ window.goIntro = (id) => {
 };
 
 window.startPlay = () => {
-  initAudio();
+  unlockAudio();
   const routine = state.routines[state.currentId];
   if (!routine || routine.steps.length === 0) return showToast("운동 목록이 비어있습니다.");
   state.play = {
@@ -193,7 +197,7 @@ window.startPlay = () => {
 };
 
 window.resumePlay = (id) => {
-  initAudio();
+  unlockAudio();
   state.currentId = id;
   const routine = state.routines[id];
   if (routine && routine.progress) {
@@ -220,7 +224,7 @@ window.resumePlay = (id) => {
 };
 
 window.confirmResetAndStart = (id) => {
-  initAudio();
+  unlockAudio();
   if (state.routines[id]) {
     delete state.routines[id].progress;
     persistRoutine(state.routines[id]);
@@ -230,7 +234,7 @@ window.confirmResetAndStart = (id) => {
 
 window.nextStep = (skipBeep = false) => {
   clearTimer();
-  initAudio();
+  unlockAudio();
   if (!skipBeep) playBeep('finish');
   const routine = state.routines[state.currentId];
   if (!routine) return;
@@ -434,14 +438,14 @@ window.skipStep = () => {
 
 
 window.togglePause = () => {
-  initAudio();
+  unlockAudio();
   state.play.paused = !state.play.paused;
   render();
 };
 
 window.toggleSound = () => {
   state.soundEnabled = !state.soundEnabled;
-  if (state.soundEnabled) initAudio();
+  if (state.soundEnabled) unlockAudio();
   render();
 };
 
@@ -484,7 +488,7 @@ window.confirmExitPlay = () => {
 };
 
 window.restartRoutine = () => {
-  initAudio();
+  unlockAudio();
   const routine = state.routines[state.currentId];
   if (routine && routine.progress) {
     delete routine.progress;
