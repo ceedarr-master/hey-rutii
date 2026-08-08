@@ -1,10 +1,10 @@
-import { getSfSymbol } from './utils/icons.js';
+import { getSfSymbol } from './utils/icons.js?v=2';
 import { playBeep, playRoutineCompleteSound, initAudio, unlockAudio } from './utils/audio.js';
 import { state, DEFAULT_TVA_ROUTINE, formDraft, saveLocalUserProfile } from './store/state.js';
 import { supabaseClient, initSupabaseAuth } from './config/supabase.js';
 import { renderHeader } from './components/Header.js';
-import { renderList } from './views/ListScreen.js';
-import { renderBuilder, renderInlineStepEditor } from './views/BuilderScreen.js';
+import { renderList } from './views/ListScreen.js?v=2';
+import { renderBuilder, renderInlineStepEditor } from './views/BuilderScreen.js?v=2';
 import { renderPlay, renderDone } from './views/PlayScreen.js';
 import { renderStats } from './views/StatsScreen.js';
 import { renderProfile } from './views/ProfileScreen.js';
@@ -47,6 +47,29 @@ function initSortable() {
   }
 }
 
+function initRoutineSortable() {
+  const el = document.querySelector(".routine-list-container");
+  if (!el || typeof Sortable === "undefined") return;
+  try {
+    Sortable.create(el, {
+      animation: 150,
+      handle: ".routine-drag-handle",
+      draggable: ".routine-card",
+      onEnd: async (evt) => {
+        const oldIndex = evt.oldDraggableIndex !== undefined ? evt.oldDraggableIndex : evt.oldIndex;
+        const newIndex = evt.newDraggableIndex !== undefined ? evt.newDraggableIndex : evt.newIndex;
+        if (oldIndex === newIndex || oldIndex == null || newIndex == null) return;
+        const movedId = state.routineOrder.splice(oldIndex, 1)[0];
+        state.routineOrder.splice(newIndex, 0, movedId);
+        await persistList();
+        render();
+      }
+    });
+  } catch(e) {
+    console.warn("Routine sortable initialize failed", e);
+  }
+}
+
 // ---- Main Render Function ----
 export function render() {
   clearTimer();
@@ -76,6 +99,8 @@ export function render() {
 
   if (state.screen === "builder") {
     initSortable();
+  } else if (state.screen === "list") {
+    initRoutineSortable();
   } else if (state.screen === "play") {
     requestWakeLock();
     const routine = state.routines[state.currentId];
@@ -491,6 +516,33 @@ window.goEditRoutine = (id) => {
   };
   state.screen = "builder";
   render();
+};
+
+window.duplicateRoutine = async (id) => {
+  const r = state.routines[id];
+  if (!r) return;
+  const newId = "rt-" + Date.now();
+  const duplicatedRoutine = {
+    ...JSON.parse(JSON.stringify(r)),
+    id: newId,
+    name: `${r.name} (복제)`,
+    updatedAt: new Date().toISOString()
+  };
+  delete duplicatedRoutine.shareCode;
+  delete duplicatedRoutine.progress;
+
+  state.routines[newId] = duplicatedRoutine;
+  const origIndex = state.routineOrder.indexOf(id);
+  if (origIndex !== -1) {
+    state.routineOrder.splice(origIndex + 1, 0, newId);
+  } else {
+    state.routineOrder.push(newId);
+  }
+
+  await persistRoutine(duplicatedRoutine);
+  await persistList();
+  render();
+  showToast("루틴이 복제되었습니다.");
 };
 
 window.deleteRoutine = (id) => {

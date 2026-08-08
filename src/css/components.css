@@ -182,7 +182,7 @@ button:disabled {
   width: auto;
   display: inline-flex;
   align-items: center;
-  justify-content: justify;
+  justify-content: center;
 }
 
 /* ---- progress bar ---- */
@@ -748,10 +748,11 @@ label.hero {
 }
 
 .step-drag-handle {
-  color: #9cb3b0;
+  color: var(--text-tertiary);
   font-size: var(--typo-display-xs);
   cursor: grab;
   margin-right: var(--space-12);
+  padding-bottom: 3px;
 }
 
 /* Set Progress Track (Figma Specs) */

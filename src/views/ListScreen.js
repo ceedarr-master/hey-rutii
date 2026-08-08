@@ -1,4 +1,4 @@
-import { getSfSymbol } from '../utils/icons.js';
+import { getSfSymbol } from '../utils/icons.js?v=2';
 import { state } from '../store/state.js';
 import { escapeHtml, renderAvatarHtml } from '../utils/helpers.js';
 import { estimateMinutes } from '../utils/format.js';
@@ -21,12 +21,16 @@ export function renderList() {
                   <span>${escapeHtml(r.original_author.name)}님의 루틴${r.is_modified ? '을 바탕으로 제작' : ''}</span>
                 </div>
               ` : ''}
-              <div class="routine-name">${escapeHtml(r.name)}</div>
+              <div style="display:flex; align-items:center;">
+                <span class="routine-drag-handle step-drag-handle" style="margin-right:8px;" onclick="event.stopPropagation()">≡</span>
+                <div class="routine-name">${escapeHtml(r.name)}</div>
+              </div>
               <div class="routine-meta">
                 ${r.steps.filter(s => s.type !== 'transition').length}단계 • 약 ${estimateMinutes(r)}분
               </div>
             </div>
             <div class="icon-btns" style="display:flex; gap:8px; align-items:center;">
+              <button class="btn-sm btn-secondary btn-icon" onclick="window.duplicateRoutine('${id}')" title="루틴 복제">${getSfSymbol("doc.on.doc", 14, "var(--text-secondary)")}</button>
               <button class="btn-sm btn-secondary btn-icon" onclick="window.goEditRoutine('${id}')" title="루틴 수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
               <button class="btn-sm btn-secondary btn-icon" onclick="window.shareRoutine('${id}')" title="루틴 공유하기">${getSfSymbol("square.and.arrow.up", 14, "var(--text-secondary)")}</button>
             </div>
@@ -52,5 +56,5 @@ export function renderList() {
     </div>
     <div style="font-size:var(--typo-display-md); color:var(--text-secondary); margin-bottom:var(--space-16);">저장된 루틴을 선택하거나 새로 만들어 보세요</div>
     <button class="btn-md btn-outlined" style="width:100%; margin-bottom:var(--space-12);" onclick="window.goNewRoutine()">+ 새 루틴 만들기</button>
-    ${cards}`;
+    <div class="routine-list-container">${cards}</div>`;
 }
