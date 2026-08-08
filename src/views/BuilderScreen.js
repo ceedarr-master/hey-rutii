@@ -194,6 +194,7 @@ export function renderBuilder() {
               `}
             </div>
             <div style="display:flex; gap: var(--space-8);">
+              <button class="btn-sm btn-secondary btn-icon" onclick="window.duplicateStep(${i})" title="복제">${getSfSymbol("doc.on.doc", 14, "var(--text-secondary)")}</button>
               <button class="btn-sm btn-secondary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
               <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
             </div>

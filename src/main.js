@@ -686,6 +686,19 @@ window.saveInlineEdit = (i) => {
   render();
 };
 
+window.duplicateStep = (i) => {
+  const b = state.builder;
+  if (!b || !b.steps || i < 0 || i >= b.steps.length) return;
+  const targetStep = b.steps[i];
+  const duplicatedStep = JSON.parse(JSON.stringify(targetStep));
+  b.steps.splice(i + 1, 0, duplicatedStep);
+  if (b.editingStepIndex !== null && b.editingStepIndex > i) {
+    b.editingStepIndex += 1;
+  }
+  render();
+  showToast("스텝이 복제되었습니다.");
+};
+
 window.removeStep = (i) => {
   state.builder.steps.splice(i, 1);
   if (state.builder.editingStepIndex === i) {
