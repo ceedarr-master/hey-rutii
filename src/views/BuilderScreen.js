@@ -142,19 +142,23 @@ function renderInsertZone(insertIdx) {
   return `
     <div class="step-insert-zone ${isMenuActive ? 'active' : ''}" data-insert-index="${insertIdx}">
       <div class="step-insert-line"></div>
-      <button type="button" class="step-insert-btn" onclick="window.toggleInsertMenu(${insertIdx})" title="이 위치에 스텝 추가">
-        ${getSfSymbol("plus", 14)}
-      </button>
       ${isMenuActive ? `
         <div class="step-insert-menu">
           <button type="button" class="btn-xs btn-secondary" onclick="window.insertTransitionAt(${insertIdx})">
-            ${getSfSymbol("stopwatch", 12)} + 트랜지션
+            ${getSfSymbol("stopwatch", 13)} 트랜지션
           </button>
           <button type="button" class="btn-xs btn-primary" onclick="window.insertExerciseAt(${insertIdx})">
-            ${getSfSymbol("plus", 12)} + 새 운동
+            ${getSfSymbol("plus", 13)} 새 운동
+          </button>
+          <button type="button" class="step-insert-close-btn" onclick="window.toggleInsertMenu(${insertIdx})" title="닫기">
+            ${getSfSymbol("xmark", 12, "var(--text-tertiary)")}
           </button>
         </div>
-      ` : ''}
+      ` : `
+        <button type="button" class="step-insert-btn" onclick="window.toggleInsertMenu(${insertIdx})" title="이 위치에 스텝 추가">
+          ${getSfSymbol("plus", 14)}
+        </button>
+      `}
     </div>`;
 }
 
