@@ -30,8 +30,10 @@ function initSortable() {
     Sortable.create(el, {
       animation: 150,
       handle: ".step-drag-handle",
+      draggable: ".step-item-figma",
       onEnd: (evt) => {
-        const { oldIndex, newIndex } = evt;
+        const oldIndex = evt.oldDraggableIndex !== undefined ? evt.oldDraggableIndex : evt.oldIndex;
+        const newIndex = evt.newDraggableIndex !== undefined ? evt.newDraggableIndex : evt.newIndex;
         if (oldIndex === newIndex || oldIndex == null || newIndex == null) return;
         const b = state.builder;
         if (!b || !b.steps) return;
@@ -686,7 +688,49 @@ window.saveInlineEdit = (i) => {
 
 window.removeStep = (i) => {
   state.builder.steps.splice(i, 1);
+  if (state.builder.editingStepIndex === i) {
+    state.builder.editingStepIndex = null;
+  }
   render();
+};
+
+window.toggleInsertMenu = (idx) => {
+  const b = state.builder;
+  if (!b) return;
+  b.activeInsertMenuIndex = b.activeInsertMenuIndex === idx ? null : idx;
+  render();
+};
+
+window.insertTransitionAt = (idx, defaultSec = 15) => {
+  const b = state.builder;
+  if (!b) return;
+  const transitionStep = { type: 'transition', seconds: defaultSec };
+  b.steps.splice(idx, 0, transitionStep);
+  b.activeInsertMenuIndex = null;
+  b.editingStepIndex = null;
+  render();
+  showToast("트랜지션 스텝이 추가되었습니다.");
+};
+
+window.insertExerciseAt = (idx) => {
+  const b = state.builder;
+  if (!b) return;
+  const newExercise = {
+    name: "새 운동",
+    target: "",
+    desc: "",
+    type: "timer",
+    seconds: 30,
+    reps: 10,
+    secPerRep: 3,
+    sets: 1,
+    restSeconds: 0
+  };
+  b.steps.splice(idx, 0, newExercise);
+  b.activeInsertMenuIndex = null;
+  b.editingStepIndex = idx;
+  render();
+  showToast("새 운동 스텝이 추가되었습니다.");
 };
 
 window.promptInsertTransitions = () => {

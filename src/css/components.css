@@ -654,6 +654,100 @@ label.hero {
   color: var(--text-tertiary);
 }
 
+/* ---- Step Inline Insert Zone ---- */
+.step-insert-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: -4px 0;
+  padding: 6px 0;
+  min-height: 20px;
+  z-index: 10;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-insert-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-brand-accent, #34c759);
+  opacity: 0;
+  transform: translateY(-50%) scaleX(0.95);
+  transition: all 0.25s ease;
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+.step-insert-btn {
+  position: relative;
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--surface-white, #ffffff);
+  border: 1.5px solid var(--color-stroke-dark, #e0e0e0);
+  color: var(--text-secondary, #666666);
+  opacity: 0.25;
+  transform: scale(0.85);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+}
+
+/* Hover & Active States */
+.step-insert-zone:hover .step-insert-line,
+.step-insert-zone.active .step-insert-line {
+  opacity: 1;
+  transform: translateY(-50%) scaleX(1);
+  box-shadow: 0 0 8px rgba(52, 199, 89, 0.4);
+}
+
+.step-insert-zone:hover .step-insert-btn,
+.step-insert-zone.active .step-insert-btn {
+  opacity: 1;
+  transform: scale(1.1);
+  border-color: var(--color-brand-accent, #34c759);
+  color: var(--color-brand-accent, #34c759);
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.25);
+  background: var(--surface-white, #ffffff);
+}
+
+.step-insert-btn:hover {
+  background: var(--color-brand-accent, #34c759) !important;
+  color: var(--text-white, #ffffff) !important;
+  transform: scale(1.2) !important;
+}
+
+.step-insert-menu {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  gap: var(--space-8, 8px);
+  background: var(--surface-white, #ffffff);
+  border: 1px solid var(--border-card, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  padding: 6px 10px;
+  margin-top: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  animation: popover-bounce 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popover-bounce {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .step-drag-handle {
   color: #9cb3b0;
   font-size: var(--typo-display-xs);

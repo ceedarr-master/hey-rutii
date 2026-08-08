@@ -135,6 +135,29 @@ export function renderInlineStepEditor(i, s) {
     </div>`;
 }
 
+function renderInsertZone(insertIdx) {
+  const b = state.builder;
+  const isMenuActive = b.activeInsertMenuIndex === insertIdx;
+
+  return `
+    <div class="step-insert-zone ${isMenuActive ? 'active' : ''}" data-insert-index="${insertIdx}">
+      <div class="step-insert-line"></div>
+      <button type="button" class="step-insert-btn" onclick="window.toggleInsertMenu(${insertIdx})" title="이 위치에 스텝 추가">
+        ${getSfSymbol("plus", 14)}
+      </button>
+      ${isMenuActive ? `
+        <div class="step-insert-menu">
+          <button type="button" class="btn-xs btn-secondary" onclick="window.insertTransitionAt(${insertIdx})">
+            ${getSfSymbol("stopwatch", 12)} + 트랜지션
+          </button>
+          <button type="button" class="btn-xs btn-primary" onclick="window.insertExerciseAt(${insertIdx})">
+            ${getSfSymbol("plus", 12)} + 새 운동
+          </button>
+        </div>
+      ` : ''}
+    </div>`;
+}
+
 export function renderBuilder() {
   const b = state.builder;
   if (!b) return "";
@@ -143,35 +166,38 @@ export function renderBuilder() {
   if (b.steps.length === 0) {
     stepsHtml = `<div class="empty-state" style="font-size:var(--typo-body-sm); font-weight:var(--fw-medium); color:var(--text-tertiary); padding:var(--space-20);">아직 추가된 운동이 없습니다.</div>`;
   } else {
-    stepsHtml = `<div class="step-list">` +
-      b.steps.map((s, i) => {
-        if (b.editingStepIndex === i) {
-          return renderInlineStepEditor(i, s);
-        } else {
-          const isTrans = s.type === 'transition';
-          return `
-            <div class="step-item-figma ${isTrans ? 'transition-type' : ''}" data-id="${i}">
-              <div style="display:flex; align-items:center; flex:1; gap:10px;">
-                <div class="step-drag-handle" style="${isTrans ? 'color:var(--text-tertiary);' : ''}">≡</div>
-                ${isTrans ? `
-                  <div class="step-break" style="display:flex; align-items:center; gap:8px; white-space:nowrap;">
-                    <span>트랜지션</span>
-                    <span style="font-weight:var(--fw-medium); opacity:0.85;">⏱ ${s.seconds || 15}초</span>
-                  </div>
-                ` : `
-                  <div>
-                    <div class="step-list-title">${escapeHtml(s.name)}</div>
-                    <div class="step-list-subtitle">${stepDetail(s)}</div>
-                  </div>
-                `}
-              </div>
-              <div style="display:flex; gap: var(--space-8);">
-                <button class="btn-sm btn-secondary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
-                <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
-              </div>
-            </div>`;
-        }
-      }).join("") + `</div>`;
+    const items = [];
+    b.steps.forEach((s, i) => {
+      items.push(renderInsertZone(i));
+      if (b.editingStepIndex === i) {
+        items.push(renderInlineStepEditor(i, s));
+      } else {
+        const isTrans = s.type === 'transition';
+        items.push(`
+          <div class="step-item-figma ${isTrans ? 'transition-type' : ''}" data-id="${i}">
+            <div style="display:flex; align-items:center; flex:1; gap:10px;">
+              <div class="step-drag-handle" style="${isTrans ? 'color:var(--text-tertiary);' : ''}">≡</div>
+              ${isTrans ? `
+                <div class="step-break" style="display:flex; align-items:center; gap:8px; white-space:nowrap;">
+                  <span>트랜지션</span>
+                  <span style="font-weight:var(--fw-medium); opacity:0.85;">⏱ ${s.seconds || 15}초</span>
+                </div>
+              ` : `
+                <div>
+                  <div class="step-list-title">${escapeHtml(s.name)}</div>
+                  <div class="step-list-subtitle">${stepDetail(s)}</div>
+                </div>
+              `}
+            </div>
+            <div style="display:flex; gap: var(--space-8);">
+              <button class="btn-sm btn-secondary btn-icon" onclick="window.startInlineEdit(${i})" title="수정">${getSfSymbol("pencil", 14, "var(--text-secondary)")}</button>
+              <button class="btn-sm btn-warning btn-icon" onclick="window.removeStep(${i})" title="삭제">${getSfSymbol("trash.fill", 14, "#ff5e3a")}</button>
+            </div>
+          </div>`);
+      }
+    });
+    items.push(renderInsertZone(b.steps.length));
+    stepsHtml = `<div class="step-list">${items.join("")}</div>`;
   }
 
   return `
